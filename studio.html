@@ -1,85 +1,107 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Webneva Studio – AI för webbutvecklare</title>
-  <link rel="icon" href="images/webneva-logo.png" />
+  <link rel="icon" href="images/webneva-logo.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
-      font-family: Inter, system-ui, sans-serif;
-      background: radial-gradient(circle at 10% 10%, #e0f2fe, #f8fafc);
+      font-family: "Inter", system-ui, sans-serif;
+      background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      color: #1e293b;
     }
     .glass {
-      background: rgba(255, 255, 255, 0.75);
+      background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
+    .brand { color: #0f4c81; }
     .brand-bg { background-color: #0f4c81; }
     .brand-bg:hover { background-color: #0c3b63; }
-    .chat-bubble { border-radius: 1rem; padding: .75rem 1rem; margin-bottom: .75rem; word-wrap: break-word; white-space: pre-wrap; }
+    .chat-bubble {
+      border-radius: 1rem;
+      padding: .75rem 1rem;
+      margin-bottom: .75rem;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
     .chat-ai { background-color: #f1f5f9; align-self: flex-start; }
     .chat-user { background-color: #0f4c81; color: white; align-self: flex-end; }
+    textarea::-webkit-scrollbar, #chatBox::-webkit-scrollbar {
+      width: 8px;
+    }
+    textarea::-webkit-scrollbar-thumb, #chatBox::-webkit-scrollbar-thumb {
+      background-color: rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
   </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
+<body class="antialiased">
 
   <!-- Header -->
-  <header class="w-full glass shadow-sm border-b border-slate-200 fixed top-0 left-0 z-50">
-    <div class="max-w-7xl mx-auto flex justify-between items-center px-8 py-4">
+  <header class="fixed top-0 left-0 w-full z-40 glass border-b border-slate-200">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
       <div class="flex items-center gap-3">
-        <img src="images/webneva-logo.png" class="h-10 w-10" alt="Webneva logo">
-        <span class="font-extrabold text-2xl text-[#0f4c81]">Webneva Studio</span>
+        <img src="images/webneva-logo.png" alt="Webneva" class="h-10 w-10 object-contain">
+        <span class="font-extrabold text-xl md:text-2xl brand">Webneva<span class="text-blue-500"> Studio</span></span>
       </div>
       <div class="relative">
-        <button id="profileBtn" class="flex items-center gap-2 px-4 py-2 bg-white border rounded-full shadow hover:shadow-md transition">
+        <button id="profileBtn" class="flex items-center gap-2 bg-white border rounded-full px-4 py-2 text-sm shadow hover:shadow-md transition">
           <i class="fa-solid fa-user text-slate-700"></i>
-          <span class="font-medium">Profil</span>
+          <span>Profil</span>
           <i class="fa-solid fa-chevron-down text-xs"></i>
         </button>
-        <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-100">
-          <a href="/" class="block px-4 py-2 text-sm hover:bg-blue-50">Tillbaka till startsida</a>
-          <a href="#" class="block px-4 py-2 text-sm hover:bg-blue-50">Inställningar</a>
+        <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-100 z-50">
+          <a href="/" class="block px-4 py-2 text-sm hover:bg-blue-50">🏠 Till startsida</a>
+          <a href="#" class="block px-4 py-2 text-sm hover:bg-blue-50">⚙️ Inställningar</a>
           <hr>
-          <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logga ut</a>
+          <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">🚪 Logga ut</a>
         </div>
       </div>
     </div>
   </header>
 
   <!-- Main -->
-  <main class="flex-1 flex flex-col lg:flex-row justify-center gap-8 px-8 pt-28 pb-16 max-w-7xl mx-auto w-full">
-    
-    <!-- Kod -->
-    <section class="glass p-6 rounded-2xl shadow-xl flex-1 flex flex-col h-[600px]">
-      <h2 class="font-bold text-lg mb-3 text-[#0f4c81]"><i class="fa-solid fa-code"></i> Din kod</h2>
-      <textarea id="userCode" class="flex-1 p-3 rounded-lg border bg-white font-mono text-sm resize-none focus:ring-2 focus:ring-blue-400" placeholder="Klistra in din HTML/CSS/JS-kod här..."></textarea>
-      <div class="mt-4 flex justify-end gap-3">
-        <button id="previewBtn" class="brand-bg text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90">Visa live</button>
-        <button id="sendMessageBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg font-semibold shadow">✨ Förbättra med AI</button>
-      </div>
-    </section>
+  <main class="flex-1 flex flex-col items-center justify-center pt-28 pb-16 px-4">
+    <div class="w-full max-w-5xl glass rounded-2xl p-6 md:p-10 flex flex-col lg:flex-row gap-8">
 
-    <!-- AI -->
-    <section class="glass p-6 rounded-2xl shadow-xl flex-1 flex flex-col h-[600px]">
-      <h2 class="font-bold text-lg mb-3 text-[#0f4c81]"><i class="fa-solid fa-robot"></i> AI-assistent</h2>
-      <div id="chatBox" class="flex flex-col flex-1 overflow-y-auto border rounded-lg bg-white p-4 text-sm mb-4">
-        <div class="chat-bubble chat-ai">👋 Hej! Klistra in din kod till vänster och klicka på <strong>”Förbättra med AI”</strong>.</div>
-      </div>
-      <textarea id="userMessage" class="w-full border rounded-lg p-2 text-sm mb-3 resize-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Skriv till AI..."></textarea>
-      <button id="sendChatBtn" class="brand-bg text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90">Skicka</button>
-    </section>
+      <!-- Input / kodruta -->
+      <section class="flex-1 flex flex-col">
+        <h2 class="font-bold text-lg mb-3 text-[#0f4c81] flex items-center gap-2"><i class="fa-solid fa-code"></i> Din kod</h2>
+        <textarea id="userCode" class="flex-1 border rounded-lg p-4 bg-white font-mono text-sm resize-none focus:ring-2 focus:ring-blue-400" rows="12" placeholder="Klistra in din HTML/CSS/JS här..."></textarea>
+        <div class="mt-4 flex gap-3 justify-end">
+          <button id="previewBtn" class="brand-bg text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition">Visa live</button>
+          <button id="sendMessageBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg font-semibold shadow transition">✨ Förbättra med AI</button>
+        </div>
+      </section>
 
+      <!-- AI sektion -->
+      <section class="flex-1 flex flex-col">
+        <h2 class="font-bold text-lg mb-3 text-[#0f4c81] flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> AI-assistent</h2>
+        <div id="chatBox" class="flex flex-col flex-1 overflow-y-auto border rounded-lg bg-white p-4 text-sm font-sans mb-4 h-[350px]">
+          <div class="chat-bubble chat-ai">👋 Hej! Jag är din AI-assistent. Klistra in kod till vänster eller skriv ett meddelande nedan.</div>
+        </div>
+        <textarea id="userMessage" class="w-full border rounded-lg p-3 text-sm mb-3 resize-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Skriv till AI (t.ex. 'Gör knappen blåare och centrerad')..."></textarea>
+        <button id="sendChatBtn" class="brand-bg text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition">Skicka</button>
+      </section>
+
+    </div>
   </main>
 
+  <!-- Script -->
   <script>
   // Profilmeny
   document.getElementById("profileBtn").addEventListener("click", () => {
     document.getElementById("profileMenu").classList.toggle("hidden");
   });
 
-  // Preview
+  // Live Preview
   document.getElementById("previewBtn").addEventListener("click", () => {
     const code = document.getElementById("userCode").value;
     const win = window.open("", "_blank");
@@ -87,7 +109,7 @@
     win.document.close();
   });
 
-  // AI-integration
+  // AI Kommunikation
   async function sendToAI(message) {
     const chatBox = document.getElementById("chatBox");
     const userDiv = document.createElement("div");
@@ -100,6 +122,7 @@
     thinking.className = "chat-bubble chat-ai italic text-gray-500";
     thinking.innerText = "⏳ AI bearbetar...";
     chatBox.appendChild(thinking);
+    chatBox.scrollTop = chatBox.scrollHeight;
 
     try {
       const res = await fetch("/api/openai", {
@@ -113,12 +136,14 @@
       aiDiv.className = "chat-bubble chat-ai";
       aiDiv.innerText = data.reply || "⚠️ AI kunde inte svara.";
       chatBox.appendChild(aiDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
     } catch (err) {
       chatBox.removeChild(thinking);
       const errDiv = document.createElement("div");
       errDiv.className = "chat-bubble chat-ai text-red-500";
       errDiv.innerText = "❌ Fel vid kontakt med AI-servern.";
       chatBox.appendChild(errDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
   }
 
@@ -135,5 +160,6 @@
     sendToAI(msg);
   });
   </script>
+
 </body>
 </html>
