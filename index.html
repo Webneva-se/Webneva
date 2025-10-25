@@ -1,1 +1,207 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Webneva – Bygg, testa & förbättra din hemsida med AI</title>
+  <meta name="description" content="Webneva låter dig klistra in HTML/CSS/JS, se sidan live och få AI-hjälp att förbättra design, struktur och responsivitet innan publicering." />
+  <link rel="icon" href="images/webneva-logo.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(135deg,#f6f9fc,#e9f0f8)}
+    .glass{background:rgba(255,255,255,.9);backdrop-filter:saturate(130%) blur(10px)}
+    .brand{color:#0f4c81}
+    .brand-bg{background:#0f4c81}
+    .brand-bg:hover{background:#0c3b63}
+  </style>
+</head>
+<body class="text-slate-900 antialiased">
+
+  <!-- Header -->
+  <header class="fixed inset-x-0 top-0 z-40 glass shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="images/webneva-logo.png" alt="Webneva" class="h-8 w-8 object-contain">
+        <span class="font-extrabold tracking-tight text-lg brand">Webneva<span class="text-blue-500">.se</span></span>
+      </div>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-700">
+        <a href="#vad" class="hover:text-slate-900">Vad är Webneva?</a>
+        <a href="#sa-funkar-det" class="hover:text-slate-900">Så funkar det</a>
+        <a href="#sakerhet" class="hover:text-slate-900">Säkerhet</a>
+        <a href="#faq" class="hover:text-slate-900">FAQ</a>
+      </nav>
+      <a href="studio.html" class="brand-bg text-white px-4 py-2 rounded-full text-sm font-semibold shadow-sm">Starta editor</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="pt-28 pb-14">
+    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+          Bygg, testa & förbättra <span class="brand">din hemsida</span> med AI
+        </h1>
+        <p class="mt-4 text-lg text-slate-600">
+          Klistra in HTML/CSS/JS, se resultatet live och låt AI föreslå förbättringar för design,
+          struktur och responsivitet – innan du publicerar.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href="studio.html" class="brand-bg text-white px-6 py-3 rounded-full font-semibold shadow-lg">
+            🚀 Starta editor
+          </a>
+          <a href="#vad" class="px-6 py-3 rounded-full font-semibold border border-slate-300 hover:bg-white">
+            Läs mer
+          </a>
+        </div>
+        <p class="mt-3 text-xs text-slate-500">Ingen inlogg krävs för att testa. Exportera när du är nöjd.</p>
+      </div>
+      <div class="glass rounded-2xl shadow-xl p-6">
+        <!-- Minimal “preview” mock to hint product -->
+        <div class="border rounded-xl overflow-hidden shadow-sm">
+          <div class="bg-slate-800 text-slate-100 text-xs px-4 py-2 flex items-center gap-2">
+            <i class="fa-solid fa-code"></i> live-preview.html
+          </div>
+          <div class="bg-white p-6">
+            <div class="h-3 w-24 rounded-full bg-slate-200 mb-4"></div>
+            <div class="h-7 w-64 rounded bg-slate-100 mb-3"></div>
+            <div class="h-3 w-80 rounded bg-slate-200 mb-1.5"></div>
+            <div class="h-3 w-72 rounded bg-slate-200 mb-6"></div>
+            <div class="flex gap-3">
+              <div class="h-9 w-28 rounded-full brand-bg/90"></div>
+              <div class="h-9 w-28 rounded-full bg-slate-200"></div>
+            </div>
+          </div>
+        </div>
+        <p class="text-center text-xs text-slate-500 mt-3">Exempelvy: editor till vänster, live-förhandsvisning till höger.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vad är Webneva -->
+  <section id="vad" class="py-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-6">Vad är Webneva?</h2>
+      <p class="text-slate-700 max-w-3xl">
+        Webneva är en AI-driven editor för webbutveckling. Du kan:
+        <span class="font-semibold">klistra in kod</span>, se sidan
+        <span class="font-semibold">live</span>, be AI om förbättringar och exportera färdig HTML/CSS/JS.
+        Perfekt för snabb prototypning, pixel-polish och responsiva justeringar.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-6 mt-10">
+        <div class="glass rounded-2xl p-6 shadow">
+          <i class="fa-solid fa-bolt text-2xl brand"></i>
+          <h3 class="font-semibold mt-3 mb-1">Live Preview</h3>
+          <p class="text-slate-600 text-sm">Se dina ändringar direkt – inga omstarter, ingen väntan.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 shadow">
+          <i class="fa-solid fa-wand-magic-sparkles text-2xl brand"></i>
+          <h3 class="font-semibold mt-3 mb-1">AI-förbättringar</h3>
+          <p class="text-slate-600 text-sm">”Gör knappen blå & rundare”, ”Fixa mobilmenyn”, ”Modernisera typografin”.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 shadow">
+          <i class="fa-solid fa-file-export text-2xl brand"></i>
+          <h3 class="font-semibold mt-3 mb-1">Exportera</h3>
+          <p class="text-slate-600 text-sm">Exportera ren kod eller kopiera med ett klick när du är nöjd.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Så funkar det -->
+  <section id="sa-funkar-det" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-8">Så funkar det</h2>
+      <ol class="grid md:grid-cols-4 gap-6">
+        <li class="glass rounded-2xl p-6 shadow">
+          <div class="text-xs font-semibold text-slate-500">Steg 1</div>
+          <h3 class="font-semibold mt-1 mb-2">Klistra in kod</h3>
+          <p class="text-sm text-slate-600">HTML, CSS och valfri JS. Eller börja från en mall.</p>
+        </li>
+        <li class="glass rounded-2xl p-6 shadow">
+          <div class="text-xs font-semibold text-slate-500">Steg 2</div>
+          <h3 class="font-semibold mt-1 mb-2">Se live</h3>
+          <p class="text-sm text-slate-600">Förhandsvisningen uppdateras automatiskt vid varje ändring.</p>
+        </li>
+        <li class="glass rounded-2xl p-6 shadow">
+          <div class="text-xs font-semibold text-slate-500">Steg 3</div>
+          <h3 class="font-semibold mt-1 mb-2">Be AI om hjälp</h3>
+          <p class="text-sm text-slate-600">Ge naturliga instruktioner: design, struktur, tillgänglighet, performance.</p>
+        </li>
+        <li class="glass rounded-2xl p-6 shadow">
+          <div class="text-xs font-semibold text-slate-500">Steg 4</div>
+          <h3 class="font-semibold mt-1 mb-2">Exportera</h3>
+          <p class="text-sm text-slate-600">Hämta den förbättrade koden och publicera på din sajt.</p>
+        </li>
+      </ol>
+      <div class="mt-10">
+        <a href="studio.html" class="brand-bg text-white px-6 py-3 rounded-full font-semibold shadow">
+          Prova nu – gratis
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Säkerhet -->
+  <section id="sakerhet" class="py-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-6">Säkerhet & integritet</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl p-6 shadow">
+          <i class="fa-solid fa-key text-2xl brand"></i>
+          <h3 class="font-semibold mt-3 mb-1">API-nycklar skyddas</h3>
+          <p class="text-slate-600 text-sm">Nycklar lagras som miljövariabler på servern – aldrig i klientkoden.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 shadow">
+          <i class="fa-solid fa-shield-halved text-2xl brand"></i>
+          <h3 class="font-semibold mt-3 mb-1">Isolerad förhandsvisning</h3>
+          <p class="text-slate-600 text-sm">Preview körs i sandbox/iframe för att skydda din miljö.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 shadow">
+          <i class="fa-solid fa-lock text-2xl brand"></i>
+          <h3 class="font-semibold mt-3 mb-1">Privat som standard</h3>
+          <p class="text-slate-600 text-sm">Dina projekt delas inte utan ditt uttryckliga godkännande.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-6">Vanliga frågor</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="glass rounded-2xl p-6 shadow">
+          <h3 class="font-semibold">Behöver jag konto?</h3>
+          <p class="text-slate-600 text-sm mt-1">Nej. Testa editorn direkt. Konto kommer för att spara projekt online.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 shadow">
+          <h3 class="font-semibold">Vilka format stöds?</h3>
+          <p class="text-slate-600 text-sm mt-1">HTML, CSS och JS i separata fält eller i en fil. Mallar finns.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 shadow">
+          <h3 class="font-semibold">Kan AI förstöra min kod?</h3>
+          <p class="text-slate-600 text-sm mt-1">Förslag visas först – du väljer vad som ska appliceras.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 shadow">
+          <h3 class="font-semibold">Vad kostar det?</h3>
+          <p class="text-slate-600 text-sm mt-1">En gratis nivå för test. Betald nivå planeras för fler anrop & lagring.</p>
+        </div>
+      </div>
+
+      <div class="mt-10">
+        <a href="studio.html" class="brand-bg text-white px-6 py-3 rounded-full font-semibold shadow">
+          🚀 Starta editor
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-10 text-center text-sm text-slate-500">
+    © 2025 Webneva.se – AI-driven webbdesign. Alla rättigheter förbehållna.
+  </footer>
+</body>
+</html>
 
