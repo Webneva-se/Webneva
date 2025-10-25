@@ -1,38 +1,39 @@
-// webneva/api/openai.js
+// /api/openai.js
 import OpenAI from "openai";
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
-
 export default async function handler(req, res) {
-  // Tillåt endast POST
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Endast POST-förfrågningar stöds." });
   }
 
   try {
-    const { message } = req.body;
+    if (!process.env.OPENAI_API_KEY) {
+      console.error("❌ OPENAI_API_KEY saknas i miljövariablerna.");
+      return res.status(500).json({ error: "Ingen API-nyckel hittades." });
+    }
 
+    const client = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+
+    const { message } = req.body || {};
     if (!message) {
-      return res.status(400).json({ error: "Ingen meddelandetext angiven." });
+      return res.status(400).json({ error: "Ingen text skickades till AI." });
     }
 
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        {
-          role: "system",
-          content:
-            "Du är en hjälpsam AI som förklarar, förbättrar och justerar webbkod och design på ett tydligt sätt."
-        },
+        { role: "system", content: "Du är en hjälpsam AI som förbättrar HTML, CSS och JS." },
         { role: "user", content: message }
-      ]
+      ],
     });
 
-    res.status(200).json({ reply: completion.choices[0].message.content });
+    const reply = completion.choices[0]?.message?.content || "Inget svar från AI.";
+    return res.status(200).json({ reply });
+
   } catch (error) {
-    console.error("Fel vid AI-anrop:", error);
-    res.status(500).json({ error: "Något gick fel vid kontakt med OpenAI API." });
+    console.error("❌ AI-fel:", error);
+    return res.status(500).json({ error: "Fel vid anrop till AI.", details: error.message });
   }
 }
