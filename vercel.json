@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
     { "source": "/studio", "destination": "/studio.html" },
-    { "source": "/editor", "destination": "/editor.html" }
+    { "source": "/editor", "destination": "/editor.html" },
+    { "source": "/api/(.*)", "destination": "/api/$1" }
   ]
 }
