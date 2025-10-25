@@ -1,132 +1,166 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Webneva Studio – AI-editor</title>
-  <link rel="icon" href="images/Webneva.png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webneva Studio – AI-driven webbutveckling</title>
+  <link rel="icon" href="images/webneva-logo.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <script>
-    // Tailwind dark mode
-    tailwind.config = { darkMode: 'class' }
-  </script>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
+      background: linear-gradient(135deg, #f7faff, #e9eff8);
+      color: #1e293b;
+    }
+    .glass {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(10px);
+    }
+    .brand {
+      color: #0f4c81;
+    }
+    .brand-bg {
+      background-color: #0f4c81;
+    }
+    .brand-bg:hover {
+      background-color: #0c3b63;
+    }
+    .chat-bubble {
+      max-width: 80%;
+      border-radius: 1rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.75rem;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+    .chat-ai {
+      background-color: #f1f5f9;
+      align-self: flex-start;
+    }
+    .chat-user {
+      background-color: #0f4c81;
+      color: white;
+      align-self: flex-end;
+    }
+  </style>
 </head>
-
-<body class="bg-slate-50 text-gray-900 font-[Inter] transition-colors duration-300 dark:bg-slate-900 dark:text-gray-100">
+<body class="antialiased">
 
   <!-- Header -->
-  <header class="flex items-center justify-between px-6 py-3 bg-blue-800 text-white shadow-md dark:bg-slate-800">
-    <div class="flex items-center gap-3">
-      <img src="images/Webneva.png" alt="Webneva logotyp" class="h-8 w-auto">
-      <span class="font-bold text-lg">Webneva Studio</span>
-    </div>
-
-    <div class="flex items-center gap-3">
-      <button id="theme-toggle" class="bg-white text-blue-800 px-3 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600 transition">
-        🌙 Mörkt läge
-      </button>
-      <a href="index.html" class="bg-white text-blue-800 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600">
+  <header class="fixed inset-x-0 top-0 z-40 glass shadow">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="images/webneva-logo.png" alt="Webneva" class="h-8 w-8 object-contain">
+        <span class="font-extrabold text-lg brand">Webneva<span class="text-blue-500"> Studio</span></span>
+      </div>
+      <a href="index.html" class="brand-bg text-white px-4 py-2 rounded-full text-sm font-semibold shadow-sm">
         ← Tillbaka
       </a>
     </div>
   </header>
 
-  <!-- Main -->
-  <main class="grid md:grid-cols-2 gap-0 h-[calc(100vh-56px)] transition-colors duration-300">
+  <!-- Main Content -->
+  <main class="pt-28 pb-20 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-8">
     
-    <!-- Kodruta -->
-    <div class="p-4 bg-white border-r border-slate-200 flex flex-col dark:bg-slate-900 dark:border-slate-700">
-      <h2 class="text-lg font-semibold mb-2 text-blue-800 dark:text-blue-400">HTML / CSS / JS</h2>
-      <textarea id="code" class="flex-1 w-full p-3 border rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-slate-800 dark:text-gray-100 dark:border-slate-700" placeholder="Skriv eller klistra in din kod här..."></textarea>
-      <div class="flex justify-end mt-3 gap-3">
-        <button id="run-btn" class="px-5 py-2 bg-blue-700 text-white rounded-full hover:bg-blue-800 transition">
-          ▶️ Visa live
-        </button>
-        <button id="ai-btn" class="px-5 py-2 bg-yellow-400 text-gray-900 rounded-full hover:bg-yellow-300 transition">
-          🤖 Förbättra med AI
-        </button>
+    <!-- Kod-editor -->
+    <section class="glass rounded-2xl shadow-lg p-6 flex flex-col">
+      <h2 class="font-bold text-xl mb-3 flex items-center gap-2"><i class="fa-solid fa-code"></i> HTML / CSS / JS</h2>
+      <textarea id="userCode" class="flex-1 border rounded-lg p-3 text-sm font-mono bg-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Klistra in din kod här..."></textarea>
+      <div class="mt-4 flex gap-3 justify-end">
+        <button id="previewBtn" class="brand-bg text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition">Visa live</button>
+        <button id="sendMessageBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg font-semibold shadow transition">✨ Förbättra med AI</button>
       </div>
-    </div>
+    </section>
 
-    <!-- Preview -->
-    <div class="bg-slate-100 p-2 dark:bg-slate-800">
-      <iframe id="preview" class="w-full h-full rounded-md bg-white border dark:bg-slate-900 dark:border-slate-700"></iframe>
-    </div>
+    <!-- Förhandsvisning / AI-svar -->
+    <section class="glass rounded-2xl shadow-lg p-6 flex flex-col">
+      <h2 class="font-bold text-xl mb-3 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Interagera med AI</h2>
+
+      <!-- AI chatfönster -->
+      <div id="chatBox" class="flex flex-col flex-1 overflow-y-auto border rounded-lg bg-white p-4 text-sm font-sans mb-4" style="height: 400px;">
+        <div class="chat-bubble chat-ai">
+          👋 Hej! Klistra in din kod till vänster och klicka på <strong>"Förbättra med AI"</strong> så hjälper jag dig att göra den modernare och mer responsiv.
+        </div>
+      </div>
+
+      <textarea id="userMessage" class="w-full border rounded-lg p-2 text-sm mb-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Skriv till AI (t.ex. 'Gör knappen blåare och centrerad')..."></textarea>
+      <button id="sendChatBtn" class="brand-bg text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition">Skicka</button>
+    </section>
+
   </main>
 
   <script>
-    const codeInput = document.getElementById("code");
-    const previewFrame = document.getElementById("preview");
-    const runBtn = document.getElementById("run-btn");
-    const aiBtn = document.getElementById("ai-btn");
-    const themeToggle = document.getElementById("theme-toggle");
+  // "Visa live" - förhandsvisning av användarens kod
+  document.getElementById("previewBtn").addEventListener("click", () => {
+    const code = document.getElementById("userCode").value;
+    const win = window.open("", "_blank");
+    win.document.open();
+    win.document.write(code);
+    win.document.close();
+  });
 
-    // 🌙 Mörkt läge toggle
-    themeToggle.addEventListener("click", () => {
-      document.documentElement.classList.toggle("dark");
-      const isDark = document.documentElement.classList.contains("dark");
-      themeToggle.textContent = isDark ? "☀️ Ljust läge" : "🌙 Mörkt läge";
-      localStorage.setItem("theme", isDark ? "dark" : "light");
-    });
+  // AI interaktion - Förbättra kod
+  async function sendToAI(message) {
+    const chatBox = document.getElementById("chatBox");
+    
+    // Visa användarens meddelande
+    const userDiv = document.createElement("div");
+    userDiv.className = "chat-bubble chat-user";
+    userDiv.innerText = message;
+    chatBox.appendChild(userDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
 
-    // Ladda tidigare tema
-    if (localStorage.getItem("theme") === "dark" ||
-        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-      document.documentElement.classList.add("dark");
-      themeToggle.textContent = "☀️ Ljust läge";
+    // Visa "AI tänker..."
+    const thinkingDiv = document.createElement("div");
+    thinkingDiv.className = "chat-bubble chat-ai italic text-gray-500";
+    thinkingDiv.innerText = "⏳ AI bearbetar...";
+    chatBox.appendChild(thinkingDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    try {
+      const res = await fetch("/api/openai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await res.json();
+      chatBox.removeChild(thinkingDiv);
+
+      const aiDiv = document.createElement("div");
+      aiDiv.className = "chat-bubble chat-ai";
+      aiDiv.innerText = data.reply || "⚠️ AI kunde inte generera något svar.";
+      chatBox.appendChild(aiDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+    } catch (err) {
+      console.error("Fel:", err);
+      chatBox.removeChild(thinkingDiv);
+
+      const errorDiv = document.createElement("div");
+      errorDiv.className = "chat-bubble chat-ai text-red-500";
+      errorDiv.innerText = "❌ Ett fel uppstod vid kontakt med AI-servern.";
+      chatBox.appendChild(errorDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
+  }
 
-    // 🧠 Ladda tidigare kod
-    codeInput.value = localStorage.getItem("webneva_code") || "";
+  // Knapp: Förbättra med AI
+  document.getElementById("sendMessageBtn").addEventListener("click", () => {
+    const code = document.getElementById("userCode").value.trim();
+    if (!code) return alert("Klistra in din kod först!");
+    sendToAI("Förbättra följande kod:\n" + code);
+  });
 
-    // ▶️ Visa live
-    runBtn.addEventListener("click", () => {
-      const code = codeInput.value;
-      const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-      doc.open();
-      doc.write(code);
-      doc.close();
-      localStorage.setItem("webneva_code", code);
-    });
-
-    // 🤖 Förbättra med AI
-    aiBtn.addEventListener("click", async () => {
-      const userCode = codeInput.value.trim();
-      if (!userCode) return alert("Klistra in eller skriv lite kod först!");
-
-      aiBtn.textContent = "⏳ AI analyserar...";
-      aiBtn.disabled = true;
-
-      try {
-        const res = await fetch("/api/openai", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: "Förbättra denna HTML/CSS/JS med fokus på modern design, responsivitet och prestanda:\n\n" + userCode
-          })
-        });
-
-        const data = await res.json();
-
-        if (data.reply) {
-          codeInput.value = data.reply;
-          const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-          doc.open();
-          doc.write(data.reply);
-          doc.close();
-          localStorage.setItem("webneva_code", data.reply);
-        } else {
-          alert("❌ Fel vid AI-anrop: " + (data.error || "Okänt fel"));
-        }
-      } catch (err) {
-        alert("⚠️ Kunde inte nå AI-servern.");
-        console.error(err);
-      } finally {
-        aiBtn.textContent = "🤖 Förbättra med AI";
-        aiBtn.disabled = false;
-      }
-    });
+  // Knapp: Chatta direkt med AI
+  document.getElementById("sendChatBtn").addEventListener("click", () => {
+    const msg = document.getElementById("userMessage").value.trim();
+    if (!msg) return alert("Skriv ett meddelande först!");
+    document.getElementById("userMessage").value = "";
+    sendToAI(msg);
+  });
   </script>
+
 </body>
 </html>
