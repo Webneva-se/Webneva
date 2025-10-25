@@ -2,110 +2,174 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Webneva – AI för webbutvecklare</title>
-  <meta name="description" content="Webneva låter dig se, förbättra och förstå din kod med AI. Bygg moderna hemsidor snabbare och snyggare.">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Webneva – Bygg, testa & förbättra din hemsida med AI</title>
+  <meta name="description" content="Webneva låter dig klistra in eller generera HTML/CSS/JS, se sidan live och få AI-hjälp att förbättra design, struktur och responsivitet innan publicering." />
   <link rel="icon" href="images/bgk-remove.webneva.png" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script>
+    // Tailwind dark mode toggle via class
+    if (localStorage.getItem('wn-theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
   <style>
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: radial-gradient(circle at top left, #e0f2fe, #f8fafc);
-      color: #1e293b;
-    }
-    .glass {
-      background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(16px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-    }
-    .brand-bg { background-color: #0f4c81; }
-    .brand-bg:hover { background-color: #0c3b63; }
-    .brand { color: #0f4c81; }
+    .glass{background:rgba(255,255,255,.85);backdrop-filter:saturate(120%) blur(10px)}
+    .brand { color:#0f4c81 }
+    .btn-brand{background:#0f4c81}
+    .btn-brand:hover{background:#0c3b63}
   </style>
 </head>
-<body class="antialiased flex flex-col min-h-screen">
+<body class="antialiased text-slate-900 dark:bg-slate-950 dark:text-slate-100">
 
   <!-- Header -->
-  <header class="w-full glass fixed top-0 z-50 border-b border-slate-200">
-    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
+  <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="images/bgk-remove.webneva.png" alt="Webneva logotyp" class="h-12 w-auto object-contain">
-        <span class="font-extrabold text-2xl brand">Webneva<span class="text-blue-500">.se</span></span>
+        <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-10 w-10 object-contain">
+        <span class="font-extrabold tracking-tight text-2xl md:text-3xl brand">Webneva<span class="text-blue-500">.se</span></span>
       </div>
-      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-700">
-        <a href="#om" class="hover:text-[#0f4c81]">Om</a>
-        <a href="#funktioner" class="hover:text-[#0f4c81]">Funktioner</a>
-        <a href="#kontakt" class="hover:text-[#0f4c81]">Kontakt</a>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-700 dark:text-slate-300">
+        <a href="#vad" class="hover:opacity-80">Vad är Webneva?</a>
+        <a href="#sa-funkar-det" class="hover:opacity-80">Så funkar det</a>
+        <a href="#sakerhet" class="hover:opacity-80">Säkerhet</a>
+        <a href="#faq" class="hover:opacity-80">FAQ</a>
       </nav>
-      <a href="/studio" class="brand-bg text-white px-5 py-2 rounded-full font-semibold shadow hover:shadow-md">Starta Studio</a>
+      <div class="flex items-center gap-3">
+        <button id="themeBtn" class="px-3 py-2 rounded-full border border-slate-200 dark:border-slate-700 text-sm">Tema</button>
+        <a href="/studio" class="btn-brand text-white px-4 py-2 rounded-full text-sm font-semibold shadow-sm">Starta Studio</a>
+      </div>
     </div>
   </header>
 
   <!-- Hero -->
-  <section class="flex-1 flex flex-col items-center justify-center text-center px-6 pt-36 pb-20">
-    <img src="images/bgk-remove.webneva.png" class="h-24 mb-6 drop-shadow-lg" alt="Webneva logo">
-    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
-      Skapa, testa och förbättra <br class="hidden md:block"><span class="text-[#0f4c81]">din kod med AI</span>
-    </h1>
-    <p class="text-lg md:text-xl text-slate-600 mb-8 max-w-2xl">
-      Webneva Studio hjälper dig bygga moderna hemsidor med AI.  
-      Klistra in din kod, få smarta förbättringar och se resultatet direkt.
-    </p>
-    <div class="flex flex-wrap justify-center gap-4">
-      <a href="/studio" class="brand-bg text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl">🚀 Starta Studio</a>
-      <a href="#om" class="border border-slate-300 px-8 py-4 rounded-full font-semibold text-lg hover:bg-white">Läs mer</a>
+  <section class="pt-14 md:pt-24 pb-10">
+    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+          Bygg, testa & förbättra <span class="brand">din hemsida</span> med AI
+        </h1>
+        <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">
+          Klistra in eller generera HTML/CSS/JS, se resultatet live och låt AI föreslå förbättringar – innan du publicerar.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href="/studio" class="btn-brand text-white px-6 py-3 rounded-full font-semibold shadow-lg">
+            🚀 Starta Studio
+          </a>
+          <a href="#vad" class="px-6 py-3 rounded-full font-semibold border border-slate-300 dark:border-slate-700 hover:bg-white/70 dark:hover:bg-slate-800/50">
+            Läs mer
+          </a>
+        </div>
+        <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">Ingen inlogg krävs för att testa. Exportera när du är nöjd.</p>
+      </div>
+
+      <div class="glass dark:bg-slate-900/70 rounded-2xl shadow-xl p-5">
+        <!-- Demo ”laptop” card -->
+        <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden shadow-sm">
+          <div class="bg-slate-800 text-slate-100 text-xs px-4 py-2 flex items-center gap-2">
+            <span class="inline-flex h-2 w-2 rounded-full bg-green-400"></span> live-preview.html
+          </div>
+          <div class="bg-white dark:bg-slate-900 p-6">
+            <div class="h-6 w-40 rounded bg-slate-100 dark:bg-slate-800 mb-4"></div>
+            <div class="h-9 w-72 rounded bg-slate-100 dark:bg-slate-800 mb-3"></div>
+            <div class="h-3 w-80 rounded bg-slate-100 dark:bg-slate-800 mb-2"></div>
+            <div class="h-3 w-64 rounded bg-slate-100 dark:bg-slate-800 mb-6"></div>
+            <div class="flex gap-3">
+              <div class="h-10 w-32 rounded-full btn-brand/90"></div>
+              <div class="h-10 w-32 rounded-full bg-slate-100 dark:bg-slate-800"></div>
+            </div>
+          </div>
+        </div>
+        <p class="text-center text-xs text-slate-500 dark:text-slate-400 mt-3">Editor till vänster, live-förhandsvisning till höger i Webneva Studio.</p>
+      </div>
     </div>
   </section>
 
-  <!-- Om -->
-  <section id="om" class="py-20 bg-white">
-    <div class="max-w-5xl mx-auto px-6 text-center">
-      <h2 class="text-3xl font-bold mb-4 text-[#0f4c81]">Vad är Webneva?</h2>
-      <p class="text-slate-600 max-w-2xl mx-auto">
-        Webneva är en AI-driven plattform för webbutvecklare. Den analyserar och förbättrar din kod,
-        föreslår modernare designlösningar och hjälper dig förstå varför ändringar gör skillnad.
+  <!-- Info-sektioner (som du hade) -->
+  <section id="vad" class="py-14">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-6">Vad är Webneva?</h2>
+      <p class="text-slate-700 dark:text-slate-300 max-w-3xl">
+        Webneva är en AI-driven studio. Du kan klistra in kod eller generera från en prompt, se sidan live, be AI om förbättringar och exportera färdig HTML/CSS/JS. Perfekt för snabb prototypning och responsiva justeringar.
       </p>
     </div>
   </section>
 
-  <!-- Funktioner -->
-  <section id="funktioner" class="py-20 bg-gradient-to-b from-white to-blue-50">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-      <h2 class="text-3xl font-bold text-[#0f4c81] mb-12">Funktioner i Webneva Studio</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="glass rounded-2xl p-6 shadow hover:shadow-xl transition">
-          <i class="fa-solid fa-code text-3xl text-[#0f4c81] mb-3"></i>
-          <h3 class="font-semibold text-xl mb-2">Live-redigering</h3>
-          <p class="text-slate-600">Klistra in HTML, CSS & JS – se resultatet direkt utan att ladda om.</p>
+  <section id="sa-funkar-det" class="py-14 bg-white dark:bg-slate-900">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-8">Så funkar det</h2>
+      <ol class="grid md:grid-cols-4 gap-6">
+        <li class="glass dark:bg-slate-800/60 rounded-2xl p-6 shadow">
+          <div class="text-xs font-semibold text-slate-500 dark:text-slate-400">Steg 1</div>
+          <h3 class="font-semibold mt-1 mb-2">Beskriv eller klistra in kod</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">AI kan generera grund eller du klistrar in egen kod.</p>
+        </li>
+        <li class="glass dark:bg-slate-800/60 rounded-2xl p-6 shadow">
+          <div class="text-xs font-semibold text-slate-500 dark:text-slate-400">Steg 2</div>
+          <h3 class="font-semibold mt-1 mb-2">Se live</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Förhandsvisningen uppdateras omedelbart.</p>
+        </li>
+        <li class="glass dark:bg-slate-800/60 rounded-2xl p-6 shadow">
+          <div class="text-xs font-semibold text-slate-500 dark:text-slate-400">Steg 3</div>
+          <h3 class="font-semibold mt-1 mb-2">Be AI om förbättringar</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">”Gör knappen röd”, ”Skapa undersida”, ”Förbättra mobilvy”.</p>
+        </li>
+        <li class="glass dark:bg-slate-800/60 rounded-2xl p-6 shadow">
+          <div class="text-xs font-semibold text-slate-500 dark:text-slate-400">Steg 4</div>
+          <h3 class="font-semibold mt-1 mb-2">Exportera</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Hämta ren kod och publicera.</p>
+        </li>
+      </ol>
+      <div class="mt-10">
+        <a href="/studio" class="btn-brand text-white px-6 py-3 rounded-full font-semibold shadow">Prova nu – gratis</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="sakerhet" class="py-14">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-6">Säkerhet & integritet</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass dark:bg-slate-800/60 rounded-2xl p-6 shadow">
+          <h3 class="font-semibold mb-1">API-nycklar skyddas</h3>
+          <p class="text-slate-600 dark:text-slate-300 text-sm">Nycklar lagras som miljövariabler på servern – aldrig i klientkoden.</p>
         </div>
-        <div class="glass rounded-2xl p-6 shadow hover:shadow-xl transition">
-          <i class="fa-solid fa-wand-magic-sparkles text-3xl text-[#0f4c81] mb-3"></i>
-          <h3 class="font-semibold text-xl mb-2">AI-förbättringar</h3>
-          <p class="text-slate-600">Be AI att göra din design mer responsiv, modern eller professionell.</p>
+        <div class="glass dark:bg-slate-800/60 rounded-2xl p-6 shadow">
+          <h3 class="font-semibold mb-1">Isolerad förhandsvisning</h3>
+          <p class="text-slate-600 dark:text-slate-300 text-sm">Preview körs i sandbox/iframe.</p>
         </div>
-        <div class="glass rounded-2xl p-6 shadow hover:shadow-xl transition">
-          <i class="fa-solid fa-cloud-arrow-down text-3xl text-[#0f4c81] mb-3"></i>
-          <h3 class="font-semibold text-xl mb-2">Exportera kod</h3>
-          <p class="text-slate-600">När du är nöjd – exportera den optimerade koden med ett klick.</p>
+        <div class="glass dark:bg-slate-800/60 rounded-2xl p-6 shadow">
+          <h3 class="font-semibold mb-1">Privat som standard</h3>
+          <p class="text-slate-600 dark:text-slate-300 text-sm">Dina projekt delas inte utan ditt godkännande.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Kontakt -->
-  <section id="kontakt" class="py-16 text-center bg-white">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-3xl font-bold mb-4 text-[#0f4c81]">Behöver du hjälp?</h2>
-      <p class="text-slate-600 mb-6">Kontakta oss på <a href="mailto:info@webneva.se" class="text-blue-600 hover:underline">info@webneva.se</a></p>
-      <a href="/studio" class="brand-bg text-white px-8 py-4 rounded-full font-semibold text-lg shadow hover:shadow-lg">Öppna Webneva Studio</a>
+  <section id="faq" class="py-14 bg-white dark:bg-slate-900">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-6">Vanliga frågor</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="glass dark:bg-slate-800/60 rounded-2xl p-6 shadow"><h3 class="font-semibold">Behöver jag konto?</h3><p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Nej, testa direkt. Konto för att spara projekt kommer.</p></div>
+        <div class="glass dark:bg-slate-800/60 rounded-2xl p-6 shadow"><h3 class="font-semibold">Vilka format stöds?</h3><p class="text-sm text-slate-600 dark:text-slate-300 mt-1">HTML, CSS, JS. Mallar via AI.</p></div>
+        <div class="glass dark:bg-slate-800/60 rounded-2xl p-6 shadow"><h3 class="font-semibold">Kan AI förstöra min kod?</h3><p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Förslagen är valfria – du bestämmer.</p></div>
+        <div class="glass dark:bg-slate-800/60 rounded-2xl p-6 shadow"><h3 class="font-semibold">Kostnad?</h3><p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Gratis för test – betalnivå för fler anrop.</p></div>
+      </div>
+      <div class="mt-10"><a href="/studio" class="btn-brand text-white px-6 py-3 rounded-full font-semibold shadow">🚀 Starta Studio</a></div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="py-8 text-center text-sm text-slate-500 border-t border-slate-200 glass">
-    © 2025 Webneva – AI-driven webbutveckling. Alla rättigheter förbehållna.
+  <footer class="py-10 text-center text-sm text-slate-500 dark:text-slate-400">
+    © 2025 Webneva.se – AI-driven webbdesign.
   </footer>
 
+  <script>
+    const themeBtn = document.getElementById('themeBtn');
+    themeBtn.addEventListener('click', () => {
+      const root = document.documentElement;
+      const isDark = root.classList.toggle('dark');
+      localStorage.setItem('wn-theme', isDark ? 'dark' : 'light');
+    });
+  </script>
 </body>
 </html>
