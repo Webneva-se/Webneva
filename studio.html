@@ -1,165 +1,364 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Webneva Studio – AI för webbutvecklare</title>
-  <link rel="icon" href="images/webneva-logo.png">
+
+  <!-- Favicon / Logga -->
+  <link rel="icon" href="images/bgk-remove.webneva.png" />
+
+  <!-- Tailwind & Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
   <style>
-    body {
-      font-family: "Inter", system-ui, sans-serif;
-      background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      color: #1e293b;
+    body{
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at 10% 10%, #e0f2fe, #f8fafc);
+      color:#0f172a;
     }
-    .glass {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-    .brand { color: #0f4c81; }
-    .brand-bg { background-color: #0f4c81; }
-    .brand-bg:hover { background-color: #0c3b63; }
-    .chat-bubble {
-      border-radius: 1rem;
-      padding: .75rem 1rem;
-      margin-bottom: .75rem;
-      word-wrap: break-word;
-      white-space: pre-wrap;
-    }
-    .chat-ai { background-color: #f1f5f9; align-self: flex-start; }
-    .chat-user { background-color: #0f4c81; color: white; align-self: flex-end; }
-    textarea::-webkit-scrollbar, #chatBox::-webkit-scrollbar {
-      width: 8px;
-    }
-    textarea::-webkit-scrollbar-thumb, #chatBox::-webkit-scrollbar-thumb {
-      background-color: rgba(0,0,0,0.1);
-      border-radius: 8px;
+    .glass{ background: rgba(255,255,255,.72); backdrop-filter: blur(18px); box-shadow: 0 8px 32px rgba(2,6,23,.08) }
+    .brand { color:#0f4c81 }
+    .brand-bg { background:#0f4c81 }
+    .brand-bg:hover { background:#0c3b63 }
+    .chip{ background:rgba(15,76,129,.07); color:#0f4c81 }
+    .chat-bubble{ border-radius:1rem; padding:.75rem 1rem; margin-bottom:.75rem; word-wrap:break-word; white-space:pre-wrap }
+    .chat-ai{ background:#f1f5f9; align-self:flex-start }
+    .chat-user{ background:#0f4c81; color:#fff; align-self:flex-end }
+    textarea::-webkit-scrollbar, #chatBox::-webkit-scrollbar { width:8px }
+    textarea::-webkit-scrollbar-thumb, #chatBox::-webkit-scrollbar-thumb { background:rgba(2,6,23,.15); border-radius:8px }
+    .btn{ transition: transform .06s ease; }
+    .btn:active{ transform: translateY(1px); }
+    .kbd{ border:1px solid rgba(2,6,23,.15); background:#fff; border-radius:.375rem; padding:.1rem .35rem; font-size:.75rem }
+    .pulse-dot{ width:10px; height:10px; border-radius:9999px; background:#22c55e; box-shadow:0 0 0 0 rgba(34,197,94,.7); animation:pulse 1.8s infinite }
+    @keyframes pulse {
+      0%{ box-shadow:0 0 0 0 rgba(34,197,94,.7) }
+      70%{ box-shadow:0 0 0 10px rgba(34,197,94,0) }
+      100%{ box-shadow:0 0 0 0 rgba(34,197,94,0) }
     }
   </style>
 </head>
-<body class="antialiased">
+<body class="antialiased min-h-screen">
+
+  <!-- Redirect: /studio.html -> /studio -->
+  <script>
+    if (location.pathname.endsWith('studio.html')) {
+      location.replace(location.origin + '/studio');
+    }
+  </script>
 
   <!-- Header -->
-  <header class="fixed top-0 left-0 w-full z-40 glass border-b border-slate-200">
-    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
+  <header class="glass fixed top-0 inset-x-0 z-50 border-b border-slate-200/70">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="images/webneva-logo.png" alt="Webneva" class="h-10 w-10 object-contain">
-        <span class="font-extrabold text-xl md:text-2xl brand">Webneva<span class="text-blue-500"> Studio</span></span>
+        <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-10 w-auto object-contain"/>
+        <span class="font-extrabold text-xl sm:text-2xl brand">Webneva<span class="text-blue-500"> Studio</span></span>
+        <span class="hidden sm:inline-flex items-center gap-2 ml-3 text-xs px-2 py-1 rounded chip">
+          <span class="pulse-dot"></span> LIVE
+        </span>
       </div>
-      <div class="relative">
-        <button id="profileBtn" class="flex items-center gap-2 bg-white border rounded-full px-4 py-2 text-sm shadow hover:shadow-md transition">
-          <i class="fa-solid fa-user text-slate-700"></i>
-          <span>Profil</span>
-          <i class="fa-solid fa-chevron-down text-xs"></i>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button id="newProjectBtn" class="btn px-3 sm:px-4 py-2 rounded-lg border bg-white hover:bg-slate-50 text-sm">
+          <i class="fa-solid fa-file-circle-plus mr-2"></i>Nytt projekt
         </button>
-        <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-100 z-50">
-          <a href="/" class="block px-4 py-2 text-sm hover:bg-blue-50">🏠 Till startsida</a>
-          <a href="#" class="block px-4 py-2 text-sm hover:bg-blue-50">⚙️ Inställningar</a>
-          <hr>
-          <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">🚪 Logga ut</a>
+        <button id="saveBtn" class="btn px-3 sm:px-4 py-2 rounded-lg border bg-white hover:bg-slate-50 text-sm">
+          <i class="fa-solid fa-floppy-disk mr-2"></i>Spara
+        </button>
+        <a href="/" class="btn brand-bg text-white px-4 py-2 rounded-lg shadow hover:shadow-md text-sm">
+          <i class="fa-solid fa-house mr-2"></i>Startsida
+        </a>
+
+        <!-- Profilmeny -->
+        <div class="relative">
+          <button id="profileBtn" class="btn flex items-center gap-2 bg-white border rounded-full px-3 py-2 shadow hover:shadow-md">
+            <i class="fa-solid fa-user text-slate-700"></i>
+            <span class="hidden sm:inline">Profil</span>
+            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+          </button>
+          <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-100 z-50">
+            <a href="/" class="block px-4 py-2 text-sm hover:bg-blue-50">🏠 Till startsida</a>
+            <a href="#" class="block px-4 py-2 text-sm hover:bg-blue-50">⚙️ Inställningar</a>
+            <hr />
+            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">🚪 Logga ut</a>
+          </div>
         </div>
       </div>
     </div>
   </header>
 
   <!-- Main -->
-  <main class="flex-1 flex flex-col items-center justify-center pt-28 pb-16 px-4">
-    <div class="w-full max-w-5xl glass rounded-2xl p-6 md:p-10 flex flex-col lg:flex-row gap-8">
-
-      <!-- Input / kodruta -->
-      <section class="flex-1 flex flex-col">
-        <h2 class="font-bold text-lg mb-3 text-[#0f4c81] flex items-center gap-2"><i class="fa-solid fa-code"></i> Din kod</h2>
-        <textarea id="userCode" class="flex-1 border rounded-lg p-4 bg-white font-mono text-sm resize-none focus:ring-2 focus:ring-blue-400" rows="12" placeholder="Klistra in din HTML/CSS/JS här..."></textarea>
-        <div class="mt-4 flex gap-3 justify-end">
-          <button id="previewBtn" class="brand-bg text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition">Visa live</button>
-          <button id="sendMessageBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg font-semibold shadow transition">✨ Förbättra med AI</button>
+  <main class="max-w-7xl mx-auto px-6 pt-28 pb-10 grid lg:grid-cols-2 gap-8">
+    <!-- Vänster: Kod + Chat -->
+    <section class="flex flex-col gap-6">
+      <!-- Kod-editor -->
+      <div class="glass rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col h-[420px]">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-bold text-lg brand flex items-center gap-2">
+            <i class="fa-solid fa-code"></i> Din kod
+          </h2>
+          <div class="text-xs text-slate-500 hidden sm:flex items-center gap-2">
+            <span class="hidden md:inline">Skicka till AI</span> <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span>
+          </div>
         </div>
-      </section>
-
-      <!-- AI sektion -->
-      <section class="flex-1 flex flex-col">
-        <h2 class="font-bold text-lg mb-3 text-[#0f4c81] flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> AI-assistent</h2>
-        <div id="chatBox" class="flex flex-col flex-1 overflow-y-auto border rounded-lg bg-white p-4 text-sm font-sans mb-4 h-[350px]">
-          <div class="chat-bubble chat-ai">👋 Hej! Jag är din AI-assistent. Klistra in kod till vänster eller skriv ett meddelande nedan.</div>
+        <textarea id="codeEditor" class="flex-1 border rounded-lg p-3 bg-white font-mono text-[12.5px] leading-6 resize-none focus:ring-2 focus:ring-blue-400"
+          placeholder="Här kommer din genererade HTML-kod visas... Du kan också klistra in egen kod."></textarea>
+        <div class="mt-3 flex justify-end gap-2">
+          <button id="formatBtn" class="btn border px-3 py-2 rounded-lg bg-white hover:bg-slate-50 text-sm">
+            <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Formatera
+          </button>
+          <button id="applyCodeBtn" class="btn brand-bg text-white px-4 py-2 rounded-lg shadow hover:shadow-md text-sm">
+            <i class="fa-solid fa-play mr-2"></i>Uppdatera förhandsvisning
+          </button>
         </div>
-        <textarea id="userMessage" class="w-full border rounded-lg p-3 text-sm mb-3 resize-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Skriv till AI (t.ex. 'Gör knappen blåare och centrerad')..."></textarea>
-        <button id="sendChatBtn" class="brand-bg text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition">Skicka</button>
-      </section>
+      </div>
 
-    </div>
+      <!-- Chat -->
+      <div class="glass rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col h-[360px]">
+        <h2 class="font-bold text-lg brand mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-robot"></i> AI-assistent
+        </h2>
+        <div id="chatBox" class="flex flex-col flex-1 overflow-y-auto border rounded-lg bg-white p-4 text-sm mb-3">
+          <div class="chat-bubble chat-ai">
+            👋 Hej! Jag kan generera och förbättra din kod.<br><br>
+            <span class="text-slate-600">Exempel:</span><br>
+            - “Skapa en hemsida för en restaurang som säljer thailändsk mat. Den har 5 stjärnor.”<br>
+            - “Ändra den blå knappen till röd och centrera rubriken.”<br>
+            - “Gör sidan mer responsiv och lägg till en hero-bild.”
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <input id="chatInput" class="flex-1 border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400" placeholder="Skriv en instruktion till AI… (Ctrl + Enter för att skicka)"/>
+          <button id="sendChatBtn" class="btn brand-bg text-white px-4 py-2 rounded-lg shadow hover:shadow-md text-sm">Skicka</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Höger: Förhandsvisning -->
+    <section class="glass rounded-2xl p-5 sm:p-6 shadow-xl">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-bold text-lg brand flex items-center gap-2">
+          <i class="fa-solid fa-display"></i> Live-förhandsvisning
+        </h2>
+        <div class="text-xs text-slate-500 flex items-center gap-3">
+          <span>Sandlåda</span>
+          <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span>
+        </div>
+      </div>
+      <iframe id="previewFrame" class="w-full rounded-xl border bg-white" style="height: 760px;"
+        sandbox="allow-scripts allow-forms allow-pointer-lock allow-same-origin"></iframe>
+    </section>
   </main>
 
-  <!-- Script -->
+  <!-- Välkomstmodal: Brief -->
+  <div id="welcomeModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden">
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="glass max-w-2xl w-full rounded-2xl p-6 shadow-2xl">
+        <div class="flex items-center gap-3 mb-3">
+          <img src="images/bgk-remove.webneva.png" class="h-8" alt="Webneva">
+          <h3 class="font-extrabold text-xl brand">Nytt projekt med AI</h3>
+        </div>
+        <p class="text-slate-600 text-sm mb-3">
+          Beskriv vad du vill bygga så genererar jag en komplett, modern HTML-sida åt dig.
+        </p>
+        <textarea id="projectBrief" rows="4" class="w-full border rounded-lg p-3 bg-white text-sm focus:ring-2 focus:ring-blue-400"
+          placeholder="Ex: Skapa en hemsida för en restaurang som säljer thailändsk mat. Den har 5 stjärnor, en hero-bild, menysektion och kontaktformulär. Färger: marinblå & guld."></textarea>
+        <div class="flex items-center justify-between mt-4">
+          <div class="text-xs text-slate-500">Tips: var specifik med sektioner, färger och stil.</div>
+          <div class="flex gap-2">
+            <button id="skipBriefBtn" class="btn border px-4 py-2 rounded-lg bg-white hover:bg-slate-50 text-sm">Hoppa över</button>
+            <button id="createFromBriefBtn" class="btn brand-bg text-white px-4 py-2 rounded-lg shadow hover:shadow-md text-sm">Skapa med AI</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-  // Profilmeny
-  document.getElementById("profileBtn").addEventListener("click", () => {
-    document.getElementById("profileMenu").classList.toggle("hidden");
+  /* ---------- UI helpers ---------- */
+  const $ = (sel)=>document.querySelector(sel);
+  const chatBox = $("#chatBox");
+  const codeEditor = $("#codeEditor");
+  const preview = $("#previewFrame");
+  const chatInput = $("#chatInput");
+
+  function appendChat(role, text){
+    const div = document.createElement("div");
+    div.className = "chat-bubble " + (role === "user" ? "chat-user" : "chat-ai");
+    div.innerText = text;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function setPreview(html){
+    preview.srcdoc = html || "<!doctype html><html><head><meta charset='utf-8'></head><body style='font-family:system-ui;padding:24px;color:#0f172a'><h2>Ingen kod ännu…</h2><p>Generera via AI eller klistra in din egen HTML-kod till vänster.</p></body></html>";
+  }
+
+  function saveLocal(){
+    localStorage.setItem("webneva_studio_code", codeEditor.value);
+    localStorage.setItem("webneva_studio_chat", chatBox.innerHTML);
+  }
+
+  function loadLocal(){
+    const c = localStorage.getItem("webneva_studio_code");
+    const ch = localStorage.getItem("webneva_studio_chat");
+    if(c){ codeEditor.value = c; setPreview(c); }
+    if(ch){ chatBox.innerHTML = ch; }
+  }
+
+  /* ---------- Profilmeny ---------- */
+  $("#profileBtn").addEventListener("click", ()=>{
+    $("#profileMenu").classList.toggle("hidden");
   });
 
-  // Live Preview
-  document.getElementById("previewBtn").addEventListener("click", () => {
-    const code = document.getElementById("userCode").value;
-    const win = window.open("", "_blank");
-    win.document.write(code);
-    win.document.close();
+  /* ---------- Knappbeteenden ---------- */
+  $("#applyCodeBtn").addEventListener("click", ()=>{
+    setPreview(codeEditor.value);
+    saveLocal();
   });
 
-  // AI Kommunikation
-  async function sendToAI(message) {
-    const chatBox = document.getElementById("chatBox");
-    const userDiv = document.createElement("div");
-    userDiv.className = "chat-bubble chat-user";
-    userDiv.innerText = message;
-    chatBox.appendChild(userDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
+  $("#formatBtn").addEventListener("click", ()=>{
+    // enkel formatter: trim + normalisera radslut
+    const t = codeEditor.value.replace(/\r\n/g, "\n").trim() + "\n";
+    codeEditor.value = t;
+    saveLocal();
+  });
 
-    const thinking = document.createElement("div");
-    thinking.className = "chat-bubble chat-ai italic text-gray-500";
-    thinking.innerText = "⏳ AI bearbetar...";
-    chatBox.appendChild(thinking);
-    chatBox.scrollTop = chatBox.scrollHeight;
+  $("#newProjectBtn").addEventListener("click", ()=>{
+    $("#welcomeModal").classList.remove("hidden");
+  });
 
-    try {
-      const res = await fetch("/api/openai", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message })
-      });
-      const data = await res.json();
-      chatBox.removeChild(thinking);
-      const aiDiv = document.createElement("div");
-      aiDiv.className = "chat-bubble chat-ai";
-      aiDiv.innerText = data.reply || "⚠️ AI kunde inte svara.";
-      chatBox.appendChild(aiDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    } catch (err) {
-      chatBox.removeChild(thinking);
-      const errDiv = document.createElement("div");
-      errDiv.className = "chat-bubble chat-ai text-red-500";
-      errDiv.innerText = "❌ Fel vid kontakt med AI-servern.";
-      chatBox.appendChild(errDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
+  $("#skipBriefBtn").addEventListener("click", ()=>{
+    $("#welcomeModal").classList.add("hidden");
+  });
+
+  /* ---------- Förhandsvisning live on input (debounce) ---------- */
+  let tmr; 
+  codeEditor.addEventListener("input", ()=>{
+    clearTimeout(tmr);
+    tmr = setTimeout(()=>{ setPreview(codeEditor.value); saveLocal(); }, 400);
+  });
+
+  /* ---------- Keyboard: Ctrl+Enter i chatten ---------- */
+  chatInput.addEventListener("keydown",(e)=>{
+    if((e.ctrlKey || e.metaKey) && e.key === "Enter"){
+      $("#sendChatBtn").click();
+    }
+  });
+
+  /* ---------- AI: Gemensam funktion ---------- */
+  async function callAI(message){
+    const res = await fetch("/api/openai", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ message })
+    });
+    if(!res.ok){
+      const t = await res.text().catch(()=> "");
+      throw new Error("AI-fel: " + res.status + " " + t);
+    }
+    const data = await res.json();
+    return data.reply;
+  }
+
+  /* ---------- AI: Generera från brief ---------- */
+  async function generateFromBrief(brief){
+    appendChat("user", "Projektbrief: " + brief);
+
+    const sys = `
+Du är en expert webbutvecklar-AI. Generera ENDAST en komplett, självständig HTML5-sida (<!DOCTYPE html> ... </html>), utan förklarande text.
+Designen ska vara modern, responsiv, snygg typografi, semantiska taggar, gärna TailwindCDN (om relevant).
+Om briefen nämner färger/sektioner – följ dem. Lägg in placeholder-bilder/texter där det passar.
+Inga externa bilder med extern URL; använd gärna bilder via placeholders/unsplash CDN om nödvändigt.
+`.trim();
+
+    const prompt = `${sys}\n\nBRIEF:\n${brief}\n\nKRAV: Återge ENDAST den fullständiga HTML-koden.`;
+
+    appendChat("ai", "⏳ Skapar en första version baserat på din brief…");
+    try{
+      const html = await callAI(prompt);
+      // Försök att extrahera endast HTML om AI råkar skriva något runtom
+      const cleaned = (html.match(/<\!DOCTYPE html[\s\S]*<\/html>/i)||[])[0] || html;
+      codeEditor.value = cleaned.trim();
+      setPreview(codeEditor.value);
+      appendChat("ai", "✅ Klar! Jag genererade en första version. Justera via chatten om du vill.");
+      saveLocal();
+      $("#welcomeModal").classList.add("hidden");
+    }catch(err){
+      console.error(err);
+      appendChat("ai", "❌ Det gick inte att generera kod just nu. Försök igen.");
     }
   }
 
-  document.getElementById("sendMessageBtn").addEventListener("click", () => {
-    const code = document.getElementById("userCode").value.trim();
-    if (!code) return alert("Klistra in din kod först!");
-    sendToAI("Förbättra följande kod:\n" + code);
+  $("#createFromBriefBtn").addEventListener("click", ()=>{
+    const brief = $("#projectBrief").value.trim();
+    if(!brief) { alert("Skriv en kort brief först!"); return; }
+    generateFromBrief(brief);
   });
 
-  document.getElementById("sendChatBtn").addEventListener("click", () => {
-    const msg = document.getElementById("userMessage").value.trim();
-    if (!msg) return alert("Skriv något först!");
-    document.getElementById("userMessage").value = "";
-    sendToAI(msg);
+  /* ---------- AI: Förbättra/ändra befintlig kod ---------- */
+  async function improveCode(instruction){
+    appendChat("user", instruction);
+
+    const sys = `
+Du är en AI som UPPDATERAR en befintlig HTML-sida utifrån en instruktion.
+Svara ENDAST med en komplett, uppdaterad HTML-fil (<!DOCTYPE html> ... </html>).
+Behåll allt som fungerar; ändra bara det som efterfrågas.
+`.trim();
+
+    const currentHTML = codeEditor.value || "<!-- tomt -->";
+    const prompt = `${sys}\n\nINSTRUKTION:\n${instruction}\n\nAKTUELL KOD:\n${currentHTML}\n\nKRAV: Återge ENDAST den kompletta HTML-koden, ingen övrig text.`;
+
+    appendChat("ai", "⏳ Bearbetar din ändring…");
+    try{
+      const html = await callAI(prompt);
+      const cleaned = (html.match(/<\!DOCTYPE html[\s\S]*<\/html>/i)||[])[0] || html;
+      codeEditor.value = cleaned.trim();
+      setPreview(codeEditor.value);
+      appendChat("ai", "✅ Uppdaterat! Kika i förhandsvisningen.");
+      saveLocal();
+    }catch(err){
+      console.error(err);
+      appendChat("ai", "❌ Kunde inte uppdatera koden just nu.");
+    }
+  }
+
+  /* ---------- Chat-knapp ---------- */
+  $("#sendChatBtn").addEventListener("click", ()=>{
+    const val = chatInput.value.trim();
+    if(!val) return;
+    chatInput.value = "";
+    improveCode(val);
+  });
+
+  /* ---------- Förbättra-knapp ovanför editor (skicka hela koden) ---------- */
+  document.addEventListener("keydown", (e)=>{
+    if((e.ctrlKey || e.metaKey) && e.key === "Enter"){
+      const msg = chatInput.value.trim();
+      if(msg){ $("#sendChatBtn").click(); }
+    }
+  });
+
+  /* ---------- Init ---------- */
+  (function init(){
+    loadLocal();
+    if(!localStorage.getItem("webneva_studio_hasOnboarded")){
+      $("#welcomeModal").classList.remove("hidden");
+      localStorage.setItem("webneva_studio_hasOnboarded","1");
+    }
+    setPreview(codeEditor.value);
+  })();
+
+  /* ---------- Spara lokalt ---------- */
+  $("#saveBtn").addEventListener("click", ()=>{
+    saveLocal();
+    const toast = document.createElement("div");
+    toast.className = "fixed bottom-5 right-5 glass border border-slate-200 rounded-lg px-4 py-2 shadow text-sm";
+    toast.innerText = "✅ Sparat lokalt i din webbläsare.";
+    document.body.appendChild(toast);
+    setTimeout(()=> toast.remove(), 2200);
   });
   </script>
-
 </body>
 </html>
