@@ -9,11 +9,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(135deg,#f6f9fc,#e9f0f8)}
-    .glass{background:rgba(255,255,255,.9);backdrop-filter:saturate(130%) blur(10px)}
-    .brand{color:#0f4c81}
-    .brand-bg{background:#0f4c81}
-    .brand-bg:hover{background:#0c3b63}
+    body {font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif; background: linear-gradient(135deg, #f6f9fc, #e9f0f8);}
+    .glass {background: rgba(255,255,255,0.9); backdrop-filter: saturate(130%) blur(10px);}
+    .brand {color: #0f4c81;}
+    .brand-bg {background: #0f4c81;}
+    .brand-bg:hover {background: #0c3b63;}
   </style>
 </head>
 <body class="text-slate-900 antialiased">
@@ -22,7 +22,7 @@
   <header class="fixed inset-x-0 top-0 z-40 glass shadow-sm">
     <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="images/Webneva.png" alt="Webneva" class="h-8 w-8 object-contain drop-shadow-md">
+        <img src="images/Webneva.png" alt="Webneva" class="h-9 w-auto object-contain drop-shadow-md">
         <span class="font-extrabold tracking-tight text-lg brand">Webneva<span class="text-blue-500">.se</span></span>
       </div>
       <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-700">
@@ -77,6 +77,37 @@
     </div>
   </section>
 
+  <!-- Vad är Webneva -->
+  <section id="vad" class="py-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-6">Vad är Webneva?</h2>
+      <p class="text-slate-700 max-w-3xl">
+        Webneva är en AI-driven editor för webbutveckling. Du kan
+        <span class="font-semibold">klistra in kod</span>, se sidan
+        <span class="font-semibold">live</span>, be AI om förbättringar och exportera färdig HTML/CSS/JS.
+        Perfekt för snabb prototypning, pixel-polish och responsiva justeringar.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-6 mt-10">
+        <div class="glass rounded-2xl p-6 shadow">
+          <i class="fa-solid fa-bolt text-2xl brand"></i>
+          <h3 class="font-semibold mt-3 mb-1">Live Preview</h3>
+          <p class="text-slate-600 text-sm">Se dina ändringar direkt – inga omstarter, ingen väntan.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 shadow">
+          <i class="fa-solid fa-wand-magic-sparkles text-2xl brand"></i>
+          <h3 class="font-semibold mt-3 mb-1">AI-förbättringar</h3>
+          <p class="text-slate-600 text-sm">“Gör knappen blå & rundare”, “Fixa mobilmenyn”, “Modernisera typografin”.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 shadow">
+          <i class="fa-solid fa-file-export text-2xl brand"></i>
+          <h3 class="font-semibold mt-3 mb-1">Exportera</h3>
+          <p class="text-slate-600 text-sm">Exportera ren kod eller kopiera med ett klick när du är nöjd.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- AI-status -->
   <div class="text-center pb-6">
     <p id="ai-status" class="text-xs text-slate-500">Kontrollerar AI-anslutning...</p>
@@ -94,7 +125,7 @@
       const response = await fetch("/api/openai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: "Hej AI, svara kort att du är igång." })
+        body: JSON.stringify({ message: "Testar API-anslutning." })
       });
       const data = await response.json();
       const el = document.getElementById("ai-status");
@@ -104,7 +135,7 @@
       } else throw new Error();
     } catch {
       const el = document.getElementById("ai-status");
-      el.textContent = "❌ Fel vid AI-anrop";
+      el.textContent = "❌ Fel vid AI-anrop – kontrollera din API-nyckel i Vercel";
       el.classList.add("text-red-600");
     }
   }
