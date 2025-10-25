@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Webneva Studio – AI-driven webbutveckling</title>
-  <link rel="icon" href="images/webneva-logo.png">
+  <link rel="icon" href="images/webneva-logo.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
       font-family: Inter, system-ui, sans-serif;
-      background: linear-gradient(135deg, #f7faff, #e9eff8);
+      background: linear-gradient(135deg, #f7faff, #edf2fb);
     }
     .brand-bg { background-color: #0f4c81; }
     .brand-bg:hover { background-color: #0c3b63; }
@@ -20,75 +20,77 @@
     .chat-user { background-color: #0f4c81; color: white; align-self: flex-end; }
   </style>
 </head>
-<body class="antialiased">
+<body class="antialiased flex min-h-screen">
 
-  <!-- Header -->
-  <header class="fixed inset-x-0 top-0 z-50 glass shadow-md border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <img src="images/webneva-logo.png" alt="Webneva" class="h-10 w-10 object-contain drop-shadow">
-        <span class="font-extrabold text-2xl text-[#0f4c81]">Webneva<span class="text-blue-500"> Studio</span></span>
+  <!-- Sidebar -->
+  <aside class="w-64 glass border-r border-slate-200 shadow-lg flex flex-col justify-between fixed inset-y-0 left-0 z-40">
+    <div>
+      <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-200">
+        <img src="images/webneva-logo.png" class="h-10 w-10" alt="Webneva logo">
+        <span class="font-extrabold text-xl text-[#0f4c81]">Webneva</span>
       </div>
-
-      <!-- Profilmeny -->
-      <div class="relative">
-        <button id="profileBtn" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow hover:shadow-md border border-slate-200 transition">
-          <i class="fa-solid fa-user text-slate-600"></i>
-          <span class="text-sm font-medium text-slate-700">Profil</span>
-          <i class="fa-solid fa-chevron-down text-xs text-slate-500"></i>
-        </button>
-        <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-100">
-          <a href="#" class="block px-4 py-2 text-sm hover:bg-slate-100">Mitt konto</a>
-          <a href="#" class="block px-4 py-2 text-sm hover:bg-slate-100">Inställningar</a>
-          <hr class="my-1">
-          <a href="#" id="loginBtn" class="block px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">Logga in</a>
-          <a href="/" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logga ut</a>
-        </div>
-      </div>
+      <nav class="mt-6 flex flex-col">
+        <a href="/" class="px-6 py-3 flex items-center gap-3 text-slate-700 hover:bg-blue-50">
+          <i class="fa-solid fa-house"></i> <span>Startsida</span>
+        </a>
+        <a href="/studio" class="px-6 py-3 flex items-center gap-3 bg-blue-100 text-[#0f4c81] font-semibold">
+          <i class="fa-solid fa-code"></i> <span>Studio</span>
+        </a>
+        <a href="/settings" class="px-6 py-3 flex items-center gap-3 text-slate-700 hover:bg-blue-50">
+          <i class="fa-solid fa-gear"></i> <span>Inställningar</span>
+        </a>
+      </nav>
     </div>
-  </header>
 
-  <!-- Main -->
-  <main class="pt-28 pb-16 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-8">
+    <div class="border-t border-slate-200 px-6 py-4">
+      <a href="#" class="flex items-center gap-3 text-slate-700 hover:text-red-600">
+        <i class="fa-solid fa-right-from-bracket"></i> Logga ut
+      </a>
+    </div>
+  </aside>
 
-    <!-- Kod-editor -->
-    <section class="glass rounded-2xl shadow-lg p-6 flex flex-col">
-      <h2 class="font-bold text-xl mb-3 flex items-center gap-2 text-[#0f4c81]">
-        <i class="fa-solid fa-code"></i> Kodeditor
-      </h2>
-      <textarea id="userCode" class="flex-1 border rounded-lg p-3 text-sm font-mono bg-white resize-none focus:ring-2 focus:ring-blue-400" placeholder="Klistra in din kod här..."></textarea>
-      <div class="mt-4 flex gap-3 justify-end">
-        <button id="previewBtn" class="brand-bg text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition">Visa live</button>
-        <button id="sendMessageBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg font-semibold shadow transition">✨ Förbättra med AI</button>
-      </div>
-    </section>
+  <!-- Main Content -->
+  <main class="flex-1 ml-64 p-10">
+    <header class="flex justify-between items-center mb-10">
+      <h1 class="text-3xl font-bold text-[#0f4c81] flex items-center gap-2">
+        <i class="fa-solid fa-code"></i> Webneva Studio
+      </h1>
+      <button id="saveProjectBtn" class="brand-bg text-white px-6 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition">
+        💾 Spara projekt
+      </button>
+    </header>
 
-    <!-- AI-sektion -->
-    <section class="glass rounded-2xl shadow-lg p-6 flex flex-col">
-      <h2 class="font-bold text-xl mb-3 flex items-center gap-2 text-[#0f4c81]">
-        <i class="fa-solid fa-wand-magic-sparkles"></i> Interagera med AI
-      </h2>
-
-      <div id="chatBox" class="flex flex-col flex-1 overflow-y-auto border rounded-lg bg-white p-4 text-sm mb-4" style="height: 400px;">
-        <div class="chat-bubble chat-ai">
-          👋 Hej! Klistra in din kod till vänster och klicka på <strong>"Förbättra med AI"</strong> så hjälper jag dig.
+    <div class="grid xl:grid-cols-2 gap-8">
+      <!-- Kodredigerare -->
+      <section class="glass rounded-2xl shadow-lg p-6 flex flex-col h-[550px]">
+        <h2 class="font-semibold text-lg mb-2 flex items-center gap-2 text-[#0f4c81]">
+          <i class="fa-solid fa-terminal"></i> Din kod
+        </h2>
+        <textarea id="userCode" class="flex-1 border rounded-lg p-3 text-sm font-mono bg-white resize-none focus:ring-2 focus:ring-blue-400" placeholder="Klistra in din HTML/CSS/JS här..."></textarea>
+        <div class="mt-4 flex gap-3 justify-end">
+          <button id="previewBtn" class="brand-bg text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition">Visa live</button>
+          <button id="sendMessageBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg font-semibold shadow transition">✨ Förbättra med AI</button>
         </div>
-      </div>
+      </section>
 
-      <textarea id="userMessage" class="w-full border rounded-lg p-2 text-sm mb-3 resize-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Skriv till AI..."></textarea>
-      <button id="sendChatBtn" class="brand-bg text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition">Skicka</button>
-      <a href="/" class="mt-6 text-center text-sm text-blue-600 hover:underline">← Tillbaka till startsidan</a>
-    </section>
-
+      <!-- AI-chatt -->
+      <section class="glass rounded-2xl shadow-lg p-6 flex flex-col h-[550px]">
+        <h2 class="font-semibold text-lg mb-2 flex items-center gap-2 text-[#0f4c81]">
+          <i class="fa-solid fa-robot"></i> AI-assistent
+        </h2>
+        <div id="chatBox" class="flex flex-col flex-1 overflow-y-auto border rounded-lg bg-white p-4 text-sm mb-4">
+          <div class="chat-bubble chat-ai">
+            👋 Hej! Klistra in din kod till vänster och klicka på <strong>”Förbättra med AI”</strong> så hjälper jag dig.
+          </div>
+        </div>
+        <textarea id="userMessage" class="w-full border rounded-lg p-2 text-sm mb-3 resize-none focus:ring-2 focus:ring-blue-400" rows="2" placeholder="Skriv till AI..."></textarea>
+        <button id="sendChatBtn" class="brand-bg text-white px-5 py-2 rounded-lg font-semibold shadow hover:opacity-90 transition">Skicka</button>
+      </section>
+    </div>
   </main>
 
   <script>
-  // Dropdown-profil
-  document.getElementById("profileBtn").addEventListener("click", () => {
-    document.getElementById("profileMenu").classList.toggle("hidden");
-  });
-
-  // Preview-funktion
+  // Förhandsvisning
   document.getElementById("previewBtn").addEventListener("click", () => {
     const code = document.getElementById("userCode").value;
     const win = window.open("", "_blank");
@@ -110,7 +112,42 @@
     thinkingDiv.className = "chat-bubble chat-ai italic text-gray-500";
     thinkingDiv.innerText = "⏳ AI bearbetar...";
     chatBox.appendChild(thinkingDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
 
     try {
-      const res = aw
+      const res = await fetch("/api/openai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      });
+      const data = await res.json();
+      chatBox.removeChild(thinkingDiv);
+
+      const aiDiv = document.createElement("div");
+      aiDiv.className = "chat-bubble chat-ai";
+      aiDiv.innerText = data.reply || "⚠️ AI kunde inte generera något svar.";
+      chatBox.appendChild(aiDiv);
+    } catch (err) {
+      chatBox.removeChild(thinkingDiv);
+      const errorDiv = document.createElement("div");
+      errorDiv.className = "chat-bubble chat-ai text-red-500";
+      errorDiv.innerText = "❌ Ett fel uppstod vid kontakt med AI-servern.";
+      chatBox.appendChild(errorDiv);
+    }
+  }
+
+  document.getElementById("sendMessageBtn").addEventListener("click", () => {
+    const code = document.getElementById("userCode").value.trim();
+    if (!code) return alert("Klistra in din kod först!");
+    sendToAI("Förbättra följande kod:\n" + code);
+  });
+
+  document.getElementById("sendChatBtn").addEventListener("click", () => {
+    const msg = document.getElementById("userMessage").value.trim();
+    if (!msg) return alert("Skriv ett meddelande först!");
+    document.getElementById("userMessage").value = "";
+    sendToAI(msg);
+  });
+  </script>
+
+</body>
+</html>
