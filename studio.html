@@ -7,23 +7,38 @@
   <link rel="icon" href="images/Webneva.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script>
+    // Tailwind dark mode
+    tailwind.config = { darkMode: 'class' }
+  </script>
 </head>
-<body class="bg-slate-50 text-gray-900 font-[Inter]">
+
+<body class="bg-slate-50 text-gray-900 font-[Inter] transition-colors duration-300 dark:bg-slate-900 dark:text-gray-100">
+
   <!-- Header -->
-  <header class="flex items-center justify-between px-6 py-3 bg-blue-800 text-white shadow-md">
+  <header class="flex items-center justify-between px-6 py-3 bg-blue-800 text-white shadow-md dark:bg-slate-800">
     <div class="flex items-center gap-3">
       <img src="images/Webneva.png" alt="Webneva logotyp" class="h-8 w-auto">
       <span class="font-bold text-lg">Webneva Studio</span>
     </div>
-    <a href="index.html" class="bg-white text-blue-800 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-100">← Tillbaka</a>
+
+    <div class="flex items-center gap-3">
+      <button id="theme-toggle" class="bg-white text-blue-800 px-3 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600 transition">
+        🌙 Mörkt läge
+      </button>
+      <a href="index.html" class="bg-white text-blue-800 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600">
+        ← Tillbaka
+      </a>
+    </div>
   </header>
 
   <!-- Main -->
-  <main class="grid md:grid-cols-2 gap-0 h-[calc(100vh-56px)]">
+  <main class="grid md:grid-cols-2 gap-0 h-[calc(100vh-56px)] transition-colors duration-300">
+    
     <!-- Kodruta -->
-    <div class="p-4 bg-white border-r border-slate-200 flex flex-col">
-      <h2 class="text-lg font-semibold mb-2 text-blue-800">HTML / CSS / JS</h2>
-      <textarea id="code" class="flex-1 w-full p-3 border rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Skriv din kod här..."></textarea>
+    <div class="p-4 bg-white border-r border-slate-200 flex flex-col dark:bg-slate-900 dark:border-slate-700">
+      <h2 class="text-lg font-semibold mb-2 text-blue-800 dark:text-blue-400">HTML / CSS / JS</h2>
+      <textarea id="code" class="flex-1 w-full p-3 border rounded-md font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-slate-800 dark:text-gray-100 dark:border-slate-700" placeholder="Skriv eller klistra in din kod här..."></textarea>
       <div class="flex justify-end mt-3 gap-3">
         <button id="run-btn" class="px-5 py-2 bg-blue-700 text-white rounded-full hover:bg-blue-800 transition">
           ▶️ Visa live
@@ -35,8 +50,8 @@
     </div>
 
     <!-- Preview -->
-    <div class="bg-slate-100 p-2">
-      <iframe id="preview" class="w-full h-full rounded-md bg-white border"></iframe>
+    <div class="bg-slate-100 p-2 dark:bg-slate-800">
+      <iframe id="preview" class="w-full h-full rounded-md bg-white border dark:bg-slate-900 dark:border-slate-700"></iframe>
     </div>
   </main>
 
@@ -45,13 +60,37 @@
     const previewFrame = document.getElementById("preview");
     const runBtn = document.getElementById("run-btn");
     const aiBtn = document.getElementById("ai-btn");
+    const themeToggle = document.getElementById("theme-toggle");
 
+    // 🌙 Mörkt läge toggle
+    themeToggle.addEventListener("click", () => {
+      document.documentElement.classList.toggle("dark");
+      const isDark = document.documentElement.classList.contains("dark");
+      themeToggle.textContent = isDark ? "☀️ Ljust läge" : "🌙 Mörkt läge";
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
+
+    // Ladda tidigare tema
+    if (localStorage.getItem("theme") === "dark" ||
+        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+      document.documentElement.classList.add("dark");
+      themeToggle.textContent = "☀️ Ljust läge";
+    }
+
+    // 🧠 Ladda tidigare kod
+    codeInput.value = localStorage.getItem("webneva_code") || "";
+
+    // ▶️ Visa live
     runBtn.addEventListener("click", () => {
       const code = codeInput.value;
       const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-      doc.open(); doc.write(code); doc.close();
+      doc.open();
+      doc.write(code);
+      doc.close();
+      localStorage.setItem("webneva_code", code);
     });
 
+    // 🤖 Förbättra med AI
     aiBtn.addEventListener("click", async () => {
       const userCode = codeInput.value.trim();
       if (!userCode) return alert("Klistra in eller skriv lite kod först!");
@@ -64,7 +103,7 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            message: "Förbättra denna kod med fokus på design, responsivitet och modern stil:\n\n" + userCode
+            message: "Förbättra denna HTML/CSS/JS med fokus på modern design, responsivitet och prestanda:\n\n" + userCode
           })
         });
 
@@ -73,7 +112,10 @@
         if (data.reply) {
           codeInput.value = data.reply;
           const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-          doc.open(); doc.write(data.reply); doc.close();
+          doc.open();
+          doc.write(data.reply);
+          doc.close();
+          localStorage.setItem("webneva_code", data.reply);
         } else {
           alert("❌ Fel vid AI-anrop: " + (data.error || "Okänt fel"));
         }
