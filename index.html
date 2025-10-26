@@ -48,7 +48,7 @@
                 <div class="flex items-center space-x-6">
                     <a href="#features" class="text-slate-300 hover:text-white transition-colors font-medium">Funktioner</a>
                     <a href="#demo" class="text-slate-300 hover:text-white transition-colors font-medium">Demo</a>
-                    <a href="/studio" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 glow">
+                    <a href="studio.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 glow">
                         🚀 Starta Studio
                     </a>
                 </div>
@@ -81,14 +81,14 @@
 
             <!-- CTA Buttons -->
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                <button onclick="startQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105 glow flex items-center space-x-3">
+                <a href="studio.html" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105 glow flex items-center space-x-3">
                     <span>🚀</span>
-                    <span>Kom Igång med Quiz</span>
-                </button>
+                    <span>Skapa Ny Hemsida</span>
+                </a>
                 
-                <a href="/studio" class="glass-card border border-slate-600 hover:border-blue-400 text-slate-300 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all flex items-center space-x-3">
-                    <span>🎨</span>
-                    <span>Direkt till Studio</span>
+                <a href="studio.html?mode=improve" class="glass-card border border-slate-600 hover:border-blue-400 text-slate-300 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all flex items-center space-x-3">
+                    <span>🔧</span>
+                    <span>Förbättra Kod</span>
                 </a>
             </div>
 
@@ -212,7 +212,7 @@
                         </div>
                         <p class="text-2xl font-bold mb-2">Live Demo</p>
                         <p class="text-slate-400 mb-4">Se Webneva Studio i action</p>
-                        <a href="/studio" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold inline-block transition-all hover:scale-105">
+                        <a href="studio.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold inline-block transition-all hover:scale-105">
                             Öppna Studio
                         </a>
                     </div>
@@ -228,12 +228,18 @@
                 <h2 class="text-4xl font-bold mb-6">Redo att skapa magi?</h2>
                 <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
                     Gå från idé till live webbplats på rekordtid. 
-                    Inga kreditkort krävs, ingen registrering.
+                    Inga kreditkord krävs, ingen registrering.
                 </p>
-                <button onclick="startQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white px-10 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 glow inline-flex items-center space-x-3">
-                    <span>🚀</span>
-                    <span>Kom Igång Nu</span>
-                </button>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="studio.html" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105 glow inline-flex items-center space-x-3">
+                        <span>🚀</span>
+                        <span>Skapa Ny Sida</span>
+                    </a>
+                    <a href="studio.html?mode=improve" class="glass-card border border-slate-600 hover:border-blue-400 text-slate-300 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all inline-flex items-center space-x-3">
+                        <span>🔧</span>
+                        <span>Förbättra Kod</span>
+                    </a>
+                </div>
                 <p class="text-sm text-slate-400 mt-4">100% gratis • Ingen registrering • Starta direkt</p>
             </div>
         </div>
@@ -262,57 +268,5 @@
             </div>
         </div>
     </footer>
-
-    <!-- Quiz Modal -->
-    <div id="quizModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4">
-        <div class="glass-card rounded-3xl p-8 max-w-md w-full border border-slate-700">
-            <div class="text-center">
-                <h3 class="text-2xl font-bold mb-6">Vad vill du göra?</h3>
-                
-                <div class="space-y-4 mb-6">
-                    <button onclick="startProject('new')" class="w-full glass-card hover:border-blue-400 border border-slate-700 p-6 rounded-xl text-left transition-all hover:scale-105">
-                        <div class="font-semibold text-lg">🆕 Skapa ny hemsida</div>
-                        <div class="text-slate-400 text-sm mt-2">Från scratch med AI</div>
-                    </button>
-                    
-                    <button onclick="startProject('improve')" class="w-full glass-card hover:border-blue-400 border border-slate-700 p-6 rounded-xl text-left transition-all hover:scale-105">
-                        <div class="font-semibold text-lg">🔧 Förbättra befintlig kod</div>
-                        <div class="text-slate-400 text-sm mt-2">Klistra in din HTML/CSS</div>
-                    </button>
-                </div>
-
-                <button onclick="closeQuiz()" class="text-slate-400 hover:text-white transition-colors">
-                    Avbryt
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function startQuiz() {
-            document.getElementById('quizModal').classList.remove('hidden');
-            document.getElementById('quizModal').classList.add('flex');
-        }
-
-        function closeQuiz() {
-            document.getElementById('quizModal').classList.add('hidden');
-            document.getElementById('quizModal').classList.remove('flex');
-        }
-
-        function startProject(type) {
-            if (type === 'new') {
-                window.location.href = '/studio?mode=generate';
-            } else {
-                window.location.href = '/studio?mode=improve';
-            }
-        }
-
-        // Close modal when clicking outside
-        document.getElementById('quizModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeQuiz();
-            }
-        });
-    </script>
 </body>
 </html>
