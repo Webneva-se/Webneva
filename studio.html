@@ -265,7 +265,23 @@
         if (exists){
           setCurrent(target);
         } else {
-          addPage(target, `
+addPage(target, `<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>${target.replace('.html','')}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-800">
+  <main class="max-w-3xl mx-auto px-6 py-16">
+    <h1 class="text-3xl font-bold mb-2">${target.replace('.html','')}</h1>
+    <p class="text-gray-600">Tom sida – fyll på innehåll.</p>
+    <p class="mt-6"><a class="text-blue-600 underline" href="index.html">Tillbaka</a></p>
+  </main>
+</body>
+</html>`);
+
 <!DOCTYPE html>
 <html lang="sv">
 <head>
