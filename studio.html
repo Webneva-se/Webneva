@@ -1,432 +1,140 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Webneva Studio – AI-driven webbutveckling</title>
-  <link rel="icon" href="images/bgk-remove.webneva.png">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Webneva Studio – AI-driven site builder</title>
+  <link rel="icon" href="images/bgk-remove.webneva.png" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    if (localStorage.getItem('wn-theme') === 'dark') {
-      document.documentElement.classList.add('dark');
-    }
-  </script>
+  <!-- CodeMirror -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/xml/xml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/css/css.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closetag.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/closebrackets.js"></script>
   <style>
-    .brand { color:#0f4c81 }
-    .btn-brand{background:#0f4c81}
-    .btn-brand:hover{background:#0c3b63}
-    .glass{background:rgba(255,255,255,.85);backdrop-filter:saturate(120%) blur(10px)}
-    .codearea{tab-size:2}
-    .tabs button[aria-current="true"]{background:#0f4c81;color:#fff}
-    .profile-menu{display:none}
-    .profile.open .profile-menu{display:block}
-    .device-frame{border-radius:14px;border:1px solid rgba(15,25,45,.1);box-shadow:0 15px 35px rgba(0,0,0,.08)}
+    body{background:#f6f9fc}
+    .brand{color:#0f4c81}
+    .brand-bg{background:#0f4c81}
+    .brand-bg:hover{background:#0c3b63}
+    .glass{background:rgba(255,255,255,.85);backdrop-filter:saturate(140%) blur(10px)}
+    .device-frame{
+      border-radius: 14px; background:#fff; border:1px solid #e5e7eb;
+      box-shadow: 0 10px 30px rgba(15,23,42,.08);
+    }
+    .device-head{
+      height: 44px; background:#111827; border-radius:14px 14px 0 0; color:#cbd5e1;
+      display:flex; align-items:center; gap:10px; padding:0 14px; font-size:12px;
+    }
+    .dot{height:10px;width:10px;border-radius:9999px}
+    .CodeMirror{height:calc(100vh - 220px); border:1px solid #e5e7eb; border-radius:12px; background:#0b1220; color:#e5e7eb; font-size:14px}
+    .CodeMirror-gutters{background:#0b1220; border-right:1px solid #1f2937}
   </style>
 </head>
-<body class="antialiased text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-
-  <!-- Header -->
-  <header class="sticky top-0 z-40 bg-white/85 dark:bg-slate-900/85 backdrop-blur border-b border-slate-200 dark:border-slate-800">
-    <div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
+<body class="antialiased">
+  <!-- Topbar -->
+  <header class="sticky top-0 z-40 bg-white/70 backdrop-blur border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="images/bgk-remove.webneva.png" class="h-8 w-8 object-contain" alt="Webneva">
-        <div class="font-extrabold text-xl brand">Webneva <span class="text-sky-500">Studio</span> <span class="text-xs align-super bg-green-100 text-green-700 px-1.5 py-0.5 rounded">LIVE</span></div>
+        <img src="images/bgk-remove.webneva.png" class="h-7 w-7" alt="Webneva">
+        <span class="font-black tracking-tight text-lg brand">Webneva <span class="text-xs align-top bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">LIVE</span></span>
       </div>
-
       <div class="flex items-center gap-2">
-        <button id="newBtn" class="px-3 py-2 text-sm rounded border border-slate-200 dark:border-slate-700 hover:bg-white/70 dark:hover:bg-slate-800/60">Nytt projekt</button>
-        <button id="saveBtn" class="px-3 py-2 text-sm rounded border border-slate-200 dark:border-slate-700 hover:bg-white/70 dark:hover:bg-slate-800/60">Spara</button>
-        <a href="/" class="btn-brand text-white px-3 py-2 rounded text-sm">Start­sida</a>
+        <button id="newProjectBtn" class="px-3 py-1.5 border rounded-lg bg-white hover:bg-slate-50 text-sm">🆕 Nytt projekt</button>
+        <button id="saveProjectBtn" class="px-3 py-1.5 border rounded-lg bg-white hover:bg-slate-50 text-sm">💾 Spara</button>
+        <a href="/" class="brand-bg text-white px-3 py-1.5 rounded-lg text-sm">Start­sida</a>
 
         <!-- Profil dropdown -->
-        <div id="profile" class="relative profile">
-          <button class="ml-2 flex items-center gap-2 px-3 py-2 rounded border border-slate-200 dark:border-slate-700 hover:bg-white/60 dark:hover:bg-slate-800/60">
-            <img src="images/bgk-remove.webneva.png" class="h-5 w-5 rounded" alt="">
-            <span class="text-sm">Profil</span>
-            <svg class="h-3.5 w-3.5 opacity-60" viewBox="0 0 10 6" fill="currentColor"><path d="M1 1l4 4 4-4"/></svg>
+        <div class="relative">
+          <button id="profileBtn" class="px-3 py-1.5 border rounded-lg bg-white hover:bg-slate-50 text-sm flex items-center gap-2">
+            <span class="inline-block h-6 w-6 rounded-full bg-slate-200"></span> Profil ▾
           </button>
-          <div class="profile-menu absolute right-0 mt-2 w-60 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg">
-            <div class="px-4 py-3 text-sm">
-              <div class="font-semibold">Inloggad som</div>
-              <div class="text-slate-500">gäst@webneva.se</div>
-            </div>
-            <div class="border-t border-slate-200 dark:border-slate-800"></div>
-            <button id="themeToggle" class="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm">Tema: Ljust / Mörkt</button>
-            <button class="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm" disabled>Inställningar (kommande)</button>
-            <button class="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm" disabled>Logga ut (kommande)</button>
+          <div id="profileMenu" class="hidden absolute right-0 mt-2 w-56 bg-white border rounded-xl shadow-lg p-2">
+            <div class="px-3 py-2 text-xs text-slate-500">Inställningar</div>
+            <button data-action="theme" class="w-full text-left px-3 py-2 rounded hover:bg-slate-50 text-sm">Tema: Ljus / Mörk</button>
+            <button data-action="autosave" class="w-full text-left px-3 py-2 rounded hover:bg-slate-50 text-sm">Autospara: Av/På</button>
+            <button data-action="export" class="w-full text-left px-3 py-2 rounded hover:bg-slate-50 text-sm">Exportera ZIP</button>
           </div>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Main -->
-  <main class="max-w-7xl mx-auto px-5 py-5 grid grid-cols-12 gap-5">
+  <!-- Workspace -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-5 grid grid-cols-12 gap-5">
+    <!-- Left: Editor + AI -->
+    <section class="col-span-12 lg:col-span-5 space-y-5">
+      <!-- Tabs (pages) -->
+      <div class="glass border rounded-2xl p-2 flex flex-wrap items-center gap-2">
+        <div id="tabs" class="flex flex-wrap gap-2"></div>
+        <button id="addPageBtn" class="ml-auto px-3 py-1.5 text-sm border rounded-lg bg-white hover:bg-slate-50">+ Ny sida</button>
+      </div>
 
-    <!-- Vänster: Editor + AI -->
-    <section class="col-span-12 lg:col-span-5 flex flex-col gap-4">
-
-      <!-- Flikar (sidor) -->
-      <div class="glass dark:bg-slate-900/70 rounded-xl p-3 shadow border border-slate-200 dark:border-slate-800">
-        <div id="tabs" class="tabs flex flex-wrap gap-2">
-          <button data-page="index.html" class="px-3 py-1.5 rounded border border-slate-200 dark:border-slate-700" aria-current="true">Start</button>
-          <button data-page="about.html" class="px-3 py-1.5 rounded border border-slate-200 dark:border-slate-700">Om</button>
-          <button data-page="add-plane.html" class="px-3 py-1.5 rounded border border-slate-200 dark:border-slate-700">Lägg till</button>
-          <button id="addTab" class="ml-auto px-3 py-1.5 rounded border border-slate-200 dark:border-slate-700">+ Ny sida</button>
+      <!-- Editor -->
+      <div class="glass border rounded-2xl p-3">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2 text-xs">
+            <button id="formatBtn" class="px-2 py-1 border rounded bg-white hover:bg-slate-50">Formatera</button>
+            <span class="text-slate-500">Tips: tryck <kbd>Ctrl</kbd> + <kbd>Enter</kbd> för ”Uppdatera förhandsvisning”.</span>
+          </div>
+          <div class="text-xs text-slate-500" id="fileIndicator">index.html</div>
         </div>
-        <!-- Code editor -->
-        <textarea id="editor" class="codearea mt-3 h-[48vh] w-full font-mono text-[13px] leading-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-sky-400" spellcheck="false"></textarea>
-        <div class="mt-2 flex items-center gap-2">
-          <button id="formatBtn" class="px-3 py-2 text-sm rounded border border-slate-200 dark:border-slate-700 hover:bg-white/60 dark:hover:bg-slate-800/60">Formattera</button>
-          <button id="updateBtn" class="btn-brand text-white px-4 py-2 rounded text-sm shadow">Uppdatera</button>
-          <button id="explainBtn" class="px-3 py-2 text-sm rounded border border-slate-200 dark:border-slate-700 hover:bg-white/60 dark:hover:bg-slate-800/60">Förklara koden</button>
+        <textarea id="editor"></textarea>
+        <div class="mt-3 flex justify-end">
+          <button id="updatePreviewBtn" class="brand-bg text-white px-3 py-1.5 rounded-lg text-sm">🔁 Uppdatera förhandsvisning</button>
         </div>
       </div>
 
-      <!-- AI Assistent -->
-      <div class="glass dark:bg-slate-900/70 rounded-xl p-3 shadow border border-slate-200 dark:border-slate-800">
-        <div class="font-semibold mb-2">🤖 AI-assistent</div>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Exempel: ”Skapa en hemsida för en restaurang med sidorna meny, om oss, kontakt.”</p>
-        <div class="flex gap-2">
-          <input id="aiInput" class="flex-1 px-3 py-2 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900" placeholder="Beskriv vad du vill bygga...">
-          <button id="aiGenerate" class="btn-brand px-4 py-2 rounded text-white">Generera</button>
+      <!-- AI assistant -->
+      <div class="glass border rounded-2xl p-3">
+        <h3 class="font-semibold text-slate-800 mb-2">🤖 AI-assistent</h3>
+        <div class="text-xs text-slate-500 mb-2">
+          Exempel: <em>“Skapa en hemsida för en thairestaurang med sidorna meny, om oss, kontakt.”</em><br>
+          Exempel ändring: <em>“Gör knappar röda och lägg till testimonials.”</em>
         </div>
-        <div id="aiExplain" class="mt-3 text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap hidden"></div>
+        <div class="grid gap-2">
+          <textarea id="aiInput" class="w-full border rounded-lg p-2 text-sm" rows="2" placeholder="Skriv en instruktion till AI…"></textarea>
+          <div class="flex gap-2">
+            <button id="generateBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-sm">✨ Generera ny sajt</button>
+            <button id="transformBtn" class="brand-bg text-white px-3 py-1.5 rounded-lg text-sm">🔧 Förbättra aktuell sida</button>
+            <button id="explainBtn" class="px-3 py-1.5 rounded-lg text-sm border bg-white hover:bg-slate-50">📘 Förklara koden</button>
+          </div>
+        </div>
+        <div id="aiLog" class="mt-3 text-xs text-slate-500 whitespace-pre-wrap"></div>
       </div>
 
+      <!-- Explanations / History -->
+      <div class="glass border rounded-2xl p-3">
+        <div class="flex items-center gap-3 border-b pb-2">
+          <button id="tabExplain" class="px-3 py-1.5 rounded bg-slate-100 text-sm">Förklaringar</button>
+          <button id="tabHistory" class="px-3 py-1.5 rounded text-sm">Historik</button>
+        </div>
+        <div id="explanations" class="text-sm text-slate-700 pt-3"></div>
+        <div id="history" class="text-sm text-slate-700 pt-3 hidden"></div>
+      </div>
     </section>
 
-    <!-- Höger: Preview stor -->
+    <!-- Right: Preview (big “desktop” frame) -->
     <section class="col-span-12 lg:col-span-7">
-      <div class="glass dark:bg-slate-900/70 rounded-xl p-3 shadow border border-slate-200 dark:border-slate-800">
-        <div class="flex items-center justify-between px-3 py-2">
-          <div class="text-sm font-semibold opacity-70">Förhandsvisning</div>
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center gap-1 text-xs text-green-700 bg-green-100 px-2 py-0.5 rounded"><span class="h-2 w-2 rounded-full bg-green-600"></span>LIVe</span>
-          </div>
+      <div class="device-frame">
+        <div class="device-head">
+          <span class="dot bg-red-500"></span>
+          <span class="dot bg-yellow-400"></span>
+          <span class="dot bg-green-500"></span>
+          <span class="ml-3 text-slate-300">webneva-preview</span>
+          <span id="liveBadge" class="ml-auto text-emerald-400">● LIVE</span>
         </div>
-
-        <!-- Låtsas-datorram, stor -->
-        <div class="device-frame overflow-hidden bg-slate-900/90">
-          <div class="bg-slate-800 text-slate-100 text-xs px-4 py-2 flex items-center gap-2">
-            <span class="inline-block h-2 w-2 rounded-full bg-red-400"></span>
-            <span class="inline-block h-2 w-2 rounded-full bg-amber-400"></span>
-            <span class="inline-block h-2 w-2 rounded-full bg-green-400"></span>
-            <span class="ml-3 opacity-70">webneva-preview</span>
-          </div>
-          <iframe id="preview" class="w-full h-[68vh] bg-white dark:bg-slate-900" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe>
+        <div class="p-0" style="background:#111827">
+          <iframe id="previewFrame" title="Preview"
+                  style="width:100%;height:calc(100vh - 220px);border:0;background:#fff;border-radius:0 0 14px 14px;"></iframe>
         </div>
-      </div>
-
-      <!-- Förklaringar / logg -->
-      <div class="mt-4 glass dark:bg-slate-900/70 rounded-xl p-3 shadow border border-slate-200 dark:border-slate-800">
-        <div class="text-sm font-semibold mb-2">Förklaringar</div>
-        <div id="explanations" class="text-sm text-slate-700 dark:text-slate-300">Här visas AI:s förklaringar av din kod.</div>
       </div>
     </section>
-
   </main>
 
-  <script>
-    // --- Profilmeny / Tema ---
-    const profile = document.getElementById('profile');
-    profile.addEventListener('click', (e) => {
-      profile.classList.toggle('open');
-      e.stopPropagation();
-    });
-    document.addEventListener('click', () => profile.classList.remove('open'));
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      const root = document.documentElement;
-      const isDark = root.classList.toggle('dark');
-      localStorage.setItem('wn-theme', isDark ? 'dark' : 'light');
-    });
-
-    // --- Sidor / Projekt-minne ---
-    const DEFAULT_PAGES = {
-      "index.html": `<!DOCTYPE html>
-<html lang="sv"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rent the Perfect Aircraft</title>
-<script src="https://cdn.tailwindcss.com"></script>
-</head><body class="bg-slate-50">
-<header class="bg-green-800 text-white py-10">
-  <div class="max-w-5xl mx-auto px-4">
-    <h1 class="text-3xl md:text-4xl font-extrabold">Rent the Perfect Aircraft</h1>
-    <p class="opacity-90 mt-2">From Cessnas to Jets – We've got wings for every adventure</p>
-    <div class="mt-5"><a href="add-plane.html" class="bg-white text-green-900 px-4 py-2 rounded shadow hover:bg-slate-100">Add Your Plane</a></div>
-  </div>
-</header>
-
-<main class="max-w-5xl mx-auto px-4 py-10">
-  <h2 class="text-xl font-semibold text-green-900">Available Aircraft</h2>
-  <p class="text-slate-600">Exempelsida. Byt eller skriv över med din egen kod.</p>
-  <div class="mt-4"><a class="text-sky-700 underline" href="about.html">About this site</a></div>
-  <section class="grid md:grid-cols-3 gap-5 mt-8">
-    <article class="bg-white rounded-xl shadow border overflow-hidden">
-      <img src="https://images.unsplash.com/photo-1600442712340-39c41fdab67b?q=80&w=1200&auto=format&fit=crop" class="h-40 w-full object-cover" alt="">
-      <div class="p-4">
-        <h3 class="font-semibold">Cessna 172 Skyhawk</h3>
-        <p class="text-sm text-slate-600">Perfect for training. 4 seats.</p>
-        <div class="flex items-center justify-between mt-3">
-          <span class="font-bold">$200/hr</span>
-          <button class="bg-green-700 text-white px-3 py-1 rounded">Book Now</button>
-        </div>
-      </div>
-    </article>
-    <article class="bg-white rounded-xl shadow border overflow-hidden">
-      <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=1200&auto=format&fit=crop" class="h-40 w-full object-cover" alt="">
-      <div class="p-4">
-        <h3 class="font-semibold">Piper PA-28 Cherokee</h3>
-        <p class="text-sm text-slate-600">Comfort meets agility.</p>
-        <div class="flex items-center justify-between mt-3">
-          <span class="font-bold">$250/hr</span>
-          <button class="bg-green-700 text-white px-3 py-1 rounded">Book Now</button>
-        </div>
-      </div>
-    </article>
-    <article class="bg-white rounded-xl shadow border overflow-hidden">
-      <img src="https://images.unsplash.com/photo-1457305237443-44c3d5a30b89?q=80&w=1200&auto=format&fit=crop" class="h-40 w-full object-cover" alt="">
-      <div class="p-4">
-        <h3 class="font-semibold">Beechcraft Baron 58</h3>
-        <p class="text-sm text-slate-600">Twin-engine luxury. 6 seats.</p>
-        <div class="flex items-center justify-between mt-3">
-          <span class="font-bold">$450/hr</span>
-          <button class="bg-green-700 text-white px-3 py-1 rounded">Book Now</button>
-        </div>
-      </div>
-    </article>
-  </section>
-</main>
-
-<footer class="text-center text-xs text-slate-500 py-10">© 2025 – Demo av Webneva Studio</footer>
-</body></html>`,
-
-      "about.html": `<!DOCTYPE html>
-<html lang="sv"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>About this demo</title>
-<script src="https://cdn.tailwindcss.com"></script>
-</head><body class="bg-slate-50">
-<main class="max-w-3xl mx-auto px-4 py-12">
-  <h1 class="text-3xl font-extrabold">About This Demo</h1>
-  <p class="mt-2 text-slate-600">Den här sidan visar multi-page routing i förhandsvisningen.</p>
-  <div class="mt-5"><a class="text-sky-700 underline" href="index.html">Tillbaka</a></div>
-</main>
-</body></html>`,
-
-      "add-plane.html": `<!DOCTYPE html>
-<html lang="sv"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Add your plane</title>
-<script src="https://cdn.tailwindcss.com"></script>
-</head><body class="bg-slate-50">
-<main class="max-w-3xl mx-auto px-4 py-12">
-  <h1 class="text-2xl font-semibold">Add your plane</h1>
-  <form class="mt-5 space-y-3">
-    <div>
-      <label class="block text-sm mb-1">Name</label>
-      <input class="w-full border rounded px-3 py-2" placeholder="Cessna 172">
-    </div>
-    <div>
-      <label class="block text-sm mb-1">Hourly rate</label>
-      <input class="w-full border rounded px-3 py-2" placeholder="250">
-    </div>
-    <div class="flex gap-2">
-      <button class="bg-green-700 text-white px-3 py-2 rounded">Save</button>
-      <a class="px-3 py-2 rounded border" href="index.html">Cancel</a>
-    </div>
-  </form>
-</main>
-</body></html>`
-    };
-
-    let pages = JSON.parse(localStorage.getItem('wn-pages') || 'null') || structuredClone(DEFAULT_PAGES);
-    const tabsEl = document.getElementById('tabs');
-    const editor = document.getElementById('editor');
-    const preview = document.getElementById('preview');
-    const explanations = document.getElementById('explanations');
-    const aiExplainBox = document.getElementById('aiExplain');
-
-    let currentPage = 'index.html';
-
-    function setActiveTab(name){
-      currentPage = name;
-      tabsEl.querySelectorAll('button[data-page]').forEach(b=>{
-        b.setAttribute('aria-current', b.dataset.page===name ? 'true' : 'false');
-      });
-      editor.value = pages[currentPage] || '';
-      renderPreview();
-      persist();
-    }
-
-    function persist(){
-      localStorage.setItem('wn-pages', JSON.stringify(pages));
-    }
-
-    function buildPreviewHTML(){
-      // Router: intercepta länkar i preview och ladda rätt sida ur "pages".
-      const routerScript = `
-        <script>
-          (function(){
-            document.addEventListener('click', function(e){
-              const a = e.target.closest('a[href]');
-              if(!a) return;
-              const href = a.getAttribute('href');
-              if(!href) return;
-              if(href.endsWith('.html')){
-                e.preventDefault();
-                parent.postMessage({type:'NAVIGATE', page: href}, '*');
-              }
-            }, true);
-          })();
-        <\\/script>`;
-      // Injicera script i slutet (om möjligt)
-      let html = pages[currentPage] || '';
-      if (html.includes('</body>')) {
-        html = html.replace('</body>', routerScript + '</body>');
-      } else {
-        html += routerScript;
-      }
-      return html;
-    }
-
-    function renderPreview(){
-      preview.srcdoc = buildPreviewHTML();
-    }
-
-    window.addEventListener('message', (e) => {
-      if (!e.data) return;
-      if (e.data.type === 'NAVIGATE') {
-        const p = e.data.page;
-        if (pages[p]) {
-          setActiveTab(p);
-        }
-      }
-    });
-
-    // Init flikar
-    tabsEl.querySelectorAll('button[data-page]').forEach(btn=>{
-      btn.addEventListener('click', ()=> setActiveTab(btn.dataset.page));
-    });
-    document.getElementById('addTab').addEventListener('click', ()=>{
-      const base = prompt('Filnamn (t.ex. kontakt.html):');
-      if(!base || !base.endsWith('.html')) return alert('Ange ett giltigt filnamn som slutar på .html');
-      pages[base] = `<!DOCTYPE html><html lang="sv"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${base}</title><script src="https://cdn.tailwindcss.com"><\/script></head><body class="p-6"><h1 class="text-2xl font-bold">${base}</h1><p>Ny sida.</p><p><a class="text-sky-700 underline" href="index.html">Tillbaka</a></p></body></html>`;
-      // skapa knapp
-      const b = document.createElement('button');
-      b.dataset.page = base;
-      b.className = 'px-3 py-1.5 rounded border border-slate-200 dark:border-slate-700';
-      b.textContent = base.replace('.html','');
-      b.addEventListener('click', ()=> setActiveTab(base));
-      tabsEl.insertBefore(b, document.getElementById('addTab'));
-      setActiveTab(base);
-      persist();
-    });
-
-    // Editor events
-    editor.addEventListener('input', ()=>{
-      pages[currentPage] = editor.value;
-      renderPreview();
-      persist();
-    });
-    document.getElementById('updateBtn').addEventListener('click', renderPreview);
-    document.getElementById('formatBtn').addEventListener('click', ()=>{
-      // superenkel formattering: trim & newline
-      pages[currentPage] = editor.value = editor.value.trim() + '\n';
-      renderPreview();
-      persist();
-    });
-
-    // Förklara koden via AI
-    document.getElementById('explainBtn').addEventListener('click', async ()=>{
-      aiExplainBox.classList.remove('hidden');
-      aiExplainBox.textContent = '⏳ AI analyserar din kod...';
-      try{
-        const res = await fetch('/api/openai', { method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ message: `Förklara denna kod kortfattat och punktvis för en utvecklare:\n\n${pages[currentPage]}` })
-        });
-        const data = await res.json();
-        aiExplainBox.textContent = data.reply || 'Ingen förklaring.';
-        explanations.textContent = data.reply || 'Ingen förklaring.';
-      }catch(e){
-        aiExplainBox.textContent = 'Fel vid anrop till AI.';
-      }
-    });
-
-    // Generera sidor via AI
-    document.getElementById('aiGenerate').addEventListener('click', async ()=>{
-      const prompt = document.getElementById('aiInput').value.trim();
-      if(!prompt) return alert('Skriv vad du vill skapa.');
-      aiExplainBox.classList.remove('hidden');
-      aiExplainBox.textContent = '⏳ Skapar förslag...';
-
-      try{
-        const res = await fetch('/api/openai', {
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ message: `Generera ett komplett flersidigt webbprojekt i ren HTML (utan <script src> förutom Tailwind via CDN) med minst 3 sidor. Sidorna ska länka till varandra med <a href="...html">. Beskrivning: ${prompt}. Returnera endast HTML för startsidan i ett enda kodblock (märk inte upp med språk), och nämn namnen på de andra sidorna i en punktlista sist.` })
-        });
-        const data = await res.json();
-        const reply = (data && data.reply) ? data.reply : '';
-
-        // Försök extrahera HTML-kodblock
-        const match = reply.match(/```(?:html)?\s*([\s\S]*?)```/i);
-        const html = match ? match[1] : reply;
-
-        pages['index.html'] = html.trim();
-        // Skapa två tomma sidor om AI nämnt dem i slutet (heuristik)
-        if(!pages['about.html']) pages['about.html'] = DEFAULT_PAGES['about.html'];
-        if(!pages['add-plane.html']) pages['add-plane.html'] = DEFAULT_PAGES['add-plane.html'];
-
-        // Uppdatera editor + preview
-        setActiveTab('index.html');
-        aiExplainBox.textContent = 'Klart! Startsidan är genererad. Du kan nu be mig justera färger, knappar osv.';
-        persist();
-
-      }catch(e){
-        aiExplainBox.textContent = 'Fel vid anrop till AI.';
-      }
-    });
-
-    // Nytt/Spara (lokalt)
-    document.getElementById('newBtn').addEventListener('click', ()=>{
-      if(!confirm('Skapa nytt tomt projekt? Dina lokala ändringar försvinner.')) return;
-      pages = structuredClone(DEFAULT_PAGES);
-      // döda extra tabs
-      tabsEl.querySelectorAll('button[data-page]').forEach(b=>b.remove());
-      ['index.html','about.html','add-plane.html'].forEach((p,i)=>{
-        const b = document.createElement('button');
-        b.dataset.page = p;
-        b.textContent = p==='index.html'?'Start':p.replace('.html','');
-        b.className = 'px-3 py-1.5 rounded border border-slate-200 dark:border-slate-700';
-        if(i===0) b.setAttribute('aria-current','true');
-        b.addEventListener('click', ()=> setActiveTab(p));
-        tabsEl.insertBefore(b, document.getElementById('addTab'));
-      });
-      setActiveTab('index.html');
-      persist();
-    });
-    document.getElementById('saveBtn').addEventListener('click', ()=>{
-      const blob = new Blob([JSON.stringify(pages,null,2)], {type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'webneva-project.json';
-      a.click(); URL.revokeObjectURL(url);
-    });
-
-    // Start
-    // skapa ev nya tab-knappar för extra sidor
-    const known = new Set(['index.html','about.html','add-plane.html']);
-    Object.keys(pages).forEach(p=>{
-      if(!known.has(p)) {
-        const b = document.createElement('button');
-        b.dataset.page = p;
-        b.textContent = p.replace('.html','');
-        b.className = 'px-3 py-1.5 rounded border border-slate-200 dark:border-slate-700';
-        b.addEventListener('click', ()=> setActiveTab(p));
-        tabsEl.insertBefore(b, document.getElementById('addTab'));
-      }
-    });
-    setActiveTab('index.html');
-  </script>
+  <script type="module" src="/js/studio.js"></script>
 </body>
 </html>
