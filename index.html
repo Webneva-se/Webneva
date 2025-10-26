@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Webneva – Bygg med en prompt</title>
+  <title>Webneva – Skapa din hemsida med AI</title>
   <link rel="icon" href="images/bgk-remove.webneva.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -11,169 +11,204 @@
       theme: {
         extend: {
           colors: {
-            brand: { 50:'#eef6ff', 100:'#d9ecff', 200:'#b9daff', 300:'#91c3ff', 400:'#60a1ff', 500:'#3c81ff', 600:'#2d66e0', 700:'#254fb3', 800:'#213f8f', 900:'#1d356f' }
+            brand: {
+              50: '#f5f7ff',
+              100: '#e0e7ff',
+              500: '#3c81ff',
+              600: '#2d66e0',
+              700: '#244fb4',
+              900: '#1b387f'
+            }
           }
         }
       }
     }
   </script>
   <style>
-    .glass { background: rgba(255,255,255,.9); backdrop-filter: blur(10px) saturate(120%); }
+    .glass {
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(10px) saturate(120%);
+    }
+    .fade-enter { opacity: 0; transform: translateY(20px); transition: all .4s; }
+    .fade-enter-active { opacity: 1; transform: translateY(0); }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 text-slate-900">
+<body class="bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 min-h-screen text-slate-900">
 
   <!-- Header -->
-  <header class="sticky top-0 z-30 bg-white/70 backdrop-blur border-b border-slate-200">
+  <header class="sticky top-0 bg-white/80 backdrop-blur z-40 border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-9 w-9">
-        <h1 class="text-xl font-extrabold">Webneva<span class="text-brand-600"> Studio</span></h1>
+        <img src="images/bgk-remove.webneva.png" class="h-10" alt="Webneva">
+        <h1 class="text-2xl font-black">Webneva <span class="text-brand-600">Studio</span></h1>
       </div>
-      <nav class="hidden md:flex items-center gap-8 text-sm">
-        <a href="#how" class="hover:text-brand-700">Så funkar det</a>
-        <a href="#why" class="hover:text-brand-700">Varför Webneva</a>
-        <a href="#faq" class="hover:text-brand-700">FAQ</a>
-      </nav>
-      <a href="#quiz" id="ctaStart" class="px-4 py-2 rounded-full bg-brand-600 text-white font-semibold hover:bg-brand-700">Skapa sida</a>
+      <a href="/studio" class="bg-brand-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-brand-700">Gå till Studio</a>
     </div>
   </header>
 
   <!-- Hero -->
-  <section class="py-20">
-    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-      <div>
-        <h2 class="text-4xl md:text-5xl font-black leading-tight">Skapa en komplett webb med <span class="text-brand-600">en prompt</span></h2>
-        <p class="mt-5 text-lg text-slate-600">Besvara ett par snabba frågor eller klistra in din kod. Webneva genererar en hel sida – redo att anpassas och publiceras.</p>
-        <div class="mt-8 flex flex-wrap gap-4">
-          <button id="openQuiz" class="px-6 py-3 rounded-full bg-brand-600 text-white font-semibold hover:bg-brand-700">Börja nu</button>
-          <a href="/studio" class="px-6 py-3 rounded-full border border-slate-300 font-semibold hover:bg-white">Öppna studion</a>
-        </div>
-        <p class="mt-3 text-xs text-slate-500">Inget konto krävs – exportera när du är nöjd.</p>
-      </div>
-      <div class="glass rounded-3xl shadow-xl p-6">
-        <div class="rounded-xl overflow-hidden border border-slate-200">
-          <img src="images/bgk-remove.webneva.png" class="w-full h-64 object-contain bg-slate-50" alt="">
-        </div>
-        <p class="text-center text-xs text-slate-500 mt-3">Skapa, förhandsgranska och förbättra i realtid.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Why -->
-  <section id="why" class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-6">
-      <div class="glass rounded-2xl p-6 shadow">
-        <h3 class="font-bold text-lg">En prompt → flera sidor</h3>
-        <p class="text-slate-600 text-sm mt-2">Start, om oss, tjänster, kontakt. Allt skapas och kan utökas med flikar.</p>
-      </div>
-      <div class="glass rounded-2xl p-6 shadow">
-        <h3 class="font-bold text-lg">DeepSite + OpenAI</h3>
-        <p class="text-slate-600 text-sm mt-2">DeepSite genererar grundsidorna. OpenAI förklarar och finputsar.</p>
-      </div>
-      <div class="glass rounded-2xl p-6 shadow">
-        <h3 class="font-bold text-lg">Live-preview</h3>
-        <p class="text-slate-600 text-sm mt-2">Se resultatet direkt – inga omstarter, ingen “chrome” runt.</p>
-      </div>
-    </div>
+  <section class="py-20 text-center">
+    <h2 class="text-4xl font-extrabold">✨ Skapa din hemsida med <span class="text-brand-600">AI</span></h2>
+    <p class="mt-4 text-lg text-slate-600">Svara på några snabba frågor så genererar Webneva en professionell webbsida åt dig.</p>
+    <button id="startQuiz" class="mt-8 bg-brand-600 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-brand-700 transition">🚀 Starta quiz</button>
   </section>
 
   <!-- Quiz Modal -->
-  <div id="quizModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center p-4">
-    <div class="glass w-full max-w-2xl rounded-2xl shadow-2xl p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-xl font-bold">Snabbstart</h3>
-        <button id="closeQuiz" class="text-slate-500 hover:text-slate-700">&times;</button>
+  <div id="quizContainer" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+    <div class="glass w-full max-w-3xl p-6 rounded-3xl shadow-2xl text-center relative">
+      <button id="closeQuiz" class="absolute top-3 right-5 text-2xl text-slate-500 hover:text-slate-700">&times;</button>
+
+      <div id="progress" class="h-2 bg-slate-200 rounded-full overflow-hidden mb-5">
+        <div id="progressBar" class="h-full bg-brand-600 w-0 transition-all duration-500"></div>
       </div>
 
-      <div id="step1" class="space-y-3">
-        <label class="block text-sm font-medium">Vad vill du göra?</label>
-        <div class="grid md:grid-cols-2 gap-3">
-          <label class="border rounded-xl p-4 flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-            <input type="radio" name="mode" value="generate" class="accent-brand-600" checked>
-            <span>Skapa en ny webbplats</span>
-          </label>
-          <label class="border rounded-xl p-4 flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-            <input type="radio" name="mode" value="improve" class="accent-brand-600">
-            <span>Förbättra min befintliga kod</span>
-          </label>
-        </div>
-        <textarea id="existingCode" placeholder="Klistra in din kod (om du valde ”förbättra”)" class="hidden w-full border rounded-lg p-3 font-mono text-sm h-40"></textarea>
-        <div class="flex justify-end">
-          <button id="toStep2" class="px-5 py-2 rounded-lg bg-brand-600 text-white">Nästa</button>
-        </div>
-      </div>
+      <h3 id="quizTitle" class="text-2xl font-bold mb-4">Vad vill du göra?</h3>
+      <div id="quizContent" class="space-y-4"></div>
 
-      <div id="step2" class="space-y-3 hidden">
-        <div class="grid md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium">Nisch / bransch</label>
-            <input id="niche" class="w-full border rounded-lg p-2" placeholder="Ex: Thairestaurang i Borlänge">
-          </div>
-          <div>
-            <label class="block text-sm font-medium">Mål med sidan</label>
-            <input id="goal" class="w-full border rounded-lg p-2" placeholder="Ex: Boka bord, visa meny">
-          </div>
-          <div>
-            <label class="block text-sm font-medium">Färgstil</label>
-            <input id="colors" class="w-full border rounded-lg p-2" placeholder="Ex: Blå och rosa, mörkt läge">
-          </div>
-          <div>
-            <label class="block text-sm font-medium">Sidor</label>
-            <input id="pages" class="w-full border rounded-lg p-2" placeholder="start, om oss, meny, kontakt">
-          </div>
-        </div>
-        <div class="flex justify-between">
-          <button id="back1" class="px-5 py-2 rounded-lg border">Tillbaka</button>
-          <button id="finish" class="px-5 py-2 rounded-lg bg-brand-600 text-white">Skapa i studion</button>
-        </div>
+      <div class="mt-6 flex justify-between">
+        <button id="prevBtn" class="px-4 py-2 rounded-lg border border-slate-300 text-sm font-semibold hover:bg-white">⬅️ Tillbaka</button>
+        <button id="nextBtn" class="px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-semibold hover:bg-brand-700">Nästa ➡️</button>
       </div>
     </div>
   </div>
 
   <script>
-    const modal = document.getElementById('quizModal');
-    const step1 = document.getElementById('step1');
-    const step2 = document.getElementById('step2');
-    const existingCode = document.getElementById('existingCode');
+    const quizSteps = [
+      {
+        title: "Vad vill du göra?",
+        options: [
+          { text: "🆕 Skapa en ny hemsida", value: "generate" },
+          { text: "🛠️ Förbättra min kod", value: "improve" }
+        ],
+        type: "choice"
+      },
+      {
+        title: "Vilken typ av hemsida ska du skapa?",
+        options: [
+          { text: "🍝 Restaurang", value: "restaurang" },
+          { text: "🛒 E-handel", value: "ehandel" },
+          { text: "🎨 Portfolio", value: "portfolio" },
+          { text: "📰 Blogg", value: "blogg" },
+          { text: "🏢 Företagssida", value: "företag" }
+        ],
+        type: "choice"
+      },
+      {
+        title: "Vad är målet med din sida?",
+        type: "text",
+        placeholder: "Ex: Få kunder att boka bord, sälja produkter..."
+      },
+      {
+        title: "Vilka färger eller stil ska sidan ha?",
+        type: "text",
+        placeholder: "Ex: mörkblå och guld, minimalistisk, modern..."
+      },
+      {
+        title: "Vilka undersidor vill du ha?",
+        type: "text",
+        placeholder: "Ex: start, om oss, kontakt, meny..."
+      },
+      {
+        title: "Har du redan kod du vill förbättra?",
+        type: "textarea",
+        optional: true,
+        placeholder: "Klistra in din HTML/CSS/JS här (om du vill förbättra en sida)..."
+      }
+    ];
 
-    function openQuiz(){ modal.classList.remove('hidden'); modal.classList.add('flex'); }
-    function closeQuiz(){ modal.classList.add('hidden'); modal.classList.remove('flex'); }
+    const quizContainer = document.getElementById("quizContainer");
+    const quizContent = document.getElementById("quizContent");
+    const quizTitle = document.getElementById("quizTitle");
+    const progressBar = document.getElementById("progressBar");
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtn = document.getElementById("prevBtn");
 
-    document.getElementById('openQuiz').onclick = openQuiz;
-    document.getElementById('ctaStart').onclick = openQuiz;
-    document.getElementById('closeQuiz').onclick = closeQuiz;
+    let step = 0;
+    const answers = {};
 
-    document.getElementsByName('mode').forEach(r => {
-      r.addEventListener('change', () => {
-        existingCode.classList.toggle('hidden', r.value !== 'improve' || !r.checked);
-      });
-    });
+    document.getElementById("startQuiz").onclick = () => {
+      quizContainer.classList.remove("hidden");
+      quizContainer.classList.add("flex");
+      renderStep();
+    };
 
-    document.getElementById('toStep2').onclick = () => { step1.classList.add('hidden'); step2.classList.remove('hidden'); };
-    document.getElementById('back1').onclick = () => { step2.classList.add('hidden'); step1.classList.remove('hidden'); };
+    document.getElementById("closeQuiz").onclick = () => {
+      quizContainer.classList.add("hidden");
+      quizContainer.classList.remove("flex");
+    };
 
-    document.getElementById('finish').onclick = () => {
-      const mode = [...document.getElementsByName('mode')].find(r => r.checked)?.value || 'generate';
-      const niche = document.getElementById('niche').value.trim();
-      const goal  = document.getElementById('goal').value.trim();
-      const colors= document.getElementById('colors').value.trim();
-      const pages = document.getElementById('pages').value.trim();
-      const code  = existingCode.value.trim();
+    nextBtn.onclick = () => {
+      saveAnswer();
+      if (step < quizSteps.length - 1) {
+        step++;
+        renderStep();
+      } else {
+        finishQuiz();
+      }
+    };
 
-      const prompt = `Skapa en flersidig webb för: ${niche}. Mål: ${goal}. Färgstil: ${colors}. Sidor: ${pages || 'start, om oss, tjänster, kontakt'}. Modern, responsiv, professionell stil.`;
+    prevBtn.onclick = () => {
+      if (step > 0) {
+        step--;
+        renderStep();
+      }
+    };
 
-      const q = new URLSearchParams({
+    function renderStep() {
+      const s = quizSteps[step];
+      quizTitle.textContent = s.title;
+      progressBar.style.width = `${((step+1)/quizSteps.length)*100}%`;
+
+      quizContent.innerHTML = "";
+      if (s.type === "choice") {
+        s.options.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.className = "block w-full border border-slate-300 hover:bg-slate-100 rounded-xl p-3 text-lg";
+          btn.textContent = opt.text;
+          btn.onclick = () => { answers[step] = opt.value; nextBtn.click(); };
+          quizContent.appendChild(btn);
+        });
+        nextBtn.classList.add("hidden");
+      } else if (s.type === "text" || s.type === "textarea") {
+        nextBtn.classList.remove("hidden");
+        const input = s.type === "textarea" ? document.createElement("textarea") : document.createElement("input");
+        input.className = "w-full border border-slate-300 rounded-xl p-3 text-sm";
+        input.placeholder = s.placeholder || "";
+        if (s.type === "textarea") input.rows = 4;
+        quizContent.appendChild(input);
+      }
+      prevBtn.style.visibility = step === 0 ? "hidden" : "visible";
+    }
+
+    function saveAnswer() {
+      const s = quizSteps[step];
+      if (s.type === "text" || s.type === "textarea") {
+        const input = quizContent.querySelector("input, textarea");
+        answers[step] = input?.value?.trim() || "";
+      }
+    }
+
+    function finishQuiz() {
+      const [mode, niche, goal, colors, pages, code] = [
+        answers[0] || "generate",
+        answers[1] || "",
+        answers[2] || "",
+        answers[3] || "",
+        answers[4] || "",
+        answers[5] || ""
+      ];
+      const prompt = `Skapa en ${niche} hemsida. Mål: ${goal}. Färgtema: ${colors}. Sidor: ${pages}. Modern och responsiv.`;
+
+      const params = new URLSearchParams({
         mode,
         prompt,
         pages,
         colors,
-        hasCode: (mode === 'improve' && !!code) ? '1' : '0'
+        hasCode: code ? '1' : '0'
       });
-      if (mode === 'improve' && code) q.set('code', btoa(unescape(encodeURIComponent(code))));
-
-      window.location.href = `/studio?${q.toString()}`;
-    };
+      if (code) params.set('code', btoa(unescape(encodeURIComponent(code))));
+      window.location.href = `/studio?${params.toString()}`;
+    }
   </script>
 </body>
 </html>
