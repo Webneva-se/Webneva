@@ -1,211 +1,153 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Webneva – Bygg, testa & förbättra din hemsida med AI</title>
-  <link rel="icon" href="images/bgk-remove.webneva.png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webneva – Skapa och förbättra hemsidor med AI</title>
+  <link rel="icon" href="images/bgk-remove.webneva.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            brand: {
-              500: "#3c81ff",
-              600: "#2d66e0",
-              700: "#244fb4",
-            }
+            brand: { 500: "#3c81ff", 600: "#2d66e0", 700: "#1e4fb8" },
+            dark: "#0b1220"
           }
         }
       }
     }
   </script>
   <style>
-    .glass { background: rgba(255,255,255,0.85); backdrop-filter: blur(10px) saturate(120%); }
+    body { background: linear-gradient(135deg, #f8fbff, #ecf2ff); color: #0b1220; font-family: 'Inter', system-ui, sans-serif; }
+    .glass { background: rgba(255,255,255,0.75); backdrop-filter: blur(12px) saturate(140%); }
+    .fade-in { animation: fadeIn .6s ease forwards; opacity: 0; }
+    @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(15px); } }
   </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 text-slate-900">
+<body class="overflow-x-hidden">
 
   <!-- Header -->
-  <header class="sticky top-0 bg-white/80 backdrop-blur z-40 border-b border-slate-200">
+  <header class="fixed top-0 inset-x-0 z-40 glass border-b border-white/30">
     <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="images/bgk-remove.webneva.png" class="h-10" alt="Webneva">
-        <h1 class="text-2xl font-black">Webneva <span class="text-brand-600">Studio</span></h1>
+        <img src="images/bgk-remove.webneva.png" class="h-10 w-10 object-contain" alt="Webneva logga">
+        <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">Webneva<span class="text-brand-600">.se</span></h1>
       </div>
-      <a href="/studio" class="bg-brand-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-brand-700">Starta Studio</a>
+      <a href="/studio" class="bg-brand-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-brand-700 transition">Starta Studio</a>
     </div>
   </header>
 
   <!-- Hero -->
-  <section class="py-20 text-center">
-    <h2 class="text-4xl font-extrabold">Bygg en hemsida med <span class="text-brand-600">AI</span></h2>
-    <p class="mt-4 text-lg text-slate-600">Skapa, förbättra och förhandsgranska din hemsida direkt i webbläsaren. Inget konto behövs.</p>
-    <button id="startQuiz" class="mt-8 bg-brand-600 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-brand-700 transition">🚀 Kom igång</button>
+  <section class="pt-32 pb-20 text-center max-w-4xl mx-auto px-6">
+    <h2 class="text-5xl md:text-6xl font-extrabold leading-tight fade-in">Bygg, testa & förbättra din hemsida med <span class="text-brand-600">AI</span></h2>
+    <p class="mt-5 text-lg text-slate-600 fade-in" style="animation-delay:.3s">
+      Webneva låter dig skapa, förbättra och förhandsgranska webbsidor direkt i webbläsaren — utan att installera något.
+    </p>
+    <div class="mt-10 fade-in" style="animation-delay:.6s">
+      <button id="startQuiz" class="bg-brand-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:bg-brand-700 transition text-lg">
+        🚀 Kom igång nu
+      </button>
+      <p class="text-xs text-slate-500 mt-3">Ingen inlogg krävs. Testa direkt.</p>
+    </div>
   </section>
 
-  <!-- Vad är Webneva -->
-  <section id="vad" class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-6">
-      <h3 class="text-3xl font-bold mb-6 text-center">Vad är Webneva?</h3>
-      <p class="text-slate-600 max-w-3xl mx-auto text-center">
-        Webneva låter dig skapa eller förbättra webbsidor direkt i webbläsaren. AI-genererad design, live-preview och export av färdig kod.
-      </p>
-      <div class="grid md:grid-cols-3 gap-6 mt-10">
-        <div class="glass rounded-2xl p-6 shadow text-center">
-          <i class="fa-solid fa-bolt text-3xl text-brand-600 mb-3"></i>
-          <h4 class="font-semibold">Live Preview</h4>
-          <p class="text-slate-600 text-sm">Se ändringar direkt, utan omladdning.</p>
-        </div>
-        <div class="glass rounded-2xl p-6 shadow text-center">
-          <i class="fa-solid fa-wand-magic-sparkles text-3xl text-brand-600 mb-3"></i>
-          <h4 class="font-semibold">AI-assistent</h4>
-          <p class="text-slate-600 text-sm">Be AI skapa sidor, förbättra kod och ge designförslag.</p>
-        </div>
-        <div class="glass rounded-2xl p-6 shadow text-center">
-          <i class="fa-solid fa-download text-3xl text-brand-600 mb-3"></i>
-          <h4 class="font-semibold">Exportera</h4>
-          <p class="text-slate-600 text-sm">Ladda ner din färdiga kod direkt till datorn.</p>
-        </div>
+  <!-- Funktioner -->
+  <section class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8 text-center">
+      <div class="fade-in"><i class="fa-solid fa-bolt text-3xl text-brand-600"></i>
+        <h3 class="mt-3 font-bold text-lg">Live-förhandsvisning</h3>
+        <p class="text-slate-600 mt-2 text-sm">Se resultatet direkt medan du bygger. Inga laddningar, ingen väntan.</p>
+      </div>
+      <div class="fade-in" style="animation-delay:.2s"><i class="fa-solid fa-wand-magic-sparkles text-3xl text-brand-600"></i>
+        <h3 class="mt-3 font-bold text-lg">AI som förstår kod</h3>
+        <p class="text-slate-600 mt-2 text-sm">Beskriv vad du vill skapa – AI gör det åt dig, färdigt att använda.</p>
+      </div>
+      <div class="fade-in" style="animation-delay:.4s"><i class="fa-solid fa-code text-3xl text-brand-600"></i>
+        <h3 class="mt-3 font-bold text-lg">Smart kodförbättring</h3>
+        <p class="text-slate-600 mt-2 text-sm">Låt AI förbättra design, tillgänglighet och struktur automatiskt.</p>
       </div>
     </div>
   </section>
 
-  <!-- Så funkar det -->
-  <section id="sa-funkar-det" class="py-16">
-    <div class="max-w-7xl mx-auto px-6">
-      <h3 class="text-3xl font-bold mb-8 text-center">Så funkar det</h3>
-      <ol class="grid md:grid-cols-4 gap-6 text-center">
-        <li class="glass rounded-2xl p-6 shadow">📝 <p class="mt-2 font-semibold">Svara på frågor</p></li>
-        <li class="glass rounded-2xl p-6 shadow">🧠 <p class="mt-2 font-semibold">AI genererar sidan</p></li>
-        <li class="glass rounded-2xl p-6 shadow">👀 <p class="mt-2 font-semibold">Se resultatet direkt</p></li>
-        <li class="glass rounded-2xl p-6 shadow">🚀 <p class="mt-2 font-semibold">Exportera & publicera</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- Quiz Modal -->
-  <div id="quizContainer" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
-    <div class="glass w-full max-w-3xl p-6 rounded-3xl shadow-2xl text-center relative">
-      <button id="closeQuiz" class="absolute top-3 right-5 text-2xl text-slate-500 hover:text-slate-700">&times;</button>
-      <div id="progress" class="h-2 bg-slate-200 rounded-full overflow-hidden mb-5">
-        <div id="progressBar" class="h-full bg-brand-600 w-0 transition-all duration-500"></div>
-      </div>
-      <h3 id="quizTitle" class="text-2xl font-bold mb-4">Vad vill du göra?</h3>
-      <div id="quizContent" class="space-y-4"></div>
-      <div class="mt-6 flex justify-between">
-        <button id="prevBtn" class="px-4 py-2 rounded-lg border border-slate-300 text-sm font-semibold hover:bg-white">⬅️ Tillbaka</button>
-        <button id="nextBtn" class="px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-semibold hover:bg-brand-700">Nästa ➡️</button>
+  <!-- Quiz Overlay -->
+  <div id="quizOverlay" class="hidden fixed inset-0 bg-dark/90 text-white flex flex-col items-center justify-center z-50">
+    <div id="quizBox" class="max-w-xl w-full glass rounded-3xl p-6 md:p-10 text-center text-slate-900">
+      <h3 id="quizTitle" class="text-2xl font-bold mb-4"></h3>
+      <div id="quizContent" class="space-y-4 mb-6"></div>
+      <div class="flex justify-between">
+        <button id="quizPrev" class="px-4 py-2 rounded-lg border border-slate-300 text-sm font-semibold hover:bg-white/40">⬅️ Tillbaka</button>
+        <button id="quizNext" class="px-4 py-2 rounded-lg bg-brand-600 text-white font-semibold hover:bg-brand-700">Nästa ➡️</button>
       </div>
     </div>
   </div>
 
+  <!-- Footer -->
+  <footer class="text-center text-sm text-slate-500 py-8">
+    © 2025 Webneva.se – AI-driven webbdesign. Alla rättigheter förbehållna.
+  </footer>
+
+  <script src="https://kit.fontawesome.com/a2e8f2b70f.js" crossorigin="anonymous"></script>
+
   <script>
     const quizSteps = [
-      {
-        title: "Vad vill du göra?",
-        options: [
-          { text: "🆕 Skapa en ny hemsida", value: "generate" },
-          { text: "🛠️ Förbättra min kod", value: "improve" }
-        ],
-        type: "choice"
-      },
-      {
-        title: "Vilken typ av hemsida ska du skapa?",
-        options: [
-          { text: "🍝 Restaurang", value: "restaurang" },
-          { text: "🛒 E-handel", value: "ehandel" },
-          { text: "🎨 Portfolio", value: "portfolio" },
-          { text: "📰 Blogg", value: "blogg" },
-          { text: "🏢 Företagssida", value: "företag" },
-          { text: "✏️ Annat", value: "other" }
-        ],
-        type: "choice"
-      },
-      {
-        title: "Ange din egen typ av sida (om du valde Annat):",
-        type: "text",
-        placeholder: "Ex: personlig tränare, eventbyrå..."
-      },
-      {
-        title: "Vad är målet med din sida?",
-        type: "text",
-        placeholder: "Ex: sälja produkter, få bokningar..."
-      },
-      {
-        title: "Vilka färger eller stil ska sidan ha?",
-        type: "text",
-        placeholder: "Ex: svart och guld, modern, minimalistisk..."
-      },
-      {
-        title: "Vilka undersidor vill du ha?",
-        type: "text",
-        placeholder: "Ex: start, om oss, kontakt..."
-      },
-      {
-        title: "Har du redan kod du vill förbättra?",
-        type: "textarea",
-        optional: true,
-        placeholder: "Klistra in din HTML/CSS/JS här..."
-      }
+      { title: "Hej 👋 Vad vill du göra?", type: "choice", options: [
+        { text: "🆕 Skapa ny hemsida", value: "generate" },
+        { text: "🛠 Förbättra min kod", value: "improve" }
+      ]},
+      { title: "Vilken typ av hemsida handlar det om?", type: "choice", options: [
+        { text: "🍽 Restaurang", value: "restaurang" },
+        { text: "🛍 E-handel", value: "ehandel" },
+        { text: "🎨 Portfolio", value: "portfolio" },
+        { text: "📰 Blogg", value: "blogg" },
+        { text: "🏢 Företagssida", value: "företag" },
+        { text: "✏️ Annat (ange själv)", value: "other" }
+      ]},
+      { title: "Om du valde 'Annat', vad handlar sidan om?", type: "text", placeholder: "Ex: personlig tränare, eventbyrå..." },
+      { title: "Vad är målet med sidan?", type: "text", placeholder: "Ex: sälja produkter, få bokningar..." },
+      { title: "Vilka färger eller stil ska sidan ha?", type: "text", placeholder: "Ex: svart och guld, modern, minimalistisk..." },
+      { title: "Vilka undersidor vill du ha?", type: "text", placeholder: "Ex: start, om oss, kontakt..." },
+      { title: "Om du har kod att förbättra, klistra in den här:", type: "textarea", optional: true, placeholder: "Din HTML/CSS/JS..." }
     ];
 
-    const quizContainer = document.getElementById("quizContainer");
-    const quizContent = document.getElementById("quizContent");
-    const quizTitle = document.getElementById("quizTitle");
-    const progressBar = document.getElementById("progressBar");
-    const nextBtn = document.getElementById("nextBtn");
-    const prevBtn = document.getElementById("prevBtn");
+    const overlay = document.getElementById("quizOverlay");
+    const title = document.getElementById("quizTitle");
+    const content = document.getElementById("quizContent");
+    const nextBtn = document.getElementById("quizNext");
+    const prevBtn = document.getElementById("quizPrev");
 
     let step = 0;
     const answers = {};
 
     document.getElementById("startQuiz").onclick = () => {
-      quizContainer.classList.remove("hidden");
-      quizContainer.classList.add("flex");
+      overlay.classList.remove("hidden");
       renderStep();
     };
 
-    document.getElementById("closeQuiz").onclick = () => {
-      quizContainer.classList.add("hidden");
-      quizContainer.classList.remove("flex");
-    };
-
-    nextBtn.onclick = () => {
-      saveAnswer();
-      if (step < quizSteps.length - 1) {
-        step++;
-        renderStep();
-      } else {
-        finishQuiz();
-      }
-    };
-
+    nextBtn.onclick = () => { saveAnswer(); if (step < quizSteps.length - 1) { step++; renderStep(); } else finishQuiz(); };
     prevBtn.onclick = () => { if (step > 0) step--; renderStep(); };
 
     function renderStep() {
       const s = quizSteps[step];
-      quizTitle.textContent = s.title;
-      progressBar.style.width = `${((step+1)/quizSteps.length)*100}%`;
-      quizContent.innerHTML = "";
+      title.textContent = s.title;
+      content.innerHTML = "";
 
       if (s.type === "choice") {
         s.options.forEach(opt => {
           const btn = document.createElement("button");
-          btn.className = "block w-full border border-slate-300 hover:bg-slate-100 rounded-xl p-3 text-lg";
+          btn.className = "block w-full border border-slate-300 hover:bg-slate-100 rounded-xl p-3 text-lg text-left";
           btn.textContent = opt.text;
           btn.onclick = () => { answers[step] = opt.value; nextBtn.click(); };
-          quizContent.appendChild(btn);
+          content.appendChild(btn);
         });
         nextBtn.classList.add("hidden");
       } else {
         nextBtn.classList.remove("hidden");
-        const input = s.type === "textarea" ? document.createElement("textarea") : document.createElement("input");
+        const input = document.createElement(s.type === "textarea" ? "textarea" : "input");
         input.className = "w-full border border-slate-300 rounded-xl p-3 text-sm";
         input.placeholder = s.placeholder || "";
         if (s.type === "textarea") input.rows = 4;
-        quizContent.appendChild(input);
+        content.appendChild(input);
       }
       prevBtn.style.visibility = step === 0 ? "hidden" : "visible";
     }
@@ -213,7 +155,7 @@
     function saveAnswer() {
       const s = quizSteps[step];
       if (s.type === "text" || s.type === "textarea") {
-        const input = quizContent.querySelector("input, textarea");
+        const input = content.querySelector("input, textarea");
         answers[step] = input?.value?.trim() || "";
       }
     }
