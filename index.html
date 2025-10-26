@@ -6,98 +6,285 @@
     <title>Webneva - AI Webbutveckling</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="images/bgk-remove.webneva.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #3b82f6;
+        }
+        .glow {
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.3);
+        }
+    </style>
 </head>
-<body class="bg-slate-900 text-white">
+<body class="gradient-bg text-white min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-slate-800 py-4 px-6">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-8 w-8">
-                <span class="text-xl font-bold">Webneva</span>
+    <nav class="fixed top-0 w-full glass-card z-50 border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-10 w-10">
+                    <span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+                        Webneva
+                    </span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="#features" class="text-slate-300 hover:text-white transition-colors font-medium">Funktioner</a>
+                    <a href="#demo" class="text-slate-300 hover:text-white transition-colors font-medium">Demo</a>
+                    <a href="/studio" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 glow">
+                        🚀 Starta Studio
+                    </a>
+                </div>
             </div>
-            <a href="/studio" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition">
-                Starta Studio
-            </a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="py-20 px-6 text-center">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-6xl font-bold mb-6">
-                Skapa hemsidor med
-                <span class="text-blue-400">AI</span>
+    <section class="pt-32 pb-20 px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <!-- Badge -->
+            <div class="inline-flex items-center space-x-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-2 mb-8">
+                <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                <span class="text-sm font-semibold text-blue-400">AI-drivet webbutveckling • Just nu i beta</span>
+            </div>
+            
+            <!-- Main Heading -->
+            <h1 class="text-5xl md:text-7xl font-black mb-8 leading-tight">
+                Skapa med
+                <span class="hero-gradient bg-clip-text text-transparent">AI</span>
+                <br>
+                <span class="text-white">publicera direkt</span>
             </h1>
-            <p class="text-xl text-gray-300 mb-8">
-                Beskriv vad du vill bygga. Vår AI genererar perfekt kod direkt i webbläsaren.
+            
+            <!-- Subtitle -->
+            <p class="text-xl text-slate-300 max-w-2xl mx-auto mb-12 leading-relaxed">
+                Transformera dina idéer till professionella webbplatser på sekunder. 
+                Ingen kodkunskap krävs – bara kreativitet och en vision.
             </p>
-            <div class="space-y-4 md:space-y-0 md:space-x-4">
-                <button onclick="startQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold text-lg">
-                    Kom Igång
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                <button onclick="startQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105 glow flex items-center space-x-3">
+                    <span>🚀</span>
+                    <span>Kom Igång med Quiz</span>
                 </button>
-                <a href="/studio" class="border border-gray-600 hover:border-blue-400 text-gray-300 hover:text-white px-8 py-3 rounded-lg font-semibold text-lg inline-block">
-                    Studio
+                
+                <a href="/studio" class="glass-card border border-slate-600 hover:border-blue-400 text-slate-300 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all flex items-center space-x-3">
+                    <span>🎨</span>
+                    <span>Direkt till Studio</span>
                 </a>
             </div>
-        </div>
-    </section>
 
-    <!-- Features -->
-    <section class="py-16 px-6 bg-slate-800">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-12">Så fungerar det</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-slate-700 p-6 rounded-lg text-center">
-                    <div class="text-2xl mb-4">💬</div>
-                    <h3 class="text-xl font-semibold mb-2">1. Beskriv</h3>
-                    <p class="text-gray-300">Berätta vad du vill bygga</p>
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto mb-16">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-400 mb-2">30s</div>
+                    <div class="text-slate-400 text-sm">Från idé till sida</div>
                 </div>
-                <div class="bg-slate-700 p-6 rounded-lg text-center">
-                    <div class="text-2xl mb-4">🤖</div>
-                    <h3 class="text-xl font-semibold mb-2">2. AI genererar</h3>
-                    <p class="text-gray-300">Få perfekt HTML, CSS & JS</p>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-400 mb-2">0</div>
+                    <div class="text-slate-400 text-sm">Kodkunskap krävs</div>
                 </div>
-                <div class="bg-slate-700 p-6 rounded-lg text-center">
-                    <div class="text-2xl mb-4">🚀</div>
-                    <h3 class="text-xl font-semibold mb-2">3. Publicera</h3>
-                    <p class="text-gray-300">Exportera och ladda upp</p>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-400 mb-2">100%</div>
+                    <div class="text-slate-400 text-sm">I webbläsaren</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA -->
-    <section class="py-20 px-6 text-center">
-        <div class="max-w-2xl mx-auto">
-            <h2 class="text-3xl font-bold mb-6">Redo att börja?</h2>
-            <button onclick="startQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg">
-                Skapa din första sida
-            </button>
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-6 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Kraftfulla Funktioner</h2>
+                <p class="text-xl text-slate-300 max-w-2xl mx-auto">
+                    Allt du behöver för att skapa exceptionella webbupplevelser
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card glass-card rounded-2xl p-8 border border-slate-700">
+                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="text-2xl">⚡</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Live Förhandsvisning</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Se dina ändringar i realtid med vår avancerade live-preview. 
+                        Ingen omstart, ingen väntan.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card glass-card rounded-2xl p-8 border border-slate-700">
+                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="text-2xl">🧠</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">AI-genererad Kod</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Få perfekt, produktionsredo HTML, CSS & JS från enkla beskrivningar. 
+                        Vår AI förstår exakt vad du vill bygga.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card glass-card rounded-2xl p-8 border border-slate-700">
+                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="text-2xl">🎨</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Smart Design</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Automatiskt genererade färgpaletter, typografi och layout 
+                        som följer moderna designprinciper.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card glass-card rounded-2xl p-8 border border-slate-700">
+                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="text-2xl">📱</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Full Responsivitet</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Perfekt på alla enheter automatiskt. Mobil, tablet, desktop – 
+                        inget extra arbete krävs.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card glass-card rounded-2xl p-8 border border-slate-700">
+                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="text-2xl">🚀</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Export Ready</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Exportera ren kod eller hela projekt direkt till produktion. 
+                        Ingen lock-in, full kontroll över din kod.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="feature-card glass-card rounded-2xl p-8 border border-slate-700">
+                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="text-2xl">🔧</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Kodförbättring</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Låt AI optimera och modernisera din befintliga kod. 
+                        Bättre prestanda, säkerhet och underhållbarhet.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="py-20 px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-4">Se Webneva i Action</h2>
+            <p class="text-xl text-slate-300 mb-12 max-w-2xl mx-auto">
+                Från idé till färdig webbplats på minuter
+            </p>
+
+            <div class="glass-card rounded-3xl p-8 max-w-4xl mx-auto">
+                <div class="aspect-video bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-2xl border border-blue-500/20 flex items-center justify-center">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <span class="text-3xl">🎬</span>
+                        </div>
+                        <p class="text-2xl font-bold mb-2">Live Demo</p>
+                        <p class="text-slate-400 mb-4">Se Webneva Studio i action</p>
+                        <a href="/studio" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold inline-block transition-all hover:scale-105">
+                            Öppna Studio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="py-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="glass-card rounded-3xl p-12 bg-gradient-to-br from-blue-500/10 to-blue-500/5 border-2 border-blue-500/20">
+                <h2 class="text-4xl font-bold mb-6">Redo att skapa magi?</h2>
+                <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
+                    Gå från idé till live webbplats på rekordtid. 
+                    Inga kreditkort krävs, ingen registrering.
+                </p>
+                <button onclick="startQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white px-10 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 glow inline-flex items-center space-x-3">
+                    <span>🚀</span>
+                    <span>Kom Igång Nu</span>
+                </button>
+                <p class="text-sm text-slate-400 mt-4">100% gratis • Ingen registrering • Starta direkt</p>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-8 px-6 border-t border-gray-700 text-center text-gray-400">
-        <p>© 2024 Webneva - AI Webbutveckling</p>
+    <footer class="py-12 px-6 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-3 mb-6 md:mb-0">
+                    <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-8 w-8">
+                    <span class="text-lg font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+                        Webneva
+                    </span>
+                </div>
+                
+                <div class="flex items-center space-x-6 text-sm text-slate-400">
+                    <a href="#" class="hover:text-blue-400 transition-colors">Integritet</a>
+                    <a href="#" class="hover:text-blue-400 transition-colors">Villkor</a>
+                    <a href="#" class="hover:text-blue-400 transition-colors">Kontakt</a>
+                </div>
+                
+                <div class="mt-6 md:mt-0 text-sm text-slate-500">
+                    © 2024 Webneva. Byggt med ❤️ och AI.
+                </div>
+            </div>
+        </div>
     </footer>
 
     <!-- Quiz Modal -->
-    <div id="quizModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-slate-800 rounded-lg p-8 max-w-md w-full mx-4">
-            <h3 class="text-2xl font-bold mb-6 text-center">Vad vill du göra?</h3>
-            <div class="space-y-4">
-                <button onclick="startProject('new')" class="w-full bg-slate-700 hover:bg-slate-600 p-4 rounded-lg text-left">
-                    <div class="font-semibold">🆕 Skapa ny hemsida</div>
-                    <div class="text-gray-400 text-sm">Från början med AI</div>
-                </button>
-                <button onclick="startProject('improve')" class="w-full bg-slate-700 hover:bg-slate-600 p-4 rounded-lg text-left">
-                    <div class="font-semibold">🔧 Förbättra kod</div>
-                    <div class="text-gray-400 text-sm">Klistra in din HTML</div>
+    <div id="quizModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4">
+        <div class="glass-card rounded-3xl p-8 max-w-md w-full border border-slate-700">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-6">Vad vill du göra?</h3>
+                
+                <div class="space-y-4 mb-6">
+                    <button onclick="startProject('new')" class="w-full glass-card hover:border-blue-400 border border-slate-700 p-6 rounded-xl text-left transition-all hover:scale-105">
+                        <div class="font-semibold text-lg">🆕 Skapa ny hemsida</div>
+                        <div class="text-slate-400 text-sm mt-2">Från scratch med AI</div>
+                    </button>
+                    
+                    <button onclick="startProject('improve')" class="w-full glass-card hover:border-blue-400 border border-slate-700 p-6 rounded-xl text-left transition-all hover:scale-105">
+                        <div class="font-semibold text-lg">🔧 Förbättra befintlig kod</div>
+                        <div class="text-slate-400 text-sm mt-2">Klistra in din HTML/CSS</div>
+                    </button>
+                </div>
+
+                <button onclick="closeQuiz()" class="text-slate-400 hover:text-white transition-colors">
+                    Avbryt
                 </button>
             </div>
-            <button onclick="closeQuiz()" class="w-full mt-6 text-gray-400 hover:text-white">
-                Avbryt
-            </button>
         </div>
     </div>
 
