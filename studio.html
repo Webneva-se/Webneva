@@ -342,6 +342,35 @@ async function generateSite(raw){
     body: JSON.stringify({ mode:'generate', prompt: refined })
   });
   const j = await r.json();
+
+  const isHtml = (txt)=>/<html[\s\S]*<\/html>/i.test(txt||'');
+
+  if(j?.files?.length && isHtml(j.files[0]?.content)){
+    fs.pages = j.files.map(f=>({name:f.name || 'index.html', content:f.content || ''}));
+  }else if(j?.html && isHtml(j.html)){
+    fs.pages = [{name:'index.html', content:j.html}];
+  }else{
+    // fallback - skapa själv en enkel sida
+    fs.pages = [{
+      name:'index.html',
+      content:`<!doctype html><html lang="sv"><head><meta charset="utf-8">
+      <title>Genererad sida</title><link rel="stylesheet" href="https://cdn.tailwindcss.com">
+      </head><body class="bg-gray-50 flex items-center justify-center h-screen">
+      <div class="text-center"><h1 class="text-3xl font-bold text-red-600 mb-4">Inget HTML-svar</h1>
+      <p>DeepSite returnerade ingen kod. Prova igen med en tydligare prompt.</p></div>
+      </body></html>`
+    }];
+  }
+  setCurrent('index.html');
+  renderTabs();
+}
+
+  const refined = await refineBrief(raw);
+  const r = await fetch('/api/deepsite', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ mode:'generate', prompt: refined })
+  });
+  const j = await r.json();
   if(j?.files?.length){
     fs.pages = j.files.map(f=>({name:f.name || 'index.html', content:f.content || ''}));
   }else if(j?.html){
