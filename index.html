@@ -6,208 +6,103 @@
     <title>Webneva - AI Webbutveckling</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="images/bgk-remove.webneva.png">
-    <style>
-        body {
-            background: #0f172a;
-            color: #f1f5f9;
-            font-family: 'Inter', sans-serif;
-        }
-        .hero-bg {
-            background: radial-gradient(ellipse at top, #1e293b 0%, #0f172a 100%);
-        }
-        .btn-primary {
-            background: #3b82f6;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-        }
-        .card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 24px;
-            transition: all 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: #3b82f6;
-        }
-    </style>
 </head>
-<body class="antialiased">
+<body class="bg-slate-900 text-white">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md border-b border-slate-700 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-8 w-8">
-                    <span class="text-xl font-bold text-white">Webneva</span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="#features" class="text-slate-300 hover:text-white transition">Funktioner</a>
-                    <a href="#demo" class="text-slate-300 hover:text-white transition">Demo</a>
-                    <a href="/studio" class="btn-primary">Starta Studio</a>
-                </div>
+    <nav class="bg-slate-800 py-4 px-6">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-8 w-8">
+                <span class="text-xl font-bold">Webneva</span>
             </div>
+            <a href="/studio" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition">
+                Starta Studio
+            </a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-bg pt-32 pb-20 px-4">
-        <div class="max-w-6xl mx-auto text-center">
-            <div class="inline-flex items-center space-x-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-2 mb-8">
-                <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                <span class="text-sm font-semibold text-blue-400">AI-drivet • Just nu i beta</span>
-            </div>
-            
-            <h1 class="text-5xl md:text-7xl font-black mb-6">
-                Skapa hemsidor
-                <span class="text-blue-400">med AI</span>
+    <section class="py-20 px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                Skapa hemsidor med
+                <span class="text-blue-400">AI</span>
             </h1>
-            
-            <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-                Beskriv vad du vill bygga på vanligt språk. Vår AI skapar perfekt kod direkt i webbläsaren.
+            <p class="text-xl text-gray-300 mb-8">
+                Beskriv vad du vill bygga. Vår AI genererar perfekt kod direkt i webbläsaren.
             </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <button id="startQuiz" class="btn-primary text-lg px-8 py-4">
-                    🚀 Kom Igång med Quiz
+            <div class="space-y-4 md:space-y-0 md:space-x-4">
+                <button onclick="startQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold text-lg">
+                    Kom Igång
                 </button>
-                <a href="/studio" class="border border-slate-600 text-slate-300 hover:border-blue-400 hover:text-white px-8 py-4 rounded-lg font-semibold transition">
-                    🎨 Direkt till Studio
+                <a href="/studio" class="border border-gray-600 hover:border-blue-400 text-gray-300 hover:text-white px-8 py-3 rounded-lg font-semibold text-lg inline-block">
+                    Studio
                 </a>
-            </div>
-
-            <!-- Stats -->
-            <div class="grid grid-cols-3 gap-8 max-w-md mx-auto mb-12">
-                <div class="text-center">
-                    <div class="text-2xl font-bold text-blue-400">30s</div>
-                    <div class="text-slate-400 text-sm">Från idé till sida</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-2xl font-bold text-blue-400">0</div>
-                    <div class="text-slate-400 text-sm">Kodkunskap krävs</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-2xl font-bold text-blue-400">100%</div>
-                    <div class="text-slate-400 text-sm">I webbläsaren</div>
-                </div>
             </div>
         </div>
     </section>
 
     <!-- Features -->
-    <section id="features" class="py-20 px-4">
+    <section class="py-16 px-6 bg-slate-800">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl font-bold text-center mb-12">Så enkelt fungerar det</h2>
-            
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="card text-center">
-                    <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                        <span class="text-xl">💬</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">1. Beskriv</h3>
-                    <p class="text-slate-300">Berätta vad du vill bygga på vanligt svenska</p>
+            <h2 class="text-3xl font-bold text-center mb-12">Så fungerar det</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-slate-700 p-6 rounded-lg text-center">
+                    <div class="text-2xl mb-4">💬</div>
+                    <h3 class="text-xl font-semibold mb-2">1. Beskriv</h3>
+                    <p class="text-gray-300">Berätta vad du vill bygga</p>
                 </div>
-
-                <div class="card text-center">
-                    <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                        <span class="text-xl">🤖</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">2. AI genererar</h3>
-                    <p class="text-slate-300">Vår AI skapar perfekt HTML, CSS & JavaScript</p>
+                <div class="bg-slate-700 p-6 rounded-lg text-center">
+                    <div class="text-2xl mb-4">🤖</div>
+                    <h3 class="text-xl font-semibold mb-2">2. AI genererar</h3>
+                    <p class="text-gray-300">Få perfekt HTML, CSS & JS</p>
                 </div>
-
-                <div class="card text-center">
-                    <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                        <span class="text-xl">🚀</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">3. Publicera</h3>
-                    <p class="text-slate-300">Exportera och ladda upp till vilken host som helst</p>
+                <div class="bg-slate-700 p-6 rounded-lg text-center">
+                    <div class="text-2xl mb-4">🚀</div>
+                    <h3 class="text-xl font-semibold mb-2">3. Publicera</h3>
+                    <p class="text-gray-300">Exportera och ladda upp</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Demo Preview -->
-    <section id="demo" class="py-20 px-4 bg-slate-900">
-        <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-8">Live Demo</h2>
-            <div class="card max-w-2xl mx-auto">
-                <div class="aspect-video bg-slate-800 rounded-lg flex items-center justify-center">
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                            <span class="text-2xl">🎬</span>
-                        </div>
-                        <p class="text-lg font-semibold mb-2">Webneva Studio</p>
-                        <p class="text-slate-400 mb-4">Se AI-webbutveckling i action</p>
-                        <a href="/studio" class="btn-primary inline-block">Öppna Studio</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-20 px-4">
-        <div class="max-w-4xl mx-auto text-center">
-            <div class="card bg-gradient-to-r from-blue-500/10 to-blue-600/10 border-blue-500/30">
-                <h2 class="text-4xl font-bold mb-4">Redo att börja?</h2>
-                <p class="text-xl text-slate-300 mb-8">Skapa din första AI-genererade hemsida idag</p>
-                <button id="startQuizBottom" class="btn-primary text-lg px-8 py-4">
-                    🚀 Starta med Quiz
-                </button>
-                <p class="text-slate-400 mt-4">100% gratis • Ingen registrering</p>
-            </div>
+    <!-- CTA -->
+    <section class="py-20 px-6 text-center">
+        <div class="max-w-2xl mx-auto">
+            <h2 class="text-3xl font-bold mb-6">Redo att börja?</h2>
+            <button onclick="startQuiz()" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg">
+                Skapa din första sida
+            </button>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 px-4 border-t border-slate-800">
-        <div class="max-w-6xl mx-auto text-center">
-            <div class="flex items-center justify-center space-x-3 mb-4">
-                <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-6 w-6">
-                <span class="text-lg font-bold">Webneva</span>
-            </div>
-            <p class="text-slate-400">AI-drivet webbutveckling för alla</p>
-            <p class="text-slate-500 text-sm mt-4">© 2024 Webneva</p>
-        </div>
+    <footer class="py-8 px-6 border-t border-gray-700 text-center text-gray-400">
+        <p>© 2024 Webneva - AI Webbutveckling</p>
     </footer>
 
     <!-- Quiz Modal -->
-    <div id="quizModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-        <div class="card max-w-md w-full mx-4">
-            <div class="text-center">
-                <h3 class="text-2xl font-bold mb-6">Vad vill du göra?</h3>
-                
-                <div class="space-y-4 mb-6">
-                    <button onclick="startProject('new')" class="w-full card text-left hover:border-blue-400 transition">
-                        <div class="font-semibold">🆕 Skapa ny hemsida</div>
-                        <div class="text-slate-400 text-sm mt-1">Från scratch med AI</div>
-                    </button>
-                    
-                    <button onclick="startProject('improve')" class="w-full card text-left hover:border-blue-400 transition">
-                        <div class="font-semibold">🔧 Förbättra befintlig kod</div>
-                        <div class="text-slate-400 text-sm mt-1">Klistra in din HTML/CSS</div>
-                    </button>
-                </div>
-
-                <button onclick="closeQuiz()" class="text-slate-400 hover:text-white">
-                    Avbryt
+    <div id="quizModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-slate-800 rounded-lg p-8 max-w-md w-full mx-4">
+            <h3 class="text-2xl font-bold mb-6 text-center">Vad vill du göra?</h3>
+            <div class="space-y-4">
+                <button onclick="startProject('new')" class="w-full bg-slate-700 hover:bg-slate-600 p-4 rounded-lg text-left">
+                    <div class="font-semibold">🆕 Skapa ny hemsida</div>
+                    <div class="text-gray-400 text-sm">Från början med AI</div>
+                </button>
+                <button onclick="startProject('improve')" class="w-full bg-slate-700 hover:bg-slate-600 p-4 rounded-lg text-left">
+                    <div class="font-semibold">🔧 Förbättra kod</div>
+                    <div class="text-gray-400 text-sm">Klistra in din HTML</div>
                 </button>
             </div>
+            <button onclick="closeQuiz()" class="w-full mt-6 text-gray-400 hover:text-white">
+                Avbryt
+            </button>
         </div>
     </div>
 
     <script>
-        // Quiz functionality
-        function openQuiz() {
+        function startQuiz() {
             document.getElementById('quizModal').classList.remove('hidden');
             document.getElementById('quizModal').classList.add('flex');
         }
@@ -225,13 +120,11 @@
             }
         }
 
-        // Event listeners
-        document.getElementById('startQuiz').addEventListener('click', openQuiz);
-        document.getElementById('startQuizBottom').addEventListener('click', openQuiz);
-
-        // Close modal on background click
+        // Close modal when clicking outside
         document.getElementById('quizModal').addEventListener('click', function(e) {
-            if (e.target === this) closeQuiz();
+            if (e.target === this) {
+                closeQuiz();
+            }
         });
     </script>
 </body>
