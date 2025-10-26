@@ -1,244 +1,559 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Webneva Studio – AI-driven webbutveckling</title>
-  <link rel="icon" href="images/bgk-remove.webneva.png" />
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      theme: { extend: { colors: { brand:{500:'#4F8BFF',600:'#376CFF',700:'#254EDB'} } } }
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:  '#eef6ff',
+              100: '#d9ebff',
+              200: '#b3d7ff',
+              300: '#85bfff',
+              400: '#4a9eff',
+              500: '#1f7dff',
+              600: '#0f62d6',
+              700: '#0b4ea8',
+              800: '#0a3e86',
+              900: '#0a356f',
+            }
+          },
+          boxShadow: {
+            soft: '0 10px 30px -12px rgba(0,0,0,.25)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- CodeMirror 6 (bundle via esm.sh) -->
+  <script type="module">
+    import { EditorView, basicSetup } from "https://esm.sh/@codemirror/basic-setup@^0.21.0";
+    import { html } from "https://esm.sh/@codemirror/lang-html@^6.0.0";
+    import { oneDark } from "https://esm.sh/@codemirror/theme-one-dark@^0.2.0";
+
+    window.__loadEditor = (mount, initialValue = "") => {
+      const view = new EditorView({
+        doc: initialValue,
+        extensions: [
+          basicSetup,
+          html(),
+          oneDark,
+          EditorView.updateListener.of((update) => {
+            if (update.docChanged) {
+              const v = update.state.doc.toString();
+              window.__onEditorInput?.(v);
+            }
+          }),
+          EditorView.lineWrapping
+        ],
+        parent: mount
+      });
+      return view;
     };
   </script>
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
-    html,body{height:100%}
-    body{background:#0b1220;color:#e2e8f0;font-family:Inter,system-ui,sans-serif;overflow:hidden;}
-    .glass{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px) saturate(130%)}
-    .panel{background:#0f172a;border:1px solid rgba(255,255,255,.08)}
-    .code{font-family:ui-monospace,Menlo,Consolas,Monaco,"SF Mono",monospace}
-    .tab-active{background:rgba(255,255,255,.08)}
-    .btn{transition:transform .08s ease}
-    .btn:active{transform:translateY(1px)}
+    body { background: #0b1220; }
+    .glass { background: rgba(255,255,255,.06); backdrop-filter: blur(10px); }
+    .soft-border { border: 1px solid rgba(255,255,255,.08); }
+    .btn { @apply inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium shadow-sm transition; }
+    .btn-primary { @apply bg-brand-500 hover:bg-brand-400 text-white; }
+    .btn-ghost { @apply bg-white/5 hover:bg-white/10 text-white; }
+    .btn-soft { @apply bg-white text-slate-900 hover:bg-slate-100; }
+    .badge { @apply text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300; }
+    .pill { @apply text-xs px-2 py-0.5 rounded-full bg-white/10 text-white/80; }
+    .cm-editor { height: calc(100vh - 200px); border-radius: .75rem; overflow: hidden; }
+    .previewFrame { background:#fff; border-radius:.75rem; box-shadow:0 20px 50px -20px rgba(0,0,0,.45); }
+    .topbar { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); }
   </style>
 </head>
-<body class="h-full antialiased">
+<body class="text-white selection:bg-brand-400 selection:text-white">
 
-  <!-- Header -->
-  <header class="sticky top-0 z-30 glass">
-    <div class="max-w-[1600px] mx-auto px-5 py-3 flex items-center justify-between">
+  <!-- Topbar -->
+  <header class="topbar sticky top-0 z-50 border-b border-white/10">
+    <div class="mx-auto max-w-[1400px] px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="images/bgk-remove.webneva.png" class="h-8 w-8" alt="">
-        <span class="text-lg font-extrabold">Webneva <span class="text-brand-500">Studio</span></span>
+        <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-7 w-7 object-contain" />
+        <div class="text-lg font-extrabold tracking-tight">Webneva <span class="text-brand-300">Studio</span></div>
+        <span class="ml-2 badge">LIVE</span>
       </div>
 
       <div class="flex items-center gap-2">
-        <button id="newProject" class="btn px-3 py-1.5 rounded-lg border border-white/10 text-sm hover:bg-white/5">Nytt projekt</button>
-        <button id="saveProject" class="btn px-3 py-1.5 rounded-lg border border-white/10 text-sm hover:bg-white/5">Exportera</button>
+        <button id="newProject" class="btn btn-ghost"><i class="fa-regular fa-file"></i> Nytt projekt</button>
+        <button id="exportProject" class="btn btn-ghost"><i class="fa-solid fa-download"></i> Exportera</button>
 
-        <div class="relative">
-          <button id="profileBtn" class="btn px-3 py-1.5 rounded-lg border border-white/10 text-sm hover:bg-white/5">Profil ▾</button>
-          <div id="profileMenu" class="hidden absolute right-0 mt-2 w-52 panel rounded-xl shadow-xl p-2 text-sm">
-            <button class="w-full text-left px-3 py-2 rounded hover:bg-white/5">Inställningar</button>
-            <button class="w-full text-left px-3 py-2 rounded hover:bg-white/5">API-nycklar</button>
-            <button class="w-full text-left px-3 py-2 rounded hover:bg-white/5">Logga ut</button>
+        <!-- Profilmeny -->
+        <div class="relative" id="profileWrap">
+          <button id="profileBtn" class="btn btn-ghost">
+            <i class="fa-regular fa-user"></i>
+            Profil
+            <i class="fa-solid fa-chevron-down text-xs opacity-60"></i>
+          </button>
+          <div id="profileMenu" class="hidden absolute right-0 mt-2 w-56 rounded-xl bg-white text-slate-800 shadow-2xl ring-1 ring-black/5">
+            <div class="px-4 py-3">
+              <div class="text-sm font-semibold">Inställningar</div>
+              <div class="text-xs text-slate-500">Hantera dina preferenser</div>
+            </div>
+            <div class="border-t">
+              <button class="w-full text-left px-4 py-2 hover:bg-slate-50">Tema: <span class="pill">Auto</span></button>
+              <button class="w-full text-left px-4 py-2 hover:bg-slate-50">Färgaccent: <span class="pill">Blå</span></button>
+              <button class="w-full text-left px-4 py-2 hover:bg-slate-50">Konto</button>
+            </div>
           </div>
         </div>
 
-        <a href="/" class="ml-2 btn px-3 py-1.5 rounded-lg bg-brand-600 text-white text-sm hover:bg-brand-700">Startida</a>
+        <a href="/" class="btn btn-soft"><i class="fa-solid fa-house"></i> Startida</a>
       </div>
     </div>
   </header>
 
   <!-- Main -->
-  <main class="max-w-[1800px] mx-auto px-4 py-4 grid grid-cols-1 xl:grid-cols-[40%_1fr] gap-4 items-stretch h-[calc(100vh-70px)]">
+  <main class="mx-auto max-w-[1400px] px-4 py-6 grid grid-cols-12 gap-6">
 
-    <!-- Left: Code + AI -->
-    <section class="panel rounded-2xl p-4 flex flex-col h-full">
-      <!-- Tabs -->
-      <div id="tabs" class="flex flex-wrap items-center gap-2 mb-3 overflow-x-auto">
-        <button id="addTab" class="btn px-2.5 py-1 border border-white/10 rounded-md text-sm hover:bg-white/5">+ Ny sida</button>
+    <!-- Vänster: Kodeditor och AI-kort -->
+    <section class="col-span-12 lg:col-span-5 space-y-4">
+
+      <!-- Tabs (sidor) -->
+      <div class="glass soft-border rounded-xl p-3">
+        <div class="flex items-center justify-between">
+          <div class="text-sm font-semibold opacity-80">Sidor</div>
+          <button id="addTab" class="btn btn-ghost"><i class="fa-solid fa-plus"></i> Ny sida</button>
+        </div>
+        <div id="tabs" class="mt-2 flex flex-wrap gap-2"></div>
       </div>
 
       <!-- Editor -->
-      <textarea id="editor" class="code flex-1 w-full rounded-xl p-3 text-sm bg-[#0b1120] text-slate-200 border border-white/10 resize-none overflow-auto" placeholder="Din HTML här..."></textarea>
+      <div class="glass soft-border rounded-xl p-4">
+        <div class="mb-3 flex items-center justify-between">
+          <div class="text-sm font-semibold opacity-80">HTML / CSS / JS</div>
+          <div class="flex items-center gap-2">
+            <button id="formatBtn"   class="btn btn-ghost" title="Formatera"><i class="fa-solid fa-wand-magic-sparkles"></i> Formatera</button>
+            <button id="updatePreview" class="btn btn-primary"><i class="fa-solid fa-rotate"></i> Uppdatera</button>
+          </div>
+        </div>
+        <div id="editorMount" class="rounded-lg overflow-hidden"></div>
 
-      <!-- Actions -->
-      <div class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2">
-        <button id="formatBtn" class="btn px-3 py-2 rounded-lg border border-white/10 text-sm hover:bg-white/5">Formatera</button>
-        <button id="updatePreview" class="btn px-3 py-2 rounded-lg bg-brand-600 text-white text-sm hover:bg-brand-700">Uppdatera</button>
-        <button id="improveBtn" class="btn px-3 py-2 rounded-lg border border-white/10 text-sm hover:bg-white/5">Förbättra</button>
-        <button id="explainBtn" class="btn px-3 py-2 rounded-lg border border-white/10 text-sm hover:bg-white/5">Förklara</button>
-      </div>
-
-      <!-- AI -->
-      <div class="mt-4 flex gap-2">
-        <textarea id="aiPrompt" class="flex-1 rounded-lg p-3 text-sm bg-[#0b1120] text-slate-200 border border-white/10" placeholder="Ex: 'Skapa en modern restaurangsida med bokningsformulär'"></textarea>
-        <button id="generateSite" class="btn px-3 py-2 rounded-lg bg-emerald-600 text-white text-sm hover:bg-emerald-700">Generera</button>
-      </div>
-
-      <div class="mt-2 text-xs text-slate-400">Tips: Ange vad du vill bygga, så skapar AI hela sidan automatiskt.</div>
-
-      <!-- Förklaringar -->
-      <div class="mt-3 flex-1 overflow-y-auto">
-        <details class="panel rounded-xl p-3">
-          <summary class="cursor-pointer font-semibold">AI Förklaringar</summary>
-          <div id="explanations" class="text-sm text-slate-300 whitespace-pre-wrap mt-2">Här visas AIs förklaringar.</div>
-        </details>
-      </div>
-    </section>
-
-    <!-- Right: Live Preview -->
-    <section class="panel rounded-2xl p-3 flex flex-col h-full">
-      <div class="flex justify-between items-center mb-2">
-        <div class="text-sm text-slate-300">Förhandsvisning</div>
-        <div class="flex gap-2">
-          <button id="openFull" class="btn px-3 py-1.5 rounded bg-white text-xs font-semibold text-slate-900">🖥 Full vy</button>
+        <div class="mt-3 grid grid-cols-12 gap-2">
+          <input id="aiPrompt" type="text" class="col-span-9 rounded-lg bg-white/10 border border-white/10 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-brand-400"
+                 placeholder="Skriv vad du vill skapa eller ändra (ex: ”Skapa en modern restaurangsida med röd/svart/vit”)" />
+          <button id="generateSite" class="col-span-3 btn btn-primary"><i class="fa-solid fa-bolt"></i> Generera</button>
+          <button id="improveBtn"  class="col-span-6 btn btn-ghost"><i class="fa-solid fa-sparkles"></i> Förbättra</button>
+          <button id="explainBtn"  class="col-span-6 btn btn-ghost"><i class="fa-regular fa-circle-question"></i> Förklara koden</button>
         </div>
       </div>
-      <div class="flex-1 overflow-hidden bg-slate-200 rounded-xl relative">
-        <iframe id="preview" class="absolute inset-0 w-full h-full rounded-lg border bg-white"></iframe>
+
+      <!-- AI Förklaringar -->
+      <details class="glass soft-border rounded-xl p-4" id="explainBox">
+        <summary class="cursor-pointer text-sm font-semibold opacity-80">AI Förklaringar</summary>
+        <div id="explanations" class="mt-2 text-sm text-white/80">
+          Här visas AI:s förklaringar av din kod.
+        </div>
+      </details>
+    </section>
+
+    <!-- Höger: Preview -->
+    <section class="col-span-12 lg:col-span-7 space-y-4">
+      <div class="glass soft-border rounded-xl p-3 flex items-center justify-between">
+        <div class="text-sm font-semibold opacity-80">Förhandsvisning</div>
+        <div class="flex items-center gap-2">
+          <button id="openNewTab" class="btn btn-ghost"><i class="fa-solid fa-up-right-from-square"></i> Öppna i ny flik</button>
+          <button id="toggleFull" class="btn btn-ghost"><i class="fa-regular fa-window-maximize"></i> Full vy</button>
+        </div>
+      </div>
+
+      <div class="relative">
+        <iframe id="preview" class="previewFrame w-full h-[76vh]" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
+
+        <!-- Liten corner-indikator -->
+        <div class="absolute top-3 right-4 text-[10px] bg-emerald-500 text-white px-2 py-1 rounded-full shadow-soft">
+          LIVE
+        </div>
       </div>
     </section>
   </main>
 
-  <script>
-    const $ = (s,p=document)=>p.querySelector(s);
-    const profileBtn=$('#profileBtn'), profileMenu=$('#profileMenu');
-    profileBtn.addEventListener('click',()=>profileMenu.classList.toggle('hidden'));
-    document.addEventListener('click',e=>{if(!profileBtn.contains(e.target)&&!profileMenu.contains(e.target))profileMenu.classList.add('hidden')});
+  <!-- Fullscreen overlay -->
+  <div id="fullOverlay" class="hidden fixed inset-0 bg-black/90 z-[60] p-4">
+    <div class="max-w-[1600px] mx-auto h-full flex flex-col">
+      <div class="flex items-center justify-between text-white mb-3">
+        <div class="text-sm opacity-80">Full vy</div>
+        <button id="closeFull" class="btn btn-soft"><i class="fa-regular fa-window-minimize"></i> Stäng</button>
+      </div>
+      <iframe id="fullFrame" class="w-full flex-1 rounded-xl bg-white" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
+    </div>
+  </div>
 
-    const preview=$('#preview');
-    $('#openFull').onclick=()=>{
-      if(!fs.current)return;
-      const blob=new Blob([fs.current.content],{type:'text/html'});
-      const url=URL.createObjectURL(blob);
-      window.open(url,'_blank');
-      setTimeout(()=>URL.revokeObjectURL(url),3000);
+  <script>
+    // ------- helpers -------
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => [...document.querySelectorAll(sel)];
+
+    // profilmeny
+    $('#profileBtn').addEventListener('click', (e)=>{
+      e.stopPropagation();
+      $('#profileMenu').classList.toggle('hidden');
+    });
+    document.addEventListener('click', ()=> $('#profileMenu').classList.add('hidden'));
+
+    // ------- app state -------
+    const state = {
+      pages: [],        // {name, content}
+      current: null,    // ref to current page obj
+      editor: null,     // CodeMirror instance
     };
 
-    const fs={pages:[],current:null};
-    const tabs=$('#tabs');
-    const editor=$('#editor');
+    // bygg editor
+    function mountEditor() {
+      state.editor = window.__loadEditor($('#editorMount'), '');
+      window.__onEditorInput = (val) => {
+        if (!state.current) return;
+        state.current.content = val;
+      };
+    }
 
-    function setCurrent(name){
-      fs.current=fs.pages.find(p=>p.name===name);
+    // tabs
+    function renderTabs() {
+      const wrap = $('#tabs');
+      wrap.innerHTML = '';
+      state.pages.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = 'px-3 py-1.5 rounded-lg text-xs bg-white/10 hover:bg-white/20';
+        btn.textContent = p.name;
+        if (p === state.current) {
+          btn.classList.add('ring-2','ring-brand-400');
+        }
+        btn.onclick = () => setCurrent(p.name);
+        wrap.appendChild(btn);
+      });
+    }
+
+    function setCurrent(name) {
+      const found = state.pages.find(p => p.name === name);
+      if (!found) return;
+      state.current = found;
+      // uppdatera editor
+      if (state.editor) {
+        const view = state.editor;
+        const tr = view.state.update({
+          changes: {from:0, to:view.state.doc.length, insert: found.content}
+        });
+        view.dispatch(tr);
+      }
       renderTabs();
-      editor.value=fs.current?.content||'';
       writePreview(name);
     }
 
-    function addPage(name='ny-sida.html',content='<main class="p-10"><h1>Ny sida</h1><p>Redigera innehållet.</p></main>'){
-      if(fs.pages.some(p=>p.name===name)){
-        let i=2;while(fs.pages.some(p=>p.name===`${name.replace('.html','')}-${i}.html`))i++;
-        name=`${name.replace('.html','')}-${i}.html`;
-      }
-      fs.pages.push({name,content});
-      setCurrent(name);
+    function addPage(name = '') {
+      const n = name || prompt('Filnamn på ny sida (ex: about.html):', 'ny-sida.html');
+      if (!n) return;
+      if (state.pages.some(p => p.name === n)) return alert('Sidan finns redan');
+      state.pages.push({ name: n, content:
+`<!doctype html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${n}</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.13/dist/tailwind.min.css">
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800">
+  <main class="max-w-5xl mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-2">${n.replace('.html','')}</h1>
+    <p>Tom sida – fyll på innehåll.</p>
+    <p class="mt-4"><a href="index.html" data-router class="text-brand-600 hover:underline">Tillbaka</a></p>
+  </main>
+</body>
+</html>`});
+      setCurrent(n);
+      renderTabs();
     }
 
-    function renderTabs(){
-      tabs.innerHTML='';
-      fs.pages.forEach(p=>{
-        const b=document.createElement('button');
-        b.className='btn px-3 py-1 rounded-lg border border-white/10 text-sm '+(fs.current?.name===p.name?'tab-active':'hover:bg-white/5');
-        b.textContent=p.name;
-        b.onclick=()=>setCurrent(p.name);
-        tabs.appendChild(b);
-      });
-      const plus=document.createElement('button');
-      plus.id='addTab';plus.className='btn px-2.5 py-1 border border-white/10 rounded-md text-sm hover:bg-white/5';plus.textContent='+ Ny sida';
-      plus.onclick=()=>addPage();tabs.appendChild(plus);
-    }
-
-    function writePreview(route='index.html'){
-      if(!fs.current)return;
-      const page=fs.pages.find(p=>p.name===route)||fs.current;
-      const bridge=`
+    // preview bridge (router + safe inject)
+    const bridge = `
 <script>
-document.addEventListener('click',function(e){
- const a=e.target.closest('a[href]');
- if(!a)return;
- const href=a.getAttribute('href');
- if(href && href.endsWith('.html')){
-  e.preventDefault();
-  parent.postMessage({type:'navigate',href},'*');
- }
-});
-</script>`;
-      const html=page.content.includes('</body>')?page.content.replace('</body>',bridge+'</body>'):page.content+bridge;
-      const blob=new Blob([html],{type:'text/html'});
-      const url=URL.createObjectURL(blob);
-      preview.src=url;
-      preview.onload=()=>URL.revokeObjectURL(url);
+  // client-side router inside preview, report link clicks back to parent
+  document.addEventListener('click', (e)=>{
+    const a = e.target.closest('a[data-router]');
+    if(!a) return;
+    e.preventDefault();
+    parent.postMessage({type:'navigate', href:a.getAttribute('href')}, '*');
+  });
+<\/script>`;
+
+    function wrapHtml(html) {
+      // injicera bridge före </body> om möjligt
+      try {
+        if (html.includes('</body>')) {
+          return html.replace('</body>', bridge + '\n</body>');
+        }
+        return html + bridge;
+      } catch {
+        return html; // i värsta fall ingen injektion
+      }
     }
 
-    window.addEventListener('message',e=>{
-      if(e.data?.type==='navigate'){
-        const target=e.data.href;
-        const exists=fs.pages.find(p=>p.name===target);
-        if(exists)setCurrent(target);
-        else addPage(target,`<main class="p-10"><h1>${target.replace('.html','')}</h1><p>Tom sida – fyll på innehåll.</p><a href="index.html">Tillbaka</a></main>`);
+    function writePreview(routeName) {
+      const page = state.pages.find(p => p.name === routeName) || state.current || state.pages[0];
+      if (!page) return;
+      const blob = new Blob([wrapHtml(page.content)], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const pv = $('#preview');
+      pv.src = url;
+      pv.onload = () => URL.revokeObjectURL(url);
+      // uppdatera ev. full skärm
+      const full = $('#fullFrame');
+      if (!$('#fullOverlay').classList.contains('hidden')) {
+        const b2 = new Blob([wrapHtml(page.content)], { type:'text/html' });
+        const u2 = URL.createObjectURL(b2);
+        full.src = u2;
+        full.onload = () => URL.revokeObjectURL(u2);
+      }
+    }
+
+    // lyssna på navigering från preview
+    window.addEventListener('message', (e) => {
+      if (e.data?.type === 'navigate') {
+        const target = e.data.href;
+        const found = state.pages.find(p => p.name === target);
+        if (found) { setCurrent(found.name); }
+        else {
+          // auto-skapa sida för "äkta" känsla
+          addPage(target);
+        }
       }
     });
 
-    $('#updatePreview').onclick=()=>{if(!fs.current)return;fs.current.content=editor.value;writePreview(fs.current.name)};
-    editor.addEventListener('input',()=>{if(fs.current)fs.current.content=editor.value});
-    $('#formatBtn').onclick=()=>{const s=editor.value.replace(/>\\s+</g,'>\\n<').replace(/\\n{3,}/g,'\\n\\n');editor.value=s;if(fs.current)fs.current.content=s};
+    // UI actions
+    $('#formatBtn').onclick = () => {
+      if (!state.current) return;
+      const v = state.editor.state.doc.toString()
+        .replace(/>\\s+\\n</g, '><')
+        .replace(/\\n{3,}/g, '\\n\\n');
+      const view = state.editor;
+      view.dispatch({changes:{from:0,to:view.state.doc.length,insert:v}});
+      state.current.content = v;
+    };
 
-    async function explainCode(){
-      if(!fs.current)return;
-      const r=await fetch('/api/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'explain',code:editor.value})});
-      const data=await r.json();
-      $('#explanations').textContent=data.reply||'Ingen förklaring kunde hämtas.';
+    $('#updatePreview').onclick = () => {
+      if (!state.current) return;
+      state.current.content = state.editor.state.doc.toString();
+      writePreview(state.current.name);
+    };
+
+    $('#addTab').onclick = () => addPage();
+
+    // full view
+    $('#toggleFull').onclick = () => {
+      $('#fullOverlay').classList.remove('hidden');
+      // sync content
+      writePreview(state.current?.name || 'index.html');
+    };
+    $('#closeFull').onclick = () => $('#fullOverlay').classList.add('hidden');
+
+    // open in new tab
+    $('#openNewTab').onclick = () => {
+      const page = state.current || state.pages[0];
+      if (!page) return;
+      const blob = new Blob([wrapHtml(page.content)], {type:'text/html'});
+      const url = URL.createObjectURL(blob);
+      const win = window.open(url, '_blank', 'noopener');
+      setTimeout(()=> URL.revokeObjectURL(url), 4000);
+      if (!win) alert('Tillåt popup-fönster för att öppna i ny flik.');
+    };
+
+    // ------- AI integration -------
+    async function explainCode() {
+      if (!state.current) return;
+      const r = await fetch('/api/openai', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ type: 'explain', code: state.editor.state.doc.toString() })
+      });
+      const data = await r.json().catch(()=> ({}));
+      $('#explanations').textContent = data?.reply || 'Kunde inte få svar.';
+      $('#explainBox').open = true;
     }
 
-    async function improveCurrent(msg){
-      if(!fs.current)return;
-      try{
-        const r=await fetch('/api/deepsite',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:'improve',prompt:msg,html:editor.value})});
-        if(r.ok){
-          const data=await r.json();
-          const html=data?.html||data?.files?.[0]?.content;
-          if(html){editor.value=html;fs.current.content=html;writePreview();return;}
+    async function improveCurrent(message) {
+      if (!state.current) return;
+      const codeNow = state.editor.state.doc.toString();
+
+      // Försök DeepSite först
+      try {
+        const r = await fetch('/api/deepsite', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ mode:'improve', prompt: message || 'Förbättra design och layout', html: codeNow })
+        });
+        if (r.ok) {
+          const data = await r.json();
+          const html = data?.html || data?.files?.[0]?.content;
+          if (html) {
+            const view = state.editor;
+            view.dispatch({changes:{from:0,to:view.state.doc.length,insert:html}});
+            state.current.content = html;
+            writePreview();
+            return;
+          }
         }
-      }catch{}
-      const r2=await fetch('/api/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'improve',message:msg,code:editor.value})});
-      const data2=await r2.json();
-      if(data2.reply){editor.value=data2.reply;fs.current.content=data2.reply;writePreview();}
-    }
+      } catch {}
 
-    async function generateSite(prompt,settings={}){
-      try{
-        const r=await fetch('/api/deepsite',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:'generate',prompt,settings})});
-        const data=await r.json();
-        if(data?.files?.length){fs.pages=data.files.map(f=>({name:f.name||'index.html',content:f.content||''}));}
-        else if(data?.html){fs.pages=[{name:'index.html',content:data.html}];}
-        else{fs.pages=[{name:'index.html',content:`<main class="p-10"><h1>Genererad sida</h1><p>${prompt}</p></main>`}];}
-        setCurrent('index.html');
-      }catch(e){
-        fs.pages=[{name:'index.html',content:`<main class="p-10"><h1>Fel</h1><p>API-svar saknas eller ogiltigt.</p></main>`}];
-        setCurrent('index.html');
+      // fallback OpenAI
+      const r2 = await fetch('/api/openai', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ type:'improve', message: message || 'Förbättra', code: codeNow })
+      });
+      const data2 = await r2.json().catch(()=> ({}));
+      if (data2?.reply) {
+        const html = data2.reply;
+        const view = state.editor;
+        view.dispatch({changes:{from:0,to:view.state.doc.length,insert:html}});
+        state.current.content = html;
+        writePreview();
       }
     }
 
-    $('#explainBtn').onclick=explainCode;
-    $('#improveBtn').onclick=()=>improveCurrent('Förbättra design och tillgänglighet');
-    $('#generateSite').onclick=async()=>{const p=$('#aiPrompt').value.trim();if(!p)return alert('Skriv vad du vill skapa.');await generateSite(p);};
+    async function generateSite(prompt, settings={}) {
+      // spinner i knappen
+      const btn = $('#generateSite');
+      const oldLabel = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Genererar…`;
 
-    function getQuery(){const u=new URL(location.href);return Object.fromEntries(u.searchParams.entries());}
-    (async function init(){
-      const q=getQuery();
-      fs.pages=[{name:'index.html',content:`<main class="p-10"><h1>Tomt projekt</h1><p>Skriv något i rutan till vänster och klicka Generera ny sajt.</p></main>`}];
+      try {
+        const r = await fetch('/api/deepsite', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ mode:'generate', prompt, settings })
+        });
+        const data = await r.json();
+        if (data?.files?.length) {
+          state.pages = data.files.map(f => ({ name: f.name || 'index.html', content: f.content || '' }));
+        } else if (data?.html) {
+          state.pages = [{ name:'index.html', content: data.html }];
+        } else {
+          state.pages = [{
+            name:'index.html',
+            content: `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Genererad sida</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.13/dist/tailwind.min.css"></head>
+<body class="min-h-screen bg-slate-50 text-slate-800"><main class="max-w-5xl mx-auto p-6">
+<h1 class="text-3xl font-bold">Genererad sida</h1><p class="mt-2">${prompt}</p></main></body></html>`
+          }];
+        }
+        setCurrent('index.html');
+        renderTabs();
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = oldLabel;
+      }
+    }
+
+    // bind knappar
+    $('#explainBtn').onclick = explainCode;
+    $('#improveBtn').onclick = () => {
+      const m = $('#aiPrompt').value.trim();
+      improveCurrent(m || 'Förbättra design, struktur och tillgänglighet');
+    };
+    $('#generateSite').onclick = () => {
+      const p = $('#aiPrompt').value.trim();
+      if (!p) return alert('Skriv vad du vill skapa först.');
+      generateSite(p, {});
+    };
+
+    // mock export
+    $('#exportProject').onclick = () => {
+      const out = state.pages.reduce((acc,p)=> (acc[p.name]=p.content, acc), {});
+      const blob = new Blob([JSON.stringify({files: out}, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'webneva-project.json'; a.click();
+      setTimeout(()=> URL.revokeObjectURL(url), 2000);
+    };
+
+    $('#newProject').onclick = () => {
+      state.pages = [{
+        name:'index.html',
+        content:`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Start</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.13/dist/tailwind.min.css"></head>
+<body class="min-h-screen bg-slate-50 text-slate-800">
+<header class="bg-slate-900 text-white">
+  <div class="max-w-6xl mx-auto p-6"><h1 class="text-2xl font-bold">Ny startsida</h1></div>
+</header>
+<main class="max-w-6xl mx-auto p-6">
+  <p>Redigera denna sida i editorn till vänster och klicka <em>Uppdatera</em>.</p>
+  <p class="mt-4"><a data-router href="about.html" class="text-blue-600 underline">Gå till Om oss</a></p>
+</main>
+<footer class="border-t mt-10"><div class="max-w-6xl mx-auto p-6 text-sm text-slate-500">© 2025 Webneva</div></footer>
+</body></html>`
+      }];
       setCurrent('index.html');
-      if(q.prompt)$('#aiPrompt').value=q.prompt;
-      if(q.mode==='improve'&&q.hasCode==='1'&&q.code){
-        const raw=decodeURIComponent(escape(atob(q.code)));
-        fs.pages=[{name:'index.html',content:raw}];
-        setCurrent('index.html');writePreview();return;
+      renderTabs();
+    };
+
+    // ------- init från query -------
+    function getQuery() {
+      const u = new URL(location.href);
+      return Object.fromEntries(u.searchParams.entries());
+    }
+
+    function bootEmpty() {
+      state.pages = [{
+        name:'index.html',
+        content:`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tomt projekt</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.13/dist/tailwind.min.css"></head>
+<body class="min-h-screen bg-slate-50 text-slate-800">
+<main class="max-w-6xl mx-auto p-8">
+  <h1 class="text-3xl font-bold">Tomt projekt</h1>
+  <p class="mt-2">Skriv vad du vill bygga i fältet till vänster och klicka <strong>Generera</strong>, eller klistra in din kod och klicka <strong>Uppdatera</strong>.</p>
+</main>
+</body></html>`
+      }];
+      setCurrent('index.html');
+      renderTabs();
+    }
+
+    async function init() {
+      mountEditor();
+      const q = getQuery();
+
+      // default
+      bootEmpty();
+
+      // sätt prompt i UI om finns
+      if (q.prompt) $('#aiPrompt').value = q.prompt;
+
+      // improve-läge med befintlig kod
+      if (q.mode === 'improve' && q.hasCode === '1' && q.code) {
+        try {
+          const raw = decodeURIComponent(escape(atob(q.code)));
+          state.pages = [{ name:'index.html', content: raw }];
+          setCurrent('index.html');
+          renderTabs();
+          writePreview();
+          return;
+        } catch {}
       }
-      if(q.mode==='generate'&&q.prompt){await generateSite(q.prompt,{colors:q.colors||'',pages:q.pages||''});}
-    })();
+
+      // generate-läge
+      if (q.mode === 'generate' && q.prompt) {
+        await generateSite(q.prompt, { colors: q.colors || '', pages: q.pages || '' });
+        return;
+      }
+
+      // annars visa tom mall
+      writePreview();
+    }
+
+    init();
   </script>
 </body>
 </html>
