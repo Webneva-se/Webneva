@@ -1,13 +1,13 @@
 {
   "name": "webneva",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "dependencies": {
-    "openai": "^4.60.0",
-    "archiver": "^7.0.0"
+    "openai": "^4.60.0"
   },
   "scripts": {
-    "dev": "vercel dev"
+    "dev": "vercel dev",
+    "build": "echo 'No build step needed for static site'"
   }
 }
