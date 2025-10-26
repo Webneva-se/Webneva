@@ -81,14 +81,14 @@
 
             <!-- CTA Buttons -->
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                <a href="studio.html" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105 glow flex items-center space-x-3">
+                <button onclick="openStartMenu()" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105 glow flex items-center space-x-3">
                     <span>🚀</span>
-                    <span>Skapa Ny Hemsida</span>
-                </a>
+                    <span>Kom Igång</span>
+                </button>
                 
-                <a href="studio.html?mode=improve" class="glass-card border border-slate-600 hover:border-blue-400 text-slate-300 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all flex items-center space-x-3">
-                    <span>🔧</span>
-                    <span>Förbättra Kod</span>
+                <a href="studio.html" class="glass-card border border-slate-600 hover:border-blue-400 text-slate-300 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all flex items-center space-x-3">
+                    <span>🎨</span>
+                    <span>Direkt till Studio</span>
                 </a>
             </div>
 
@@ -212,9 +212,9 @@
                         </div>
                         <p class="text-2xl font-bold mb-2">Live Demo</p>
                         <p class="text-slate-400 mb-4">Se Webneva Studio i action</p>
-                        <a href="studio.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold inline-block transition-all hover:scale-105">
-                            Öppna Studio
-                        </a>
+                        <button onclick="openStartMenu()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold inline-block transition-all hover:scale-105">
+                            Kom Igång
+                        </button>
                     </div>
                 </div>
             </div>
@@ -228,18 +228,12 @@
                 <h2 class="text-4xl font-bold mb-6">Redo att skapa magi?</h2>
                 <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
                     Gå från idé till live webbplats på rekordtid. 
-                    Inga kreditkord krävs, ingen registrering.
+                    Inga kreditkort krävs, ingen registrering.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="studio.html" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105 glow inline-flex items-center space-x-3">
-                        <span>🚀</span>
-                        <span>Skapa Ny Sida</span>
-                    </a>
-                    <a href="studio.html?mode=improve" class="glass-card border border-slate-600 hover:border-blue-400 text-slate-300 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all inline-flex items-center space-x-3">
-                        <span>🔧</span>
-                        <span>Förbättra Kod</span>
-                    </a>
-                </div>
+                <button onclick="openStartMenu()" class="bg-blue-500 hover:bg-blue-600 text-white px-10 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 glow inline-flex items-center space-x-3">
+                    <span>🚀</span>
+                    <span>Kom Igång Nu</span>
+                </button>
                 <p class="text-sm text-slate-400 mt-4">100% gratis • Ingen registrering • Starta direkt</p>
             </div>
         </div>
@@ -247,26 +241,65 @@
 
     <!-- Footer -->
     <footer class="py-12 px-6 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="flex items-center space-x-3 mb-6 md:mb-0">
-                    <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-8 w-8">
-                    <span class="text-lg font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
-                        Webneva
-                    </span>
-                </div>
-                
-                <div class="flex items-center space-x-6 text-sm text-slate-400">
-                    <a href="#" class="hover:text-blue-400 transition-colors">Integritet</a>
-                    <a href="#" class="hover:text-blue-400 transition-colors">Villkor</a>
-                    <a href="#" class="hover:text-blue-400 transition-colors">Kontakt</a>
-                </div>
-                
-                <div class="mt-6 md:mt-0 text-sm text-slate-500">
-                    © 2024 Webneva. Byggt med ❤️ och AI.
-                </div>
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="flex items-center justify-center space-x-3 mb-4">
+                <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-6 w-6">
+                <span class="text-lg font-bold">Webneva</span>
             </div>
+            <p class="text-slate-500 text-sm">© 2025 Webneva</p>
         </div>
     </footer>
+
+    <!-- Start Menu Modal -->
+    <div id="startMenu" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4">
+        <div class="glass-card rounded-3xl p-8 max-w-md w-full border border-slate-700">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-6">Välj hur du vill börja</h3>
+                
+                <div class="space-y-4 mb-6">
+                    <button onclick="startProject('new')" class="w-full glass-card hover:border-blue-400 border border-slate-700 p-6 rounded-xl text-left transition-all hover:scale-105">
+                        <div class="font-semibold text-lg">🆕 Skapa ny hemsida</div>
+                        <div class="text-slate-400 text-sm mt-2">Från början med AI</div>
+                    </button>
+                    
+                    <button onclick="startProject('improve')" class="w-full glass-card hover:border-blue-400 border border-slate-700 p-6 rounded-xl text-left transition-all hover:scale-105">
+                        <div class="font-semibold text-lg">🔧 Förbättra befintlig kod</div>
+                        <div class="text-slate-400 text-sm mt-2">Klistra in din HTML/CSS</div>
+                    </button>
+                </div>
+
+                <button onclick="closeStartMenu()" class="text-slate-400 hover:text-white transition-colors">
+                    Avbryt
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openStartMenu() {
+            document.getElementById('startMenu').classList.remove('hidden');
+            document.getElementById('startMenu').classList.add('flex');
+        }
+
+        function closeStartMenu() {
+            document.getElementById('startMenu').classList.add('hidden');
+            document.getElementById('startMenu').classList.remove('flex');
+        }
+
+        function startProject(type) {
+            if (type === 'new') {
+                window.location.href = 'studio.html';
+            } else {
+                window.location.href = 'studio.html?mode=improve';
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('startMenu').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeStartMenu();
+            }
+        });
+    </script>
 </body>
 </html>
