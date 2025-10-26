@@ -8,59 +8,74 @@
     <link rel="icon" href="images/bgk-remove.webneva.png">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
         
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0f172a;
-            color: #f1f5f9;
+        :root {
+            --hf-dark: #0d1117;
+            --hf-panel: #161b22;
+            --hf-border: #30363d;
+            --hf-text: #f0f6fc;
+            --hf-text-secondary: #8b949e;
+            --hf-blue: #3b82f6;
         }
-        .studio-panel {
-            background: #1e293b;
-            border: 1px solid #334155;
+
+        body {
+            background: var(--hf-dark);
+            color: var(--hf-text);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hf-panel {
+            background: var(--hf-panel);
+            border: 1px solid var(--hf-border);
             border-radius: 8px;
         }
-        .studio-button {
-            background: #3b82f6;
+
+        .hf-button {
+            background: var(--hf-blue);
             color: white;
             border: none;
             border-radius: 6px;
             font-weight: 600;
             transition: all 0.2s ease;
         }
-        .studio-button:hover {
+
+        .hf-button:hover {
             background: #2563eb;
             transform: translateY(-1px);
         }
-        .studio-button-secondary {
+
+        .hf-button-secondary {
             background: transparent;
-            color: #94a3b8;
-            border: 1px solid #334155;
+            color: var(--hf-text-secondary);
+            border: 1px solid var(--hf-border);
             border-radius: 6px;
             font-weight: 500;
             transition: all 0.2s ease;
         }
-        .studio-button-secondary:hover {
+
+        .hf-button-secondary:hover {
             background: rgba(255, 255, 255, 0.05);
-            border-color: #64748b;
-            color: #f1f5f9;
+            border-color: var(--hf-text-secondary);
         }
-        .studio-input {
-            background: #0f172a;
-            border: 1px solid #334155;
+
+        .hf-input {
+            background: var(--hf-dark);
+            border: 1px solid var(--hf-border);
             border-radius: 6px;
-            color: #f1f5f9;
+            color: var(--hf-text);
             padding: 8px 12px;
             font-size: 14px;
         }
-        .studio-input:focus {
+
+        .hf-input:focus {
             outline: none;
-            border-color: #3b82f6;
+            border-color: var(--hf-blue);
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
-        .studio-tab {
+
+        .hf-tab {
             background: transparent;
-            color: #94a3b8;
+            color: var(--hf-text-secondary);
             border: 1px solid transparent;
             border-radius: 6px;
             padding: 6px 12px;
@@ -69,67 +84,82 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        .studio-tab.active {
+
+        .hf-tab.active {
             background: rgba(59, 130, 246, 0.1);
-            color: #3b82f6;
-            border-color: #3b82f6;
+            color: var(--hf-blue);
+            border-color: var(--hf-blue);
         }
-        .studio-tab:hover:not(.active) {
+
+        .hf-tab:hover:not(.active) {
             background: rgba(255, 255, 255, 0.05);
-            color: #f1f5f9;
         }
+
         .code-editor {
-            background: #1e293b;
-            color: #e2e8f0;
-            font-family: 'JetBrains Mono', monospace;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
             font-size: 14px;
             line-height: 1.5;
-            border: 1px solid #334155;
         }
+
         .preview-frame {
             background: white;
             border-radius: 8px;
-            border: 1px solid #334155;
+            border: 1px solid var(--hf-border);
         }
+
         .ai-thinking {
             background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
             background-size: 200% 100%;
             animation: shimmer 2s infinite;
         }
+
         @keyframes shimmer {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
         }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        .status-indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #3fb950;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
     </style>
 </head>
 <body class="min-h-screen">
     <!-- Top Navigation -->
-    <nav class="glass-panel border-b border-slate-700/50">
+    <nav class="hf-panel border-b border-hf-border rounded-none">
         <div class="max-w-7xl mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-8 w-8">
                     <div class="flex items-center space-x-2">
                         <span class="text-xl font-bold">Webneva Studio</span>
-                        <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-bold">LIVE</span>
+                        <div class="flex items-center space-x-1">
+                            <div class="status-indicator"></div>
+                            <span class="text-xs text-green-400">LIVE</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="flex items-center space-x-3">
-                    <button id="newProject" class="studio-button-secondary flex items-center space-x-2 px-4 py-2">
+                    <button id="newProject" class="hf-button-secondary flex items-center space-x-2 px-4 py-2">
                         <span>📄</span>
                         <span>Nytt Projekt</span>
                     </button>
-                    <button id="saveProject" class="studio-button-secondary flex items-center space-x-2 px-4 py-2">
+                    <button id="saveProject" class="hf-button-secondary flex items-center space-x-2 px-4 py-2">
                         <span>💾</span>
                         <span>Exportera</span>
                     </button>
-                    <a href="index.html" class="studio-button flex items-center space-x-2 px-4 py-2">
+                    <a href="index.html" class="hf-button flex items-center space-x-2 px-4 py-2">
                         <span>🏠</span>
                         <span>Startsida</span>
                     </a>
@@ -140,15 +170,15 @@
 
     <!-- Main Content -->
     <main class="flex-1 p-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 h-[calc(100vh-140px)]">
             <!-- Left Panel - Editor -->
-            <div class="studio-panel flex flex-col">
+            <div class="hf-panel flex flex-col">
                 <!-- Tabs Bar -->
-                <div class="flex items-center justify-between p-4 border-b border-slate-700">
+                <div class="flex items-center justify-between p-4 border-b border-hf-border">
                     <div id="tabs" class="flex items-center space-x-2 flex-1 overflow-x-auto">
                         <!-- Tabs will be dynamically added here -->
                     </div>
-                    <button id="addTab" class="studio-button-secondary px-3 py-1.5 text-sm">
+                    <button id="addTab" class="hf-button-secondary px-3 py-1.5 text-sm">
                         + Ny Sida
                     </button>
                 </div>
@@ -156,12 +186,12 @@
                 <!-- Editor Area -->
                 <div class="flex-1 flex flex-col p-4">
                     <div class="flex items-center justify-between mb-3">
-                        <label class="text-sm font-medium text-slate-300">HTML Editor</label>
+                        <label class="text-sm font-medium text-hf-text-secondary">HTML Editor</label>
                         <div class="flex items-center space-x-2">
-                            <button id="formatBtn" class="studio-button-secondary px-3 py-1.5 text-sm">
+                            <button id="formatBtn" class="hf-button-secondary px-3 py-1.5 text-sm">
                                 Formatera
                             </button>
-                            <button id="updatePreview" class="studio-button-secondary px-3 py-1.5 text-sm">
+                            <button id="updatePreview" class="hf-button-secondary px-3 py-1.5 text-sm">
                                 Uppdatera
                             </button>
                         </div>
@@ -170,7 +200,7 @@
                     <textarea 
                         id="editor" 
                         rows="18"
-                        class="studio-input code-editor flex-1 w-full resize-none font-mono p-4"
+                        class="hf-input code-editor flex-1 w-full resize-none font-mono p-4"
                         placeholder="&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
@@ -185,9 +215,9 @@
                 </div>
 
                 <!-- AI Controls -->
-                <div class="p-4 border-t border-slate-700">
+                <div class="p-4 border-t border-hf-border">
                     <div class="flex items-center space-x-2 mb-3">
-                        <span class="text-sm font-medium text-slate-300">AI Assistant</span>
+                        <span class="text-sm font-medium text-hf-text-secondary">AI Assistant</span>
                         <span class="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-full">DeepSite + GPT-4</span>
                     </div>
 
@@ -196,49 +226,45 @@
                             <input 
                                 id="aiPrompt" 
                                 type="text"
-                                class="studio-input flex-1"
-                                placeholder="Beskriv vad du vill bygga... (t.ex. 'Skapa en modern portfolio med mörkt tema')"
+                                class="hf-input flex-1"
+                                placeholder="Beskriv vad du vill bygga..."
                             />
-                            <button id="generateSite" class="studio-button px-4 py-2 whitespace-nowrap">
+                            <button id="generateSite" class="hf-button px-4 py-2 whitespace-nowrap">
                                 Generera
                             </button>
                         </div>
 
                         <div class="flex flex-wrap gap-2">
-                            <button id="improveBtn" class="studio-button-secondary flex items-center space-x-2 px-3 py-2 text-sm">
+                            <button id="improveBtn" class="hf-button-secondary flex items-center space-x-2 px-3 py-2 text-sm">
                                 <span>✨</span>
                                 <span>Förbättra Kod</span>
                             </button>
-                            <button id="explainBtn" class="studio-button-secondary flex items-center space-x-2 px-3 py-2 text-sm">
+                            <button id="explainBtn" class="hf-button-secondary flex items-center space-x-2 px-3 py-2 text-sm">
                                 <span>🤖</span>
                                 <span>Förklara Kod</span>
-                            </button>
-                            <button id="applyImprove" class="studio-button-secondary flex items-center space-x-2 px-3 py-2 text-sm">
-                                <span>🔧</span>
-                                <span>Applicera</span>
                             </button>
                         </div>
 
                         <!-- AI Explanations -->
                         <details id="expander" class="mt-2">
-                            <summary class="cursor-pointer text-sm font-medium text-slate-300 hover:text-slate-100">
+                            <summary class="cursor-pointer text-sm font-medium text-hf-text-secondary hover:text-hf-text">
                                 AI Förklaringar
                             </summary>
-                            <div id="explainBox" class="mt-3 p-3 studio-input text-sm whitespace-pre-wrap max-h-32 overflow-y-auto"></div>
+                            <div id="explainBox" class="mt-3 p-3 hf-input text-sm whitespace-pre-wrap max-h-32 overflow-y-auto"></div>
                         </details>
                     </div>
                 </div>
             </div>
 
             <!-- Right Panel - Preview -->
-            <div class="studio-panel flex flex-col">
-                <div class="flex items-center justify-between p-4 border-b border-slate-700">
-                    <div class="text-sm font-medium text-slate-300">Live Preview</div>
+            <div class="hf-panel flex flex-col">
+                <div class="flex items-center justify-between p-4 border-b border-hf-border">
+                    <div class="text-sm font-medium text-hf-text-secondary">Live Preview</div>
                     <div class="flex items-center space-x-2">
-                        <button id="openInNew" class="studio-button-secondary px-3 py-1.5 text-sm">
+                        <button id="openInNew" class="hf-button-secondary px-3 py-1.5 text-sm">
                             Ny Flik
                         </button>
-                        <button id="toggleFull" class="studio-button px-3 py-1.5 text-sm">
+                        <button id="toggleFull" class="hf-button px-3 py-1.5 text-sm">
                             Fullskärm
                         </button>
                     </div>
@@ -254,10 +280,10 @@
                 </div>
 
                 <!-- AI Status -->
-                <div id="aiStatus" class="hidden ai-thinking p-3 border-t border-slate-700">
+                <div id="aiStatus" class="hidden ai-thinking p-3 border-t border-hf-border">
                     <div class="flex items-center space-x-2 text-sm">
                         <div class="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                        <span class="text-slate-300">AI tänker...</span>
+                        <span class="text-hf-text-secondary">AI tänker...</span>
                     </div>
                 </div>
             </div>
@@ -265,9 +291,9 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-4 px-6 border-t border-slate-800">
+    <footer class="py-4 px-6 border-t border-hf-border">
         <div class="max-w-7xl mx-auto text-center">
-            <p class="text-slate-500 text-sm">© 2025 Webneva</p>
+            <p class="text-hf-text-secondary text-sm">© 2025 Webneva</p>
         </div>
     </footer>
 
@@ -303,23 +329,6 @@
             <p class="text-xl text-gray-600 mb-8">
                 Din AI-drivna webbplats är redo. Redigera koden till vänster eller använd AI för att skapa något fantastiskt!
             </p>
-            <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Kom igång</h2>
-                <div class="grid md:grid-cols-3 gap-6 text-left">
-                    <div class="p-4 border border-gray-200 rounded-lg">
-                        <div class="text-blue-500 text-lg font-bold mb-2">1. Beskriv</div>
-                        <p class="text-gray-600 text-sm">Ange vad du vill bygga i AI-fältet</p>
-                    </div>
-                    <div class="p-4 border border-gray-200 rounded-lg">
-                        <div class="text-green-500 text-lg font-bold mb-2">2. Generera</div>
-                        <p class="text-gray-600 text-sm">Klicka på "Generera" för att skapa koden</p>
-                    </div>
-                    <div class="p-4 border border-gray-200 rounded-lg">
-                        <div class="text-purple-500 text-lg font-bold mb-2">3. Anpassa</div>
-                        <p class="text-gray-600 text-sm">Redigera koden direkt eller be AI om förbättringar</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </body>
@@ -335,36 +344,31 @@
         function addPage(name = 'ny-sida.html', content = '') {
             let finalName = name;
             if (state.pages.some(p => p.name === finalName)) {
-                const base = name.replace(/\.html$/, '');
+                const base = name.replace(/\\.html$/, '');
                 let counter = 2;
-                while (state.pages.some(p => p.name === `${base}-${counter}.html`)) {
+                while (state.pages.some(p => p.name === \`\${base}-\${counter}.html\`)) {
                     counter++;
                 }
-                finalName = `${base}-${counter}.html`;
+                finalName = \`\${base}-\${counter}.html\`;
             }
 
             const newPage = {
                 name: finalName,
-                content: content || `<!DOCTYPE html>
+                content: content || \`<!DOCTYPE html>
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${finalName.replace('.html', '')}</title>
+    <title>\${finalName.replace('.html', '')}</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen p-8">
     <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl font-bold text-gray-800 mb-4">${finalName.replace('.html', '')}</h1>
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">\${finalName.replace('.html', '')}</h1>
         <p class="text-gray-600 text-lg">Ny sida skapad med Webneva Studio.</p>
-        <div class="mt-6">
-            <a href="index.html" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                ← Tillbaka till startsida
-            </a>
-        </div>
     </div>
 </body>
-</html>`
+</html>\`
             };
 
             state.pages.push(newPage);
@@ -387,7 +391,7 @@
 
             state.pages.forEach(page => {
                 const tab = document.createElement('button');
-                tab.className = `studio-tab ${state.currentPage?.name === page.name ? 'active' : ''}`;
+                tab.className = \`hf-tab \${state.currentPage?.name === page.name ? 'active' : ''}\`;
                 tab.textContent = page.name;
                 tab.title = page.name;
                 
@@ -406,9 +410,9 @@
             
             // Ensure Tailwind CSS is included
             if (!html.includes('cdn.tailwindcss.com')) {
-                const tailwindScript = '<script src="https://cdn.tailwindcss.com"><\/script>';
+                const tailwindScript = '<script src="https://cdn.tailwindcss.com"></script>';
                 if (html.includes('<head>')) {
-                    html = html.replace('<head>', `<head>${tailwindScript}`);
+                    html = html.replace('<head>', \`<head>\${tailwindScript}\`);
                 } else {
                     html = tailwindScript + html;
                 }
@@ -446,36 +450,25 @@
             await setAIThinking(true);
 
             try {
-                // Simulate AI generation (replace with actual API call)
+                // Simulate AI generation
                 setTimeout(() => {
-                    const generatedHTML = `<!DOCTYPE html>
+                    const generatedHTML = \`<!DOCTYPE html>
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${prompt}</title>
+    <title>\${prompt}</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
     <div class="container mx-auto px-4 py-16 max-w-6xl">
         <header class="text-center mb-16">
-            <h1 class="text-5xl font-bold text-gray-800 mb-4">${prompt}</h1>
+            <h1 class="text-5xl font-bold text-gray-800 mb-4">\${prompt}</h1>
             <p class="text-xl text-gray-600">Skapad med Webneva AI</p>
         </header>
-        
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Funktion 1</h2>
-                <p class="text-gray-600">Beskrivning av första funktionen.</p>
-            </div>
-            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Funktion 2</h2>
-                <p class="text-gray-600">Beskrivning av andra funktionen.</p>
-            </div>
-        </div>
     </div>
 </body>
-</html>`;
+</html>\`;
 
                     state.pages = [{ name: 'index.html', content: generatedHTML }];
                     setCurrentPage('index.html');
@@ -494,7 +487,7 @@
         function showToast(message, success = true) {
             const toast = $('#toast');
             toast.textContent = message;
-            toast.className = `fixed bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg font-semibold z-50 ${success ? 'bg-blue-500 text-white' : 'bg-red-500 text-white'}`;
+            toast.className = \`fixed bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg font-semibold z-50 \${success ? 'bg-blue-500 text-white' : 'bg-red-500 text-white'}\`;
             toast.classList.remove('hidden');
             
             setTimeout(() => {
@@ -508,8 +501,8 @@
             
             // Simple formatting
             code = code
-                .replace(/>\s+</g, '><')
-                .replace(/\n\s*\n\s*\n/g, '\n\n');
+                .replace(/>\\s+</g, '><')
+                .replace(/\\n\\s*\\n\\s*\\n/g, '\\n\\n');
             
             editor.value = code;
             if (state.currentPage) {
