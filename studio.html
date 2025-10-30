@@ -7,161 +7,107 @@
   <link rel="icon" href="images/bgk-remove.webneva.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    :root{
-      --dark:#0d1117; --panel:#0f1420; --panel2:#111827;
-      --border:#1f2937; --muted:#9ca3af; --text:#e5e7eb; --blue:#3b82f6; --blue-strong:#2563eb;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    :root {
+      --dark: #0d1117;
+      --panel: #0f1420;
+      --border: #1f2937;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --blue: #3b82f6;
+      --blue-strong: #2563eb;
     }
-    html,body{height:100%}
-    body{font-family:'Inter',system-ui,ui-sans-serif; background:var(--dark); color:var(--text);}
-    /* Scrollbars (subtle) */
-    *::-webkit-scrollbar{width:8px;height:8px}
-    *::-webkit-scrollbar-thumb{background:#1f2937;border-radius:8px}
-    *::-webkit-scrollbar-track{background:transparent}
-    /* Buttons */
-    .btn{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--border);
-      background:transparent;color:var(--text);padding:.5rem .75rem;border-radius:.5rem;
-      font-weight:600;font-size:.85rem}
-    .btn:hover{border-color:#2b3545;background:#0f1420}
-    .btn-primary{background:var(--blue);border-color:var(--blue);color:white}
-    .btn-primary:hover{background:var(--blue-strong);border-color:var(--blue-strong)}
-    /* Top bar shadow line */
-    .topline{box-shadow:inset 0 -1px 0 0 rgba(255,255,255,.04)}
-    /* AI “thinking” shimmer */
-    .thinking{background:linear-gradient(90deg, transparent, rgba(59,130,246,.10), transparent);
-      background-size:200% 100%;animation:shimmer 1.7s linear infinite}
-    @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      overflow: hidden;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .btn { padding: 0.4rem 0.75rem; border: 1px solid var(--border); border-radius: 6px;
+           font-size: 0.85rem; color: var(--text); background: transparent; transition: .2s; }
+    .btn:hover { background: rgba(255,255,255,0.05); }
+    .btn-primary { background: var(--blue); border-color: var(--blue); color: white; }
+    .btn-primary:hover { background: var(--blue-strong); }
+    .thinking { background: linear-gradient(90deg,transparent,rgba(59,130,246,.1),transparent);
+                background-size:200% 100%; animation: shimmer 2s linear infinite; }
+    @keyframes shimmer { 0%{background-position:-200% 0}100%{background-position:200% 0} }
   </style>
 </head>
-<body class="h-screen overflow-hidden">
+<body>
   <!-- Top bar -->
-  <header class="topline flex items-center justify-between px-4 md:px-6 h-12 bg-[#0e1320]">
-    <div class="flex items-center gap-3">
+  <header class="flex items-center justify-between px-4 h-12 border-b border-[#1f2937] bg-[#0e1320]">
+    <div class="flex items-center gap-2">
       <img src="images/bgk-remove.webneva.png" class="h-5 w-5" alt="Webneva">
-      <div class="flex items-center gap-2">
-        <span class="font-bold tracking-tight">Webneva Studio</span>
-        <span class="text-xs text-emerald-400 flex items-center gap-1">
-          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> LIVE
-        </span>
-      </div>
+      <span class="font-semibold text-sm">Webneva Studio</span>
+      <span class="ml-2 text-xs text-emerald-400 flex items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> LIVE
+      </span>
     </div>
     <div class="flex items-center gap-2">
-      <button class="btn" id="btnNew">Nytt</button>
-      <button class="btn" id="btnExport">Exportera</button>
-      <a class="btn" href="index.html">Startsida</a>
+      <button id="btnNew" class="btn">Nytt</button>
+      <button id="btnExport" class="btn">Exportera</button>
+      <a href="index.html" class="btn">Startsida</a>
     </div>
   </header>
 
-  <!-- Main split -->
-  <main class="h-[calc(100vh-3rem)] grid grid-cols-1 lg:grid-cols-2">
-    <!-- Left: Editor + file tab -->
-    <section class="flex flex-col border-r border-[#1f2937] bg-[#0f1420]">
-      <!-- file tabs -->
-      <div class="flex items-center justify-between px-3 h-11 border-b border-[#1f2937]">
-        <div class="flex items-center">
-          <button id="tab-index" class="px-3 py-2 text-sm rounded-md border border-transparent text-slate-300 data-[active=true]:text-white data-[active=true]:border-[#243049] data-[active=true]:bg-[#131a2a]" data-active="true">
-            index.html
-          </button>
-        </div>
-        <button id="btnAddTab" class="btn" title="Ny flik">+</button>
+  <!-- Main area -->
+  <main class="grid grid-cols-[20%_80%] h-[calc(100vh-3rem)]">
+    <!-- Left side: Editor + AI -->
+    <section class="flex flex-col bg-[#0f1420] border-r border-[#1f2937]">
+      <div class="flex items-center justify-between px-3 h-10 border-b border-[#1f2937]">
+        <span class="text-sm text-slate-300">index.html</span>
+        <button id="btnAddTab" class="btn">+</button>
       </div>
-
-      <!-- CodeMirror host -->
       <div id="editorHost" class="flex-1 overflow-hidden"></div>
 
-      <!-- Bottom: AI bar (sticks to bottom of left column on all heights) -->
+      <!-- AI bar -->
       <div class="border-t border-[#1f2937] p-3">
         <div class="flex items-center gap-2 mb-2">
-          <div class="text-xs text-slate-400">AI-läge</div>
           <select id="aiMode" class="bg-[#0b0f19] border border-[#1f2937] rounded-md text-sm px-2 py-1">
             <option value="generate">Generera ny sida</option>
             <option value="improve">Förbättra aktuell kod</option>
           </select>
-          <div id="aiStatus" class="ml-auto text-xs text-slate-400 hidden">AI genererar…</div>
+          <div id="aiStatus" class="text-xs text-slate-400 ml-auto hidden">AI genererar…</div>
         </div>
         <div class="flex items-stretch gap-2">
-          <textarea id="aiPrompt" class="flex-1 resize-none h-12 md:h-10 px-3 py-2 rounded-md bg-[#0b0f19] border border-[#1f2937] text-sm outline-none focus:border-[#2a3a63]" placeholder="Skriv vad du vill bygga… (Shift+Enter = ny rad, Enter = skicka)"></textarea>
+          <textarea id="aiPrompt" class="flex-1 resize-none h-12 px-3 py-2 rounded-md bg-[#0b0f19] border border-[#1f2937] text-sm outline-none focus:border-[#2a3a63]" placeholder="Skriv din prompt och tryck Enter eller Skicka"></textarea>
           <button id="btnSend" class="btn-primary px-4">Skicka</button>
-        </div>
-        <div class="flex items-center gap-3 mt-2 text-[12px] text-slate-400">
-          <span>⌘/Ctrl + Enter: Skicka</span>
-          <span>•</span>
-          <button id="btnExplain" class="underline decoration-dotted hover:text-slate-200">Förklara koden</button>
         </div>
       </div>
     </section>
 
-    <!-- Right: Preview (always full height) -->
+    <!-- Right side: Live preview -->
     <section class="relative bg-gradient-to-br from-[#eef2ff] to-[#e6efff]">
-      <div class="flex items-center justify-between px-3 h-11 border-b border-[#d9e2ff] bg-white/70 backdrop-blur">
-        <div class="font-semibold text-slate-700">Live Preview</div>
+      <div class="flex items-center justify-between px-3 h-10 border-b border-[#c7d4f8] bg-white/60 backdrop-blur">
+        <div class="font-semibold text-slate-700 text-sm">Live Preview</div>
         <div class="flex items-center gap-2">
           <button id="btnOpen" class="btn text-slate-700 border-[#ccd6f6]">Ny flik</button>
           <button id="btnFull" class="btn text-slate-700 border-[#ccd6f6]">Fullskärm</button>
         </div>
       </div>
-      <iframe id="preview" class="absolute inset-11 bottom-0 w-full h-[calc(100%-2.75rem)] bg-white border-0"></iframe>
-      <!-- AI thinking overlay -->
-      <div id="overlay" class="pointer-events-none hidden absolute inset-11 bottom-0 flex items-start">
-        <div class="thinking w-full h-1"></div>
-      </div>
+      <iframe id="preview" class="absolute inset-0 top-10 w-full h-[calc(100%-2.5rem)] bg-white border-0"></iframe>
+      <div id="overlay" class="hidden absolute top-10 left-0 right-0 h-1 thinking"></div>
     </section>
   </main>
 
-  <!-- CodeMirror & app logic -->
+  <!-- CodeMirror + Logic -->
   <script type="module">
-    /* ----------------------- CodeMirror 6 (ESM via CDN) ----------------------- */
     import { EditorState } from "https://cdn.jsdelivr.net/npm/@codemirror/state@6.4.1/dist/index.js";
-    import { EditorView, keymap, drawSelection, highlightActiveLine } from "https://cdn.jsdelivr.net/npm/@codemirror/view@6.29.1/dist/index.js";
-    import { defaultKeymap, history, historyKeymap, indentWithTab } from "https://cdn.jsdelivr.net/npm/@codemirror/commands@6.6.2/dist/index.js";
+    import { EditorView, keymap } from "https://cdn.jsdelivr.net/npm/@codemirror/view@6.29.1/dist/index.js";
+    import { defaultKeymap, history, historyKeymap } from "https://cdn.jsdelivr.net/npm/@codemirror/commands@6.6.2/dist/index.js";
     import { html } from "https://cdn.jsdelivr.net/npm/@codemirror/lang-html@6.4.9/dist/index.js";
     import { oneDark } from "https://cdn.jsdelivr.net/npm/@codemirror/theme-one-dark@6.2.0/dist/index.js";
+    import { aiGenerate, aiImprove } from "./js/ai.js";
 
-    // Import AI helpers
-    import { aiGenerate, aiImprove, aiExplain } from "./js/ai.js";
+    let currentHTML = "<!doctype html><html lang='sv'><head><meta charset='utf-8'><title>Ny sida</title><script src='https://cdn.tailwindcss.com'><\\/script></head><body class='bg-slate-50 text-slate-900 p-10'><h1 class='text-4xl font-bold'>Webneva Studio</h1><p class='mt-4 text-slate-600'>Börja skriva eller använd AI.</p></body></html>";
 
-    /* ---------------------------- App State ---------------------------- */
-    let currentHTML = `<!doctype html>
-<html lang="sv">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Webneva Studio</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>body{font-family:Inter,system-ui,sans-serif}</style>
-</head>
-<body class="min-h-screen bg-slate-50 text-slate-900">
-<header class="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between">
-  <div class="font-black text-xl">Webneva</div>
-  <nav class="flex gap-6 text-slate-600">
-    <a class="hover:text-slate-900" href="#">Hem</a>
-    <a class="hover:text-slate-900" href="#">Tjänster</a>
-    <a class="hover:text-slate-900" href="#">Kontakt</a>
-  </nav>
-</header>
-<main class="max-w-6xl mx-auto px-6 py-12">
-  <h1 class="text-4xl md:text-5xl font-black">Redigera till vänster • Se här</h1>
-  <p class="mt-4 text-slate-600">Använd promptfältet längst ned för att generera eller förbättra koden.</p>
-</main>
-</body></html>`;
-
-    const initialDoc = currentHTML;
-
-    /* --------------------------- CodeMirror init --------------------------- */
     const editorHost = document.getElementById("editorHost");
     const state = EditorState.create({
-      doc: initialDoc,
-      extensions: [
-        history(),
-        keymap.of([
-          ...defaultKeymap,
-          ...historyKeymap,
-          indentWithTab
-        ]),
-        drawSelection(),
-        highlightActiveLine(),
-        html(),
-        oneDark,
+      doc: currentHTML,
+      extensions: [history(), keymap.of([...defaultKeymap, ...historyKeymap]), html(), oneDark,
         EditorView.updateListener.of(update => {
           if (update.docChanged) {
             currentHTML = update.state.doc.toString();
@@ -172,127 +118,59 @@
     });
     const view = new EditorView({ state, parent: editorHost });
 
-    /* ------------------------- Preview handling ------------------------- */
     const iframe = document.getElementById("preview");
-    function ensureTailwind(html) {
-      if (!/cdn\.tailwindcss\.com/.test(html)) {
+    const overlay = document.getElementById("overlay");
+    const aiPrompt = document.getElementById("aiPrompt");
+    const aiStatus = document.getElementById("aiStatus");
+    const aiMode = document.getElementById("aiMode");
+
+    function ensureTailwind(html){
+      if(!/cdn\.tailwindcss\.com/.test(html)){
         const tw = '<script src="https://cdn.tailwindcss.com"><\\/script>';
         return html.replace(/<head>/i, `<head>${tw}`);
       }
       return html;
     }
-    function updatePreview() {
-      const blob = new Blob([ensureTailwind(currentHTML)], { type: "text/html" });
+    function updatePreview(){
+      const blob = new Blob([ensureTailwind(currentHTML)],{type:"text/html"});
       const url = URL.createObjectURL(blob);
       iframe.src = url;
     }
     updatePreview();
 
-    /* ----------------------------- UI controls ----------------------------- */
-    const aiPromptEl = document.getElementById("aiPrompt");
-    const aiModeEl   = document.getElementById("aiMode");
-    const btnSend    = document.getElementById("btnSend");
-    const aiStatus   = document.getElementById("aiStatus");
-    const overlay    = document.getElementById("overlay");
-
-    function setThinking(on) {
+    function setThinking(on){
       aiStatus.classList.toggle("hidden", !on);
       overlay.classList.toggle("hidden", !on);
     }
 
-    async function doSend() {
-      const prompt = aiPromptEl.value.trim();
-      if (!prompt) return;
+    async function doSend(){
+      const prompt = aiPrompt.value.trim();
+      if(!prompt) return;
       setThinking(true);
-      try {
+      try{
         let html;
-        if (aiModeEl.value === "generate") {
-          html = await aiGenerate(prompt);
-        } else {
-          html = await aiImprove(prompt, currentHTML);
-        }
-        if (!/<html[\s\S]*<\/html>/i.test(html)) {
-          throw new Error("API returnerade inte fullständig HTML.");
-        }
-        // Skriv in i CodeMirror utan att tappa state
-        view.dispatch({
-          changes: { from: 0, to: view.state.doc.length, insert: html }
-        });
-        aiPromptEl.value = "";
-        // preview uppdateras via listener
-      } catch (err) {
-        alert("Fel: " + (err?.message || err));
-      } finally {
+        if(aiMode.value === "generate") html = await aiGenerate(prompt);
+        else html = await aiImprove(prompt, currentHTML);
+
+        if(!/<html[\s\S]*<\/html>/i.test(html)) throw new Error("Ogiltig HTML");
+        view.dispatch({ changes:{from:0, to:view.state.doc.length, insert:html} });
+        aiPrompt.value = "";
+      }catch(e){
+        alert("Fel: " + e.message);
+      }finally{
         setThinking(false);
       }
     }
 
-    btnSend.addEventListener("click", doSend);
-    aiPromptEl.addEventListener("keydown", (e) => {
-      if ((e.key === "Enter" && !e.shiftKey)) {
-        e.preventDefault();
-        doSend();
-      }
-      if ((e.key === "Enter" && (e.metaKey || e.ctrlKey))) {
-        e.preventDefault();
-        doSend();
-      }
+    document.getElementById("btnSend").addEventListener("click", doSend);
+    aiPrompt.addEventListener("keydown", e=>{
+      if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); doSend(); }
     });
 
-    // Explain button (OpenAI)
-    document.getElementById("btnExplain").addEventListener("click", async () => {
-      try {
-        setThinking(true);
-        const reply = await aiExplain(currentHTML);
-        alert(reply);
-      } catch (e) {
-        alert("Kunde inte förklara koden: " + e.message);
-      } finally {
-        setThinking(false);
-      }
-    });
-
-    // Topbar actions
-    document.getElementById("btnNew").addEventListener("click", () => {
-      if (!confirm("Starta nytt projekt?")) return;
-      const fresh = `<!doctype html>
-<html lang="sv"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nytt projekt</title>
-<script src="https://cdn.tailwindcss.com"></script>
-</head><body class="bg-slate-50 text-slate-900">
-<main class="max-w-5xl mx-auto px-6 py-16">
-  <h1 class="text-4xl font-black">Nytt projekt</h1>
-  <p class="mt-3 text-slate-600">Börja skriva kod eller använd AI-fältet längst ned.</p>
-</main>
-</body></html>`;
-      view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: fresh } });
-    });
-
-    document.getElementById("btnExport").addEventListener("click", () => {
-      const blob = new Blob([currentHTML], { type: "text/html" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url; a.download = "webneva-projekt.html"; a.click();
-    });
-
-    document.getElementById("btnOpen").addEventListener("click", () => {
-      const blob = new Blob([currentHTML], { type: "text/html" });
-      const url = URL.createObjectURL(blob);
-      window.open(url, "_blank");
-    });
-
-    document.getElementById("btnFull").addEventListener("click", () => {
-      iframe.requestFullscreen?.();
-    });
-
-    document.getElementById("btnAddTab").addEventListener("click", () => {
-      alert("Flikar kommer i nästa version ✨");
-    });
-
-    // Exponera för ev. knappar (om du vill kalla via HTML onclick)
-    window.doSend = doSend;
-
+    document.getElementById("btnNew").onclick=()=>{ if(confirm("Starta nytt projekt?")){ view.dispatch({changes:{from:0,to:view.state.doc.length,insert:currentHTML}});} };
+    document.getElementById("btnExport").onclick=()=>{ const blob=new Blob([currentHTML],{type:"text/html"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="webneva-projekt.html"; a.click(); };
+    document.getElementById("btnOpen").onclick=()=>{ const blob=new Blob([currentHTML],{type:"text/html"}); const url=URL.createObjectURL(blob); window.open(url,"_blank"); };
+    document.getElementById("btnFull").onclick=()=>{ iframe.requestFullscreen?.(); };
   </script>
 </body>
 </html>
