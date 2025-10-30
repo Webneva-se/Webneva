@@ -1,305 +1,313 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webneva - AI Webbutveckling</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" href="images/bgk-remove.webneva.png">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .gradient-bg {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-        }
-        .hero-gradient {
-            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%);
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .feature-card {
-            transition: all 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: #3b82f6;
-        }
-        .glow {
-            box-shadow: 0 0 50px rgba(59, 130, 246, 0.3);
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Webneva – AI Webbutveckling</title>
+  <link rel="icon" href="images/bgk-remove.webneva.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+    :root{
+      --bg:#0b1020; --panel:#0e152a; --border:rgba(255,255,255,.08);
+      --text:#e5e7eb; --muted:#9ca3af; --blue:#3b82f6; --blue-strong:#2563eb;
+    }
+    html,body{height:100%}
+    body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(1200px 600px at 20% 10%, rgba(59,130,246,.15), transparent),linear-gradient(180deg,#0b1020,#0a0f1d); color:var(--text)}
+    .glass{background:rgba(255,255,255,.04); border:1px solid var(--border); backdrop-filter: blur(18px)}
+    .btn{border:1px solid var(--border); border-radius:.75rem; padding:.7rem 1rem; font-weight:600}
+    .btn:hover{background:rgba(255,255,255,.05)}
+    .btn-primary{background:var(--blue); border-color:var(--blue); color:white}
+    .btn-primary:hover{background:var(--blue-strong)}
+    .badge{font-size:.7rem; padding:.15rem .45rem; border-radius:.5rem; border:1px solid var(--border); background:rgba(59,130,246,.15); color:#90c2ff}
+  </style>
 </head>
-<body class="gradient-bg text-white min-h-screen">
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full glass-card z-50 border-b border-slate-700/50">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-10 w-10">
-                    <span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
-                        Webneva
-                    </span>
-                </div>
-                <div class="flex items-center space-x-6">
-                    <a href="#features" class="text-slate-300 hover:text-white transition-colors font-medium">Funktioner</a>
-                    <a href="#demo" class="text-slate-300 hover:text-white transition-colors font-medium">Demo</a>
-                    <a href="studio.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 glow">
-                        🚀 Starta Studio
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="pt-32 pb-20 px-6">
-        <div class="max-w-6xl mx-auto text-center">
-            <!-- Badge -->
-            <div class="inline-flex items-center space-x-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-2 mb-8">
-                <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                <span class="text-sm font-semibold text-blue-400">AI-drivet webbutveckling • Just nu i beta</span>
-            </div>
-            
-            <!-- Main Heading -->
-            <h1 class="text-5xl md:text-7xl font-black mb-8 leading-tight">
-                Skapa med
-                <span class="hero-gradient bg-clip-text text-transparent">AI</span>
-                <br>
-                <span class="text-white">publicera direkt</span>
-            </h1>
-            
-            <!-- Subtitle -->
-            <p class="text-xl text-slate-300 max-w-2xl mx-auto mb-12 leading-relaxed">
-                Transformera dina idéer till professionella webbplatser på sekunder. 
-                Ingen kodkunskap krävs – bara kreativitet och en vision.
-            </p>
-
-            <!-- CTA Buttons -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                <button onclick="openStartMenu()" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105 glow flex items-center space-x-3">
-                    <span>🚀</span>
-                    <span>Kom Igång</span>
-                </button>
-                
-                <a href="studio.html" class="glass-card border border-slate-600 hover:border-blue-400 text-slate-300 hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all flex items-center space-x-3">
-                    <span>🎨</span>
-                    <span>Direkt till Studio</span>
-                </a>
-            </div>
-
-            <!-- Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto mb-16">
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-blue-400 mb-2">30s</div>
-                    <div class="text-slate-400 text-sm">Från idé till sida</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-blue-400 mb-2">0</div>
-                    <div class="text-slate-400 text-sm">Kodkunskap krävs</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-blue-400 mb-2">100%</div>
-                    <div class="text-slate-400 text-sm">I webbläsaren</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="py-20 px-6 bg-slate-900/50">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4">Kraftfulla Funktioner</h2>
-                <p class="text-xl text-slate-300 max-w-2xl mx-auto">
-                    Allt du behöver för att skapa exceptionella webbupplevelser
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Feature 1 -->
-                <div class="feature-card glass-card rounded-2xl p-8 border border-slate-700">
-                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
-                        <span class="text-2xl">⚡</span>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Live Förhandsvisning</h3>
-                    <p class="text-slate-300 leading-relaxed">
-                        Se dina ändringar i realtid med vår avancerade live-preview. 
-                        Ingen omstart, ingen väntan.
-                    </p>
-                </div>
-
-                <!-- Feature 2 -->
-                <div class="feature-card glass-card rounded-2xl p-8 border border-slate-700">
-                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
-                        <span class="text-2xl">🧠</span>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">AI-genererad Kod</h3>
-                    <p class="text-slate-300 leading-relaxed">
-                        Få perfekt, produktionsredo HTML, CSS & JS från enkla beskrivningar. 
-                        Vår AI förstår exakt vad du vill bygga.
-                    </p>
-                </div>
-
-                <!-- Feature 3 -->
-                <div class="feature-card glass-card rounded-2xl p-8 border border-slate-700">
-                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
-                        <span class="text-2xl">🎨</span>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Smart Design</h3>
-                    <p class="text-slate-300 leading-relaxed">
-                        Automatiskt genererade färgpaletter, typografi och layout 
-                        som följer moderna designprinciper.
-                    </p>
-                </div>
-
-                <!-- Feature 4 -->
-                <div class="feature-card glass-card rounded-2xl p-8 border border-slate-700">
-                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
-                        <span class="text-2xl">📱</span>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Full Responsivitet</h3>
-                    <p class="text-slate-300 leading-relaxed">
-                        Perfekt på alla enheter automatiskt. Mobil, tablet, desktop – 
-                        inget extra arbete krävs.
-                    </p>
-                </div>
-
-                <!-- Feature 5 -->
-                <div class="feature-card glass-card rounded-2xl p-8 border border-slate-700">
-                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
-                        <span class="text-2xl">🚀</span>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Export Ready</h3>
-                    <p class="text-slate-300 leading-relaxed">
-                        Exportera ren kod eller hela projekt direkt till produktion. 
-                        Ingen lock-in, full kontroll över din kod.
-                    </p>
-                </div>
-
-                <!-- Feature 6 -->
-                <div class="feature-card glass-card rounded-2xl p-8 border border-slate-700">
-                    <div class="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mb-6">
-                        <span class="text-2xl">🔧</span>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Kodförbättring</h3>
-                    <p class="text-slate-300 leading-relaxed">
-                        Låt AI optimera och modernisera din befintliga kod. 
-                        Bättre prestanda, säkerhet och underhållbarhet.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo Section -->
-    <section id="demo" class="py-20 px-6">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-4">Se Webneva i Action</h2>
-            <p class="text-xl text-slate-300 mb-12 max-w-2xl mx-auto">
-                Från idé till färdig webbplats på minuter
-            </p>
-
-            <div class="glass-card rounded-3xl p-8 max-w-4xl mx-auto">
-                <div class="aspect-video bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-2xl border border-blue-500/20 flex items-center justify-center">
-                    <div class="text-center">
-                        <div class="w-20 h-20 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                            <span class="text-3xl">🎬</span>
-                        </div>
-                        <p class="text-2xl font-bold mb-2">Live Demo</p>
-                        <p class="text-slate-400 mb-4">Se Webneva Studio i action</p>
-                        <button onclick="openStartMenu()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold inline-block transition-all hover:scale-105">
-                            Kom Igång
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Final CTA -->
-    <section class="py-20 px-6">
-        <div class="max-w-4xl mx-auto text-center">
-            <div class="glass-card rounded-3xl p-12 bg-gradient-to-br from-blue-500/10 to-blue-500/5 border-2 border-blue-500/20">
-                <h2 class="text-4xl font-bold mb-6">Redo att skapa magi?</h2>
-                <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-                    Gå från idé till live webbplats på rekordtid. 
-                    Inga kreditkort krävs, ingen registrering.
-                </p>
-                <button onclick="openStartMenu()" class="bg-blue-500 hover:bg-blue-600 text-white px-10 py-5 rounded-xl font-bold text-lg transition-all hover:scale-105 glow inline-flex items-center space-x-3">
-                    <span>🚀</span>
-                    <span>Kom Igång Nu</span>
-                </button>
-                <p class="text-sm text-slate-400 mt-4">100% gratis • Ingen registrering • Starta direkt</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-12 px-6 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto text-center">
-            <div class="flex items-center justify-center space-x-3 mb-4">
-                <img src="images/bgk-remove.webneva.png" alt="Webneva" class="h-6 w-6">
-                <span class="text-lg font-bold">Webneva</span>
-            </div>
-            <p class="text-slate-500 text-sm">© 2025 Webneva</p>
-        </div>
-    </footer>
-
-    <!-- Start Menu Modal -->
-    <div id="startMenu" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4">
-        <div class="glass-card rounded-3xl p-8 max-w-md w-full border border-slate-700">
-            <div class="text-center">
-                <h3 class="text-2xl font-bold mb-6">Välj hur du vill börja</h3>
-                
-                <div class="space-y-4 mb-6">
-                    <button onclick="startProject('new')" class="w-full glass-card hover:border-blue-400 border border-slate-700 p-6 rounded-xl text-left transition-all hover:scale-105">
-                        <div class="font-semibold text-lg">🆕 Skapa ny hemsida</div>
-                        <div class="text-slate-400 text-sm mt-2">Från början med AI</div>
-                    </button>
-                    
-                    <button onclick="startProject('improve')" class="w-full glass-card hover:border-blue-400 border border-slate-700 p-6 rounded-xl text-left transition-all hover:scale-105">
-                        <div class="font-semibold text-lg">🔧 Förbättra befintlig kod</div>
-                        <div class="text-slate-400 text-sm mt-2">Klistra in din HTML/CSS</div>
-                    </button>
-                </div>
-
-                <button onclick="closeStartMenu()" class="text-slate-400 hover:text-white transition-colors">
-                    Avbryt
-                </button>
-            </div>
-        </div>
+<body class="min-h-screen overflow-x-hidden">
+  <!-- Navbar -->
+  <nav class="fixed top-0 inset-x-0 z-40 glass">
+    <div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="images/bgk-remove.webneva.png" class="h-6 w-6" alt="Webneva">
+        <span class="font-extrabold tracking-tight">Webneva</span>
+        <span class="text-emerald-400 text-xs flex items-center gap-1">
+          <span class="inline-block w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span> LIVE
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="#features" class="text-sm text-slate-300 hover:text-white">Funktioner</a>
+        <a href="#how" class="text-sm text-slate-300 hover:text-white">Så funkar det</a>
+        <button id="btnStart" class="btn btn-primary">🚀 Kom igång</button>
+      </div>
     </div>
+  </nav>
 
-    <script>
-        function openStartMenu() {
-            document.getElementById('startMenu').classList.remove('hidden');
-            document.getElementById('startMenu').classList.add('flex');
-        }
+  <!-- Hero -->
+  <header class="pt-28 pb-14 px-6">
+    <div class="max-w-6xl mx-auto text-center">
+      <span class="badge">AI-drivet • Inget konto behövs</span>
+      <h1 class="mt-5 text-5xl md:text-7xl font-extrabold leading-tight">
+        Bygg & förbättra webbsidor
+        <span class="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">med AI</span>
+      </h1>
+      <p class="mt-6 text-lg md:text-xl text-slate-300 max-w-3xl mx-auto">
+        Svara på några smarta frågor, så skapar eller förbättrar Webneva din webbplats – med pixelperfekt design, färdiga sektioner och ren kod.
+      </p>
+      <div class="mt-8 flex items-center justify-center gap-4">
+        <button id="btnStart2" class="btn btn-primary">Börja nu</button>
+        <a href="studio.html" class="btn">Öppna Studio</a>
+      </div>
+    </div>
+  </header>
 
-        function closeStartMenu() {
-            document.getElementById('startMenu').classList.add('hidden');
-            document.getElementById('startMenu').classList.remove('flex');
-        }
+  <!-- Features (kort) -->
+  <section id="features" class="py-14 px-6">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
+      <div class="glass rounded-2xl p-6">
+        <div class="text-2xl">⚡</div>
+        <h3 class="mt-3 font-bold text-xl">Direkt i webbläsaren</h3>
+        <p class="text-slate-300 mt-2">Allt sker lokalt + API. Ingen installation. Spara/exportera när du vill.</p>
+      </div>
+      <div class="glass rounded-2xl p-6">
+        <div class="text-2xl">🎨</div>
+        <h3 class="mt-3 font-bold text-xl">Modern design</h3>
+        <p class="text-slate-300 mt-2">Tailwind, responsiv layout och färdig typografi. Bara att leverera.</p>
+      </div>
+      <div class="glass rounded-2xl p-6">
+        <div class="text-2xl">🧠</div>
+        <h3 class="mt-3 font-bold text-xl">Smart onboarding</h3>
+        <p class="text-slate-300 mt-2">En guide ställer rätt frågor så att AI förstår din vision.</p>
+      </div>
+    </div>
+  </section>
 
-        function startProject(type) {
-            if (type === 'new') {
-                window.location.href = 'studio.html';
-            } else {
-                window.location.href = 'studio.html?mode=improve';
-            }
-        }
+  <!-- Footer -->
+  <footer class="py-10 px-6">
+    <div class="max-w-6xl mx-auto text-center text-slate-400 text-sm">
+      © 2025 Webneva
+    </div>
+  </footer>
 
-        // Close modal when clicking outside
-        document.getElementById('startMenu').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeStartMenu();
-            }
+  <!-- Wizard Modal -->
+  <div id="wizard" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60">
+    <div class="glass rounded-2xl max-w-2xl w-full overflow-hidden">
+      <div class="px-6 py-5 flex items-center justify-between border-b border-[var(--border)]">
+        <div>
+          <h3 class="text-xl font-bold">Välj hur du vill börja</h3>
+          <p class="text-slate-400 text-sm">Svara på några frågor, sedan gör vi resten.</p>
+        </div>
+        <button id="wizClose" class="btn">Stäng</button>
+      </div>
+
+      <!-- Mode chooser -->
+      <div id="stepMode" class="p-6 grid md:grid-cols-2 gap-4">
+        <button data-mode="create" class="glass rounded-xl p-5 text-left hover:border-blue-500 transition border border-[var(--border)]">
+          <div class="flex items-center gap-2">
+            <span class="badge">NEW</span>
+            <span class="font-semibold">Skapa ny hemsida</span>
+          </div>
+          <p class="text-slate-400 mt-2 text-sm">Från början med AI</p>
+        </button>
+        <button data-mode="improve" class="glass rounded-xl p-5 text-left hover:border-blue-500 transition border border-[var(--border)]">
+          <div class="flex items-center gap-2">
+            <span>🔧</span>
+            <span class="font-semibold">Förbättra befintlig kod</span>
+          </div>
+          <p class="text-slate-400 mt-2 text-sm">Klistra in din HTML eller börja från fil</p>
+        </button>
+      </div>
+
+      <!-- Questions -->
+      <div id="stepQuestions" class="hidden p-6">
+        <div id="qHeader" class="flex items-center justify-between mb-4">
+          <div class="text-sm text-slate-400"><span id="qIndex">1</span>/<span id="qCount">5</span></div>
+          <button id="btnBack" class="btn">Tillbaka</button>
+        </div>
+
+        <!-- Dynamic question -->
+        <div id="qBody" class="space-y-3"></div>
+
+        <div class="mt-5 flex items-center justify-between">
+          <div id="qHelp" class="text-xs text-slate-400"></div>
+          <div class="flex gap-2">
+            <button id="btnNext" class="btn btn-primary">Nästa</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div id="stepSummary" class="hidden p-6">
+        <h4 class="text-lg font-bold mb-2">Sammanfattning</h4>
+        <div id="summaryBox" class="glass rounded-xl p-4 text-sm"></div>
+        <div class="mt-5 flex items-center justify-between">
+          <button id="btnBack2" class="btn">Tillbaka</button>
+          <button id="btnStartStudio" class="btn btn-primary">Starta Studio</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // ------- State -------
+    const SETUP_KEY = 'WEBNEVA_SETUP_V1';
+    let mode = null; // 'create' | 'improve'
+    let answers = {};
+
+    // Questions for each mode
+    const Q = {
+      create: [
+        { id:'purpose', label:'Vad är syftet med webbplatsen?', type:'text', placeholder:'Portfölj, butik, event, SaaS, etc.' },
+        { id:'audience', label:'Vem är målgruppen?', type:'text', placeholder:'T.ex. kunder i Sverige, investerare, fans...' },
+        { id:'style', label:'Vilken känsla vill du ha i designen?', type:'select', options:['Modern & minimalistisk','Kreativ & färgstark','Klassisk & sober','Tech / SaaS'], help:'Påverkar typografi, färger, spacing' },
+        { id:'pages', label:'Vilka sidor behövs?', type:'chips', options:['Startsida','Tjänster','Om oss','Kontakt','Blogg','FAQ','Portfolio'] },
+        { id:'cta', label:'Vad är viktigaste call-to-action?', type:'text', placeholder:'Boka möte, köp nu, prenumerera...' },
+      ],
+      improve: [
+        { id:'goal', label:'Vad vill du förbättra?', type:'select', options:['Design & layout','Tillgänglighet & semantik','Prestanda','Kodstädning','Responsivitet'],'help':'Du kan justera sen i Studio' },
+        { id:'pages', label:'Hur många sidor rör det?', type:'text', placeholder:'T.ex. startsida + admin + dashboard' },
+        { id:'style', label:'Designstil att eftersträva', type:'select', options:['Modern & minimalistisk','Tech / SaaS','Kreativ & färgstark','Klassisk & sober'] },
+        { id:'notes', label:'Övriga önskemål eller krav', type:'textarea', placeholder:'T.ex. “behåll färgerna”, “lägg in testimonials”...' },
+        { id:'code', label:'Klistra in din nuvarande HTML (frivilligt)', type:'textarea', placeholder:'Hela HTML-dokumentet. Lämna tomt om du vill klistra in i Studio istället.' },
+      ]
+    };
+
+    // ------- Elements -------
+    const wizard = document.getElementById('wizard');
+    const wizClose = document.getElementById('wizClose');
+    const stepMode = document.getElementById('stepMode');
+    const stepQuestions = document.getElementById('stepQuestions');
+    const stepSummary = document.getElementById('stepSummary');
+    const qBody = document.getElementById('qBody');
+    const qIndexEl = document.getElementById('qIndex');
+    const qCountEl = document.getElementById('qCount');
+    const qHelp = document.getElementById('qHelp');
+    const btnBack = document.getElementById('btnBack');
+    const btnBack2 = document.getElementById('btnBack2');
+    const btnNext = document.getElementById('btnNext');
+    const btnStartStudio = document.getElementById('btnStartStudio');
+    const summaryBox = document.getElementById('summaryBox');
+
+    // open modal
+    const openWizard = ()=>{ wizard.classList.remove('hidden'); wizard.classList.add('flex'); };
+    document.getElementById('btnStart').onclick=openWizard;
+    document.getElementById('btnStart2').onclick=openWizard;
+    wizClose.onclick=()=>{ wizard.classList.add('hidden'); wizard.classList.remove('flex'); };
+
+    // choose mode
+    Array.from(stepMode.querySelectorAll('[data-mode]')).forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        mode = btn.dataset.mode; answers = {};
+        startQuestions();
+      });
+    });
+
+    let qi = 0; // question index
+    function startQuestions(){
+      stepMode.classList.add('hidden');
+      stepSummary.classList.add('hidden');
+      stepQuestions.classList.remove('hidden');
+      qi = 0;
+      renderQuestion();
+    }
+
+    function renderQuestion(){
+      const qs = Q[mode];
+      qCountEl.textContent = qs.length;
+      qIndexEl.textContent = qi+1;
+      const q = qs[qi];
+      qBody.innerHTML = "";
+      qHelp.textContent = q.help || "";
+
+      const label = document.createElement('label');
+      label.className = "block text-sm mb-2";
+      label.textContent = q.label;
+      qBody.appendChild(label);
+
+      // field
+      let field;
+      if (q.type === 'text') {
+        field = document.createElement('input');
+        field.type = 'text';
+        field.className = "w-full glass rounded-xl px-4 py-3 outline-none";
+        field.placeholder = q.placeholder || "";
+        field.value = answers[q.id] || "";
+      } else if (q.type === 'textarea') {
+        field = document.createElement('textarea');
+        field.className = "w-full glass rounded-xl px-4 py-3 h-40 outline-none";
+        field.placeholder = q.placeholder || "";
+        field.value = answers[q.id] || "";
+      } else if (q.type === 'select') {
+        field = document.createElement('select');
+        field.className = "w-full glass rounded-xl px-4 py-3 outline-none";
+        (q.options||[]).forEach(opt=>{
+          const o = document.createElement('option');
+          o.value = opt; o.textContent = opt;
+          field.appendChild(o);
         });
-    </script>
+        field.value = answers[q.id] || (q.options?.[0]||"");
+      } else if (q.type === 'chips') {
+        field = document.createElement('div');
+        field.className = "flex flex-wrap gap-2";
+        (q.options||[]).forEach(opt=>{
+          const chip = document.createElement('button');
+          chip.type="button";
+          chip.className="px-3 py-2 rounded-lg border border-[var(--border)] hover:border-blue-500";
+          chip.textContent = opt;
+          chip.dataset.v = opt;
+          if ((answers[q.id]||[]).includes(opt)) chip.classList.add('ring','ring-blue-500/30','border-blue-500');
+          chip.onclick=()=>{
+            const arr = new Set(answers[q.id]||[]);
+            if (arr.has(opt)) arr.delete(opt); else arr.add(opt);
+            answers[q.id] = Array.from(arr);
+            renderQuestion(); // rerender to update visuals
+          };
+          field.appendChild(chip);
+        });
+      }
+      qBody.appendChild(field);
+
+      // nav
+      btnBack.disabled = (qi===0);
+      btnNext.textContent = (qi===qs.length-1) ? "Fortsätt" : "Nästa";
+
+      btnNext.onclick = ()=>{
+        const q = qs[qi];
+        if (q.type==='chips') {
+          // already stored via click
+        } else {
+          answers[q.id] = field.value.trim();
+        }
+        if (qi<qs.length-1){ qi++; renderQuestion(); }
+        else { showSummary(); }
+      };
+      btnBack.onclick = ()=>{
+        if (qi>0){ qi--; renderQuestion(); }
+        else { // back to mode
+          stepQuestions.classList.add('hidden');
+          stepMode.classList.remove('hidden');
+        }
+      };
+    }
+
+    function showSummary(){
+      stepQuestions.classList.add('hidden');
+      stepSummary.classList.remove('hidden');
+      const pretty = Object.entries(answers).map(([k,v])=>{
+        const val = Array.isArray(v)? v.join(', ') : v || '—';
+        return `<div class="py-1"><span class="text-slate-400">${k}</span>: <span class="font-semibold">${val}</span></div>`;
+      }).join('');
+      summaryBox.innerHTML = `
+        <div class="text-sm">Läge: <span class="font-semibold">${mode==='create'?'Skapa ny sida':'Förbättra kod'}</span></div>
+        <div class="mt-3">${pretty}</div>
+      `;
+    }
+
+    btnBack2.onclick = ()=>{ stepSummary.classList.add('hidden'); startQuestions(); };
+
+    btnStartStudio.onclick = ()=>{
+      const payload = { mode, answers, timestamp: Date.now(), autoRun:true };
+      localStorage.setItem(SETUP_KEY, JSON.stringify(payload));
+      window.location.href = 'studio.html';
+    };
+  </script>
 </body>
 </html>
