@@ -3,245 +3,109 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Webneva – AI Webbutveckling</title>
-  <link rel="icon" href="images/bgk-remove.webneva.png" />
+  <title>Webneva – Skapa med AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-    :root{
-      --bg:#0a0f1d; --bg2:#0b1120; --panel:rgba(255,255,255,.06);
-      --border:rgba(255,255,255,.10); --text:#e6e9ef; --muted:#9da8bf;
-      --blue:#3b82f6; --blue-2:#2563eb;
+    :root {
+      --bg: #0b1120;
+      --panel: rgba(255,255,255,.05);
+      --border: rgba(255,255,255,.1);
+      --blue: #3b82f6;
     }
-    html,body{height:100%} body{font-family:Inter,system-ui; background:
-      radial-gradient(1200px 600px at 15% -10%, rgba(59,130,246,.18), transparent),
-      radial-gradient(900px 500px at 90% 10%, rgba(37,99,235,.12), transparent),
-      linear-gradient(180deg,var(--bg),var(--bg2));
-      color:var(--text)
-    }
-    .glass{background:var(--panel); border:1px solid var(--border); backdrop-filter:blur(18px)}
-    .btn{border:1px solid var(--border); border-radius:12px; padding:.7rem 1rem; font-weight:700}
-    .btn:hover{background:rgba(255,255,255,.05)}
-    .btn-primary{background:var(--blue); border-color:var(--blue); color:#fff}
-    .btn-primary:hover{background:var(--blue-2)}
-    .badge{font-size:.7rem;padding:.2rem .5rem;border:1px solid var(--border);border-radius:999px;background:rgba(59,130,246,.18);color:#a7c7ff}
-    .wizard-mask{background:rgba(0,0,0,.55)}
+    body { background: var(--bg); color: #e5e7eb; font-family: Inter, sans-serif; }
+    .glass { background: var(--panel); border: 1px solid var(--border); backdrop-filter: blur(18px); }
+    .btn { border: 1px solid var(--border); border-radius: 10px; padding: .6rem 1.2rem; font-weight: 600; }
+    .btn:hover { background: rgba(255,255,255,.05); }
+    .btn-primary { background: var(--blue); border-color: var(--blue); color: white; }
   </style>
 </head>
-<body class="min-h-screen overflow-x-hidden">
-  <!-- Nav -->
-  <nav class="fixed inset-x-0 top-0 z-50 glass">
-    <div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <img src="images/bgk-remove.webneva.png" class="h-6 w-6" alt="Webneva">
-        <span class="font-extrabold tracking-tight">Webneva</span>
-        <span class="ml-2 text-emerald-400 text-xs flex items-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> LIVE
-        </span>
-      </div>
-      <div class="hidden md:flex items-center gap-4 text-sm">
-        <a class="text-slate-300 hover:text-white" href="#features">Funktioner</a>
-        <a class="text-slate-300 hover:text-white" href="#how">Så funkar det</a>
-        <a class="btn" href="studio.html">Öppna Studio</a>
-        <button id="startTop" class="btn btn-primary">Kom igång</button>
-      </div>
-      <button id="startTopSm" class="md:hidden btn btn-primary">Start</button>
+<body class="h-screen flex items-center justify-center">
+  <div id="wizard" class="glass rounded-2xl p-8 w-[90%] max-w-md">
+    <h1 class="text-2xl font-bold mb-1 text-white">Skapa ny hemsida</h1>
+    <p class="text-slate-400 text-sm mb-6">AI guidar dig genom några enkla steg.</p>
+
+    <div id="step">
+      <!-- Frågor kommer här -->
     </div>
-  </nav>
 
-  <!-- Hero -->
-  <header class="pt-28 pb-16 px-6">
-    <div class="max-w-6xl mx-auto text-center">
-      <span class="badge">AI-drivet • Ingen inloggning krävs</span>
-      <h1 class="mt-5 text-5xl md:text-7xl font-extrabold leading-tight">
-        Bygg & förbättra hemsidor
-        <span class="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">på sekunder</span>
-      </h1>
-      <p class="mt-6 text-lg md:text-xl text-slate-300 max-w-3xl mx-auto">
-        Svara på några smarta frågor – Webneva levererar en komplett, responsiv och snygg webbplats.
-      </p>
-      <div class="mt-8 flex items-center justify-center gap-4">
-        <button id="startBtn" class="btn btn-primary">🚀 Kom igång</button>
-        <a href="studio.html" class="btn">Öppna Studio</a>
-      </div>
-    </div>
-  </header>
-
-  <!-- Features -->
-  <section id="features" class="px-6 pb-20">
-    <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-6">
-      <div class="glass rounded-2xl p-6">
-        <div class="text-2xl">🎨</div>
-        <h3 class="mt-3 text-xl font-bold">Modern design</h3>
-        <p class="text-slate-300 mt-2">Tailwind, tydlig typografi och responsiv layout.</p>
-      </div>
-      <div class="glass rounded-2xl p-6">
-        <div class="text-2xl">⚡</div>
-        <h3 class="mt-3 text-xl font-bold">Live-preview</h3>
-        <p class="text-slate-300 mt-2">Se allt som skapas och förbättras direkt.</p>
-      </div>
-      <div class="glass rounded-2xl p-6">
-        <div class="text-2xl">🧠</div>
-        <h3 class="mt-3 text-xl font-bold">Smart onboarding</h3>
-        <p class="text-slate-300 mt-2">Guiden skapar rätt prompt – bättre resultat.</p>
-      </div>
-    </div>
-  </section>
-
-  <footer class="px-6 pb-10">
-    <div class="max-w-7xl mx-auto text-center text-slate-400 text-sm">© 2025 Webneva</div>
-  </footer>
-
-  <!-- Wizard -->
-  <div id="wizard" class="fixed inset-0 z-50 hidden items-center justify-center wizard-mask p-4">
-    <div class="glass rounded-2xl max-w-2xl w-full overflow-hidden">
-      <div class="px-6 py-5 flex items-center justify-between border-b border-[var(--border)]">
-        <div>
-          <h3 class="text-xl font-bold">Kom igång</h3>
-          <p class="text-slate-400 text-sm">Välj läge och svara på några frågor</p>
-        </div>
-        <button id="wizClose" class="btn">Stäng</button>
-      </div>
-
-      <!-- Step: mode -->
-      <div id="stepMode" class="p-6 grid md:grid-cols-2 gap-4">
-        <button data-mode="create" class="glass rounded-xl p-5 text-left hover:border-blue-500 transition border border-[var(--border)]">
-          <div class="flex items-center gap-2">
-            <span class="badge">NEW</span><span class="font-semibold">Skapa ny hemsida</span>
-          </div>
-          <p class="text-slate-300 mt-2 text-sm">Från början med AI</p>
-        </button>
-        <button data-mode="improve" class="glass rounded-xl p-5 text-left hover:border-blue-500 transition border border-[var(--border)]">
-          <div class="flex items-center gap-2">
-            <span>🔧</span><span class="font-semibold">Förbättra befintlig kod</span>
-          </div>
-          <p class="text-slate-300 mt-2 text-sm">Klistra in HTML eller börja i Studio</p>
-        </button>
-      </div>
-
-      <!-- Step: questions -->
-      <div id="stepQuestions" class="hidden p-6">
-        <div class="flex items-center justify-between mb-4">
-          <div class="text-xs text-slate-400"><span id="qIndex">1</span>/<span id="qCount">5</span></div>
-          <button id="btnBack" class="btn">Tillbaka</button>
-        </div>
-        <div id="qBody" class="space-y-3"></div>
-        <div class="mt-5 flex items-center justify-between">
-          <div id="qHelp" class="text-xs text-slate-400"></div>
-          <button id="btnNext" class="btn btn-primary">Nästa</button>
-        </div>
-      </div>
-
-      <!-- Step: summary -->
-      <div id="stepSummary" class="hidden p-6">
-        <h4 class="text-lg font-bold mb-2">Sammanfattning</h4>
-        <div id="summaryBox" class="glass rounded-xl p-4 text-sm"></div>
-        <div class="mt-5 flex items-center justify-between">
-          <button id="btnBack2" class="btn">Tillbaka</button>
-          <button id="btnStartStudio" class="btn btn-primary">Starta Studio</button>
-        </div>
-      </div>
+    <div class="flex justify-between mt-6">
+      <button id="backBtn" class="btn">Tillbaka</button>
+      <button id="nextBtn" class="btn btn-primary">Nästa</button>
     </div>
   </div>
 
-  <script type="module">
+  <script>
     const SETUP_KEY = "WEBNEVA_SETUP_V1";
-    const wizard = document.getElementById("wizard");
-    const openWizard = ()=>{ wizard.classList.remove("hidden"); wizard.classList.add("flex"); };
-    const closeWizard = ()=>{ wizard.classList.add("hidden"); wizard.classList.remove("flex"); };
+    const step = document.getElementById("step");
+    const next = document.getElementById("nextBtn");
+    const back = document.getElementById("backBtn");
 
-    document.getElementById("startBtn").onclick=openWizard;
-    document.getElementById("startTop").onclick=openWizard;
-    document.getElementById("startTopSm").onclick=openWizard;
-    document.getElementById("wizClose").onclick=closeWizard;
+    let i = 0;
+    const answers = {};
+    const questions = [
+      { id: "topic", label: "Vad ska webbplatsen handla om?", type: "text", placeholder: "Portfolio, företag, restaurang…" },
+      { id: "pages", label: "Vilka sidor ska den innehålla?", type: "chips", options: ["Startsida", "Tjänster", "Kontakt", "Om oss", "Blogg", "Galleri"] },
+      { id: "style", label: "Vilken stil vill du ha?", type: "select", options: ["Modern & minimalistisk", "Färgstark & kreativ", "Mörk & lyxig", "Ren & professionell"] }
+    ];
 
-    const stepMode = document.getElementById("stepMode");
-    const stepQuestions = document.getElementById("stepQuestions");
-    const stepSummary = document.getElementById("stepSummary");
-    const qBody = document.getElementById("qBody");
-    const qIndexEl = document.getElementById("qIndex");
-    const qCountEl = document.getElementById("qCount");
-    const qHelp = document.getElementById("qHelp");
-    const btnBack = document.getElementById("btnBack");
-    const btnBack2 = document.getElementById("btnBack2");
-    const btnNext = document.getElementById("btnNext");
-    const btnStartStudio = document.getElementById("btnStartStudio");
-    const summaryBox = document.getElementById("summaryBox");
-
-    let mode=null, answers={}, qi=0;
-    const Q = {
-      create:[
-        {id:'purpose', label:'Vad är syftet med webbplatsen?', type:'text', placeholder:'Portfolio, butik, SaaS, event…'},
-        {id:'audience', label:'Vem är målgruppen?', type:'text', placeholder:'Kunder i Sverige, investerare…'},
-        {id:'style', label:'Vilken designstil?', type:'select', options:['Modern & minimalistisk','Tech / SaaS','Kreativ & färgstark','Klassisk & sober'], help:'Påverkar typografi, färger, spacing'},
-        {id:'pages', label:'Vilka sidor behövs?', type:'chips', options:['Startsida','Tjänster','Om oss','Kontakt','Blogg','FAQ','Portfolio']},
-        {id:'cta', label:'Viktigaste call-to-action', type:'text', placeholder:'Boka möte, köp nu, prenumerera…'}
-      ],
-      improve:[
-        {id:'goal',  label:'Vad vill du förbättra?', type:'select', options:['Design & layout','Tillgänglighet','Prestanda','Kodstädning','Responsivitet']},
-        {id:'pages', label:'Hur många sidor berörs?', type:'text', placeholder:'T.ex. startsida + dashboard'},
-        {id:'style', label:'Designstil att eftersträva', type:'select', options:['Modern & minimalistisk','Tech / SaaS','Kreativ & färgstark','Klassisk & sober']},
-        {id:'notes', label:'Önskemål/krav', type:'textarea', placeholder:'Behåll färgerna, lägg in testimonials…'},
-        {id:'code',  label:'Klistra in din nuvarande HTML (frivilligt)', type:'textarea', placeholder:'Hela dokumentet. Tomt = klistra in i Studio senare.'}
-      ]
-    }
-
-    Array.from(stepMode.querySelectorAll("[data-mode]")).forEach(b=>{
-      b.onclick=()=>{ mode=b.dataset.mode; answers={}; qi=0; showQuestions(); }
-    });
-
-    function showQuestions(){
-      stepMode.classList.add("hidden");
-      stepSummary.classList.add("hidden");
-      stepQuestions.classList.remove("hidden");
-      renderQuestion();
-    }
-
-    function renderQuestion(){
-      const qs=Q[mode]; qCountEl.textContent=qs.length; qIndexEl.textContent=qi+1;
-      const q=qs[qi]; qBody.innerHTML=""; qHelp.textContent=q.help||"";
-      let field; const label=document.createElement("label"); label.className="block text-sm mb-2"; label.textContent=q.label; qBody.appendChild(label);
-
-      if(q.type==='text'){
-        field=document.createElement("input"); field.type="text"; field.className="w-full glass rounded-xl px-4 py-3 outline-none"; field.placeholder=q.placeholder||""; field.value=answers[q.id]||"";
-      } else if(q.type==='textarea'){
-        field=document.createElement("textarea"); field.className="w-full glass rounded-xl px-4 py-3 h-40 outline-none"; field.placeholder=q.placeholder||""; field.value=answers[q.id]||"";
-      } else if(q.type==='select'){
-        field=document.createElement("select"); field.className="w-full glass rounded-xl px-4 py-3 outline-none";
-        (q.options||[]).forEach(o=>{ const opt=document.createElement("option"); opt.value=o; opt.textContent=o; field.appendChild(opt); });
-        field.value=answers[q.id]||q.options?.[0]||"";
-      } else if(q.type==='chips'){
-        field=document.createElement("div"); field.className="flex flex-wrap gap-2";
-        (q.options||[]).forEach(opt=>{
-          const chip=document.createElement("button"); chip.type="button"; chip.className="px-3 py-2 rounded-lg border border-[var(--border)] hover:border-blue-500"; chip.textContent=opt;
-          if((answers[q.id]||[]).includes(opt)) chip.classList.add("ring","ring-blue-500/30","border-blue-500");
-          chip.onclick=()=>{ const s=new Set(answers[q.id]||[]); s.has(opt)?s.delete(opt):s.add(opt); answers[q.id]=Array.from(s); renderQuestion(); };
-          field.appendChild(chip);
+    function render() {
+      const q = questions[i];
+      step.innerHTML = `<label class="block text-sm mb-2 text-slate-300">${q.label}</label>`;
+      let el;
+      if (q.type === "text") {
+        el = document.createElement("input");
+        el.type = "text";
+        el.placeholder = q.placeholder;
+        el.className = "w-full rounded-lg bg-[#0f172a] text-white border border-[var(--border)] px-4 py-3";
+        el.value = answers[q.id] || "";
+        step.appendChild(el);
+      } else if (q.type === "chips") {
+        el = document.createElement("div");
+        el.className = "flex flex-wrap gap-2";
+        q.options.forEach(opt => {
+          const b = document.createElement("button");
+          b.textContent = opt;
+          b.className = "px-3 py-2 rounded-lg border border-[var(--border)] hover:border-blue-500 text-sm";
+          if ((answers[q.id] || []).includes(opt)) b.classList.add("border-blue-500", "bg-blue-500/10");
+          b.onclick = () => {
+            const set = new Set(answers[q.id] || []);
+            set.has(opt) ? set.delete(opt) : set.add(opt);
+            answers[q.id] = Array.from(set);
+            render();
+          };
+          el.appendChild(b);
         });
+        step.appendChild(el);
+      } else if (q.type === "select") {
+        el = document.createElement("select");
+        el.className = "w-full rounded-lg bg-[#0f172a] text-white border border-[var(--border)] px-4 py-3";
+        q.options.forEach(opt => {
+          const optEl = document.createElement("option");
+          optEl.textContent = opt;
+          el.appendChild(optEl);
+        });
+        el.value = answers[q.id] || q.options[0];
+        step.appendChild(el);
       }
-      qBody.appendChild(field);
-      btnBack.disabled=(qi===0);
-      btnNext.textContent=(qi===qs.length-1)?"Fortsätt":"Nästa";
-      btnNext.onclick=()=>{ if(q.type!=='chips') answers[q.id]=(field.value||"").trim(); if(qi<qs.length-1){qi++;renderQuestion();} else { showSummary(); } }
-      btnBack.onclick=()=>{ if(qi>0){qi--;renderQuestion();} else { stepQuestions.classList.add("hidden"); stepMode.classList.remove("hidden"); } }
+      back.disabled = i === 0;
+      next.textContent = i === questions.length - 1 ? "Starta Studio" : "Nästa";
+      next.onclick = () => {
+        if (q.type === "chips") {
+          // redan sparad i klick
+        } else answers[q.id] = el.value.trim();
+        if (i < questions.length - 1) { i++; render(); }
+        else finish();
+      };
+      back.onclick = () => { if (i > 0) { i--; render(); } };
     }
 
-    function showSummary(){
-      stepQuestions.classList.add("hidden");
-      stepSummary.classList.remove("hidden");
-      const pretty=Object.entries(answers).map(([k,v])=>{
-        const val=Array.isArray(v)?v.join(", "):(v||'—');
-        return `<div class="py-1 flex justify-between gap-3"><span class="text-slate-400">${k}</span><span class="font-semibold">${val}</span></div>`;
-      }).join("");
-      summaryBox.innerHTML=`<div class="text-sm">Läge: <b>${mode==='create'?'Skapa ny hemsida':'Förbättra kod'}</b></div><div class="mt-3">${pretty}</div>`;
+    function finish() {
+      const setup = { mode: "create", answers, autoRun: true, timestamp: Date.now() };
+      localStorage.setItem(SETUP_KEY, JSON.stringify(setup));
+      window.location.href = "studio.html";
     }
 
-    btnBack2.onclick=()=>{ stepSummary.classList.add("hidden"); showQuestions(); };
-
-    btnStartStudio.onclick=()=>{
-      localStorage.setItem("WEBNEVA_SETUP_V1", JSON.stringify({ mode, answers, autoRun:true, timestamp:Date.now() }));
-      window.location.href="studio.html";
-    };
+    render();
   </script>
 </body>
 </html>
