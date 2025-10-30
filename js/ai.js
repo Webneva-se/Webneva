@@ -1,34 +1,30 @@
-// /webneva/js/ai.js
+// /js/ai.js — Endast OpenAI
 
-export async function aiGenerate(prompt) {
-  const res = await fetch("/api/deepsite", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt, mode: "generate" })
-  });
-  if (!res.ok) throw new Error(`DeepSite-fel: ${res.status}`);
-  const data = await res.json();
-  return data?.html || data?.files?.[0]?.content || "";
-}
-
-export async function aiImprove(prompt, html) {
-  const res = await fetch("/api/deepsite", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt, html, mode: "improve" })
-  });
-  if (!res.ok) throw new Error(`DeepSite-förbättring fel: ${res.status}`);
-  const data = await res.json();
-  return data?.html || data?.files?.[0]?.content || "";
-}
-
-export async function aiExplain(code) {
+async function call(endpointBody) {
   const res = await fetch("/api/openai", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ type: "explain", code })
+    body: JSON.stringify(endpointBody),
   });
-  if (!res.ok) throw new Error(`OpenAI-fel: ${res.status}`);
-  const data = await res.json();
-  return data?.reply || "";
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`OpenAI backend fel ${res.status}: ${txt}`);
+  }
+  return res.json();
+}
+
+export async function aiGenerate(prompt) {
+  if (!prompt) throw new Error("Prompt saknas.");
+  const { html, reply } = await call({ type: "generate", prompt });
+  return html || reply || "";
+}
+
+export async function aiImprove(prompt, html) {
+  const { html: result, reply } = await call({ type: "improve", prompt, html });
+  return result || reply || "";
+}
+
+export async function aiExplain(html) {
+  const { reply } = await call({ type: "explain", html });
+  return reply || "";
 }
