@@ -2,139 +2,137 @@
 <html lang="sv">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Webneva – AI Webbutveckling</title>
   <link rel="icon" href="images/bgk-remove.webneva.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
     :root{
-      --bg:#0b1020; --panel:#0e152a; --border:rgba(255,255,255,.08);
-      --text:#e5e7eb; --muted:#9ca3af; --blue:#3b82f6; --blue-strong:#2563eb;
+      --bg:#0a0f1d; --bg2:#0b1120; --panel:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.10); --text:#e6e9ef; --muted:#9da8bf;
+      --blue:#3b82f6; --blue-2:#2563eb;
     }
-    html,body{height:100%}
-    body{font-family:'Inter',system-ui,sans-serif;background:radial-gradient(1200px 600px at 20% 10%, rgba(59,130,246,.15), transparent),linear-gradient(180deg,#0b1020,#0a0f1d); color:var(--text)}
-    .glass{background:rgba(255,255,255,.04); border:1px solid var(--border); backdrop-filter: blur(18px)}
-    .btn{border:1px solid var(--border); border-radius:.75rem; padding:.7rem 1rem; font-weight:600}
+    html,body{height:100%} body{font-family:Inter,system-ui; background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(59,130,246,.18), transparent),
+      radial-gradient(900px 500px at 90% 10%, rgba(37,99,235,.12), transparent),
+      linear-gradient(180deg,var(--bg),var(--bg2));
+      color:var(--text)
+    }
+    .glass{background:var(--panel); border:1px solid var(--border); backdrop-filter:blur(18px)}
+    .btn{border:1px solid var(--border); border-radius:12px; padding:.7rem 1rem; font-weight:700}
     .btn:hover{background:rgba(255,255,255,.05)}
-    .btn-primary{background:var(--blue); border-color:var(--blue); color:white}
-    .btn-primary:hover{background:var(--blue-strong)}
-    .badge{font-size:.7rem; padding:.15rem .45rem; border-radius:.5rem; border:1px solid var(--border); background:rgba(59,130,246,.15); color:#90c2ff}
+    .btn-primary{background:var(--blue); border-color:var(--blue); color:#fff}
+    .btn-primary:hover{background:var(--blue-2)}
+    .badge{font-size:.7rem;padding:.2rem .5rem;border:1px solid var(--border);border-radius:999px;background:rgba(59,130,246,.18);color:#a7c7ff}
+    .wizard-mask{background:rgba(0,0,0,.55)}
   </style>
 </head>
 <body class="min-h-screen overflow-x-hidden">
-  <!-- Navbar -->
-  <nav class="fixed top-0 inset-x-0 z-40 glass">
+  <!-- Nav -->
+  <nav class="fixed inset-x-0 top-0 z-50 glass">
     <div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <img src="images/bgk-remove.webneva.png" class="h-6 w-6" alt="Webneva">
         <span class="font-extrabold tracking-tight">Webneva</span>
-        <span class="text-emerald-400 text-xs flex items-center gap-1">
-          <span class="inline-block w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span> LIVE
+        <span class="ml-2 text-emerald-400 text-xs flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> LIVE
         </span>
       </div>
-      <div class="flex items-center gap-3">
-        <a href="#features" class="text-sm text-slate-300 hover:text-white">Funktioner</a>
-        <a href="#how" class="text-sm text-slate-300 hover:text-white">Så funkar det</a>
-        <button id="btnStart" class="btn btn-primary">🚀 Kom igång</button>
+      <div class="hidden md:flex items-center gap-4 text-sm">
+        <a class="text-slate-300 hover:text-white" href="#features">Funktioner</a>
+        <a class="text-slate-300 hover:text-white" href="#how">Så funkar det</a>
+        <a class="btn" href="studio.html">Öppna Studio</a>
+        <button id="startTop" class="btn btn-primary">Kom igång</button>
       </div>
+      <button id="startTopSm" class="md:hidden btn btn-primary">Start</button>
     </div>
   </nav>
 
   <!-- Hero -->
-  <header class="pt-28 pb-14 px-6">
+  <header class="pt-28 pb-16 px-6">
     <div class="max-w-6xl mx-auto text-center">
-      <span class="badge">AI-drivet • Inget konto behövs</span>
+      <span class="badge">AI-drivet • Ingen inloggning krävs</span>
       <h1 class="mt-5 text-5xl md:text-7xl font-extrabold leading-tight">
-        Bygg & förbättra webbsidor
-        <span class="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">med AI</span>
+        Bygg & förbättra hemsidor
+        <span class="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">på sekunder</span>
       </h1>
       <p class="mt-6 text-lg md:text-xl text-slate-300 max-w-3xl mx-auto">
-        Svara på några smarta frågor, så skapar eller förbättrar Webneva din webbplats – med pixelperfekt design, färdiga sektioner och ren kod.
+        Svara på några smarta frågor – Webneva levererar en komplett, responsiv och snygg webbplats.
       </p>
       <div class="mt-8 flex items-center justify-center gap-4">
-        <button id="btnStart2" class="btn btn-primary">Börja nu</button>
+        <button id="startBtn" class="btn btn-primary">🚀 Kom igång</button>
         <a href="studio.html" class="btn">Öppna Studio</a>
       </div>
     </div>
   </header>
 
-  <!-- Features (kort) -->
-  <section id="features" class="py-14 px-6">
-    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
-      <div class="glass rounded-2xl p-6">
-        <div class="text-2xl">⚡</div>
-        <h3 class="mt-3 font-bold text-xl">Direkt i webbläsaren</h3>
-        <p class="text-slate-300 mt-2">Allt sker lokalt + API. Ingen installation. Spara/exportera när du vill.</p>
-      </div>
+  <!-- Features -->
+  <section id="features" class="px-6 pb-20">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-6">
       <div class="glass rounded-2xl p-6">
         <div class="text-2xl">🎨</div>
-        <h3 class="mt-3 font-bold text-xl">Modern design</h3>
-        <p class="text-slate-300 mt-2">Tailwind, responsiv layout och färdig typografi. Bara att leverera.</p>
+        <h3 class="mt-3 text-xl font-bold">Modern design</h3>
+        <p class="text-slate-300 mt-2">Tailwind, tydlig typografi och responsiv layout.</p>
+      </div>
+      <div class="glass rounded-2xl p-6">
+        <div class="text-2xl">⚡</div>
+        <h3 class="mt-3 text-xl font-bold">Live-preview</h3>
+        <p class="text-slate-300 mt-2">Se allt som skapas och förbättras direkt.</p>
       </div>
       <div class="glass rounded-2xl p-6">
         <div class="text-2xl">🧠</div>
-        <h3 class="mt-3 font-bold text-xl">Smart onboarding</h3>
-        <p class="text-slate-300 mt-2">En guide ställer rätt frågor så att AI förstår din vision.</p>
+        <h3 class="mt-3 text-xl font-bold">Smart onboarding</h3>
+        <p class="text-slate-300 mt-2">Guiden skapar rätt prompt – bättre resultat.</p>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="py-10 px-6">
-    <div class="max-w-6xl mx-auto text-center text-slate-400 text-sm">
-      © 2025 Webneva
-    </div>
+  <footer class="px-6 pb-10">
+    <div class="max-w-7xl mx-auto text-center text-slate-400 text-sm">© 2025 Webneva</div>
   </footer>
 
-  <!-- Wizard Modal -->
-  <div id="wizard" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60">
+  <!-- Wizard -->
+  <div id="wizard" class="fixed inset-0 z-50 hidden items-center justify-center wizard-mask p-4">
     <div class="glass rounded-2xl max-w-2xl w-full overflow-hidden">
       <div class="px-6 py-5 flex items-center justify-between border-b border-[var(--border)]">
         <div>
-          <h3 class="text-xl font-bold">Välj hur du vill börja</h3>
-          <p class="text-slate-400 text-sm">Svara på några frågor, sedan gör vi resten.</p>
+          <h3 class="text-xl font-bold">Kom igång</h3>
+          <p class="text-slate-400 text-sm">Välj läge och svara på några frågor</p>
         </div>
         <button id="wizClose" class="btn">Stäng</button>
       </div>
 
-      <!-- Mode chooser -->
+      <!-- Step: mode -->
       <div id="stepMode" class="p-6 grid md:grid-cols-2 gap-4">
         <button data-mode="create" class="glass rounded-xl p-5 text-left hover:border-blue-500 transition border border-[var(--border)]">
           <div class="flex items-center gap-2">
-            <span class="badge">NEW</span>
-            <span class="font-semibold">Skapa ny hemsida</span>
+            <span class="badge">NEW</span><span class="font-semibold">Skapa ny hemsida</span>
           </div>
-          <p class="text-slate-400 mt-2 text-sm">Från början med AI</p>
+          <p class="text-slate-300 mt-2 text-sm">Från början med AI</p>
         </button>
         <button data-mode="improve" class="glass rounded-xl p-5 text-left hover:border-blue-500 transition border border-[var(--border)]">
           <div class="flex items-center gap-2">
-            <span>🔧</span>
-            <span class="font-semibold">Förbättra befintlig kod</span>
+            <span>🔧</span><span class="font-semibold">Förbättra befintlig kod</span>
           </div>
-          <p class="text-slate-400 mt-2 text-sm">Klistra in din HTML eller börja från fil</p>
+          <p class="text-slate-300 mt-2 text-sm">Klistra in HTML eller börja i Studio</p>
         </button>
       </div>
 
-      <!-- Questions -->
+      <!-- Step: questions -->
       <div id="stepQuestions" class="hidden p-6">
-        <div id="qHeader" class="flex items-center justify-between mb-4">
-          <div class="text-sm text-slate-400"><span id="qIndex">1</span>/<span id="qCount">5</span></div>
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-xs text-slate-400"><span id="qIndex">1</span>/<span id="qCount">5</span></div>
           <button id="btnBack" class="btn">Tillbaka</button>
         </div>
-
-        <!-- Dynamic question -->
         <div id="qBody" class="space-y-3"></div>
-
         <div class="mt-5 flex items-center justify-between">
           <div id="qHelp" class="text-xs text-slate-400"></div>
-          <div class="flex gap-2">
-            <button id="btnNext" class="btn btn-primary">Nästa</button>
-          </div>
+          <button id="btnNext" class="btn btn-primary">Nästa</button>
         </div>
       </div>
 
-      <!-- Summary -->
+      <!-- Step: summary -->
       <div id="stepSummary" class="hidden p-6">
         <h4 class="text-lg font-bold mb-2">Sammanfattning</h4>
         <div id="summaryBox" class="glass rounded-xl p-4 text-sm"></div>
@@ -147,166 +145,102 @@
   </div>
 
   <script type="module">
-    // ------- State -------
-    const SETUP_KEY = 'WEBNEVA_SETUP_V1';
-    let mode = null; // 'create' | 'improve'
-    let answers = {};
+    const SETUP_KEY = "WEBNEVA_SETUP_V1";
+    const wizard = document.getElementById("wizard");
+    const openWizard = ()=>{ wizard.classList.remove("hidden"); wizard.classList.add("flex"); };
+    const closeWizard = ()=>{ wizard.classList.add("hidden"); wizard.classList.remove("flex"); };
 
-    // Questions for each mode
+    document.getElementById("startBtn").onclick=openWizard;
+    document.getElementById("startTop").onclick=openWizard;
+    document.getElementById("startTopSm").onclick=openWizard;
+    document.getElementById("wizClose").onclick=closeWizard;
+
+    const stepMode = document.getElementById("stepMode");
+    const stepQuestions = document.getElementById("stepQuestions");
+    const stepSummary = document.getElementById("stepSummary");
+    const qBody = document.getElementById("qBody");
+    const qIndexEl = document.getElementById("qIndex");
+    const qCountEl = document.getElementById("qCount");
+    const qHelp = document.getElementById("qHelp");
+    const btnBack = document.getElementById("btnBack");
+    const btnBack2 = document.getElementById("btnBack2");
+    const btnNext = document.getElementById("btnNext");
+    const btnStartStudio = document.getElementById("btnStartStudio");
+    const summaryBox = document.getElementById("summaryBox");
+
+    let mode=null, answers={}, qi=0;
     const Q = {
-      create: [
-        { id:'purpose', label:'Vad är syftet med webbplatsen?', type:'text', placeholder:'Portfölj, butik, event, SaaS, etc.' },
-        { id:'audience', label:'Vem är målgruppen?', type:'text', placeholder:'T.ex. kunder i Sverige, investerare, fans...' },
-        { id:'style', label:'Vilken känsla vill du ha i designen?', type:'select', options:['Modern & minimalistisk','Kreativ & färgstark','Klassisk & sober','Tech / SaaS'], help:'Påverkar typografi, färger, spacing' },
-        { id:'pages', label:'Vilka sidor behövs?', type:'chips', options:['Startsida','Tjänster','Om oss','Kontakt','Blogg','FAQ','Portfolio'] },
-        { id:'cta', label:'Vad är viktigaste call-to-action?', type:'text', placeholder:'Boka möte, köp nu, prenumerera...' },
+      create:[
+        {id:'purpose', label:'Vad är syftet med webbplatsen?', type:'text', placeholder:'Portfolio, butik, SaaS, event…'},
+        {id:'audience', label:'Vem är målgruppen?', type:'text', placeholder:'Kunder i Sverige, investerare…'},
+        {id:'style', label:'Vilken designstil?', type:'select', options:['Modern & minimalistisk','Tech / SaaS','Kreativ & färgstark','Klassisk & sober'], help:'Påverkar typografi, färger, spacing'},
+        {id:'pages', label:'Vilka sidor behövs?', type:'chips', options:['Startsida','Tjänster','Om oss','Kontakt','Blogg','FAQ','Portfolio']},
+        {id:'cta', label:'Viktigaste call-to-action', type:'text', placeholder:'Boka möte, köp nu, prenumerera…'}
       ],
-      improve: [
-        { id:'goal', label:'Vad vill du förbättra?', type:'select', options:['Design & layout','Tillgänglighet & semantik','Prestanda','Kodstädning','Responsivitet'],'help':'Du kan justera sen i Studio' },
-        { id:'pages', label:'Hur många sidor rör det?', type:'text', placeholder:'T.ex. startsida + admin + dashboard' },
-        { id:'style', label:'Designstil att eftersträva', type:'select', options:['Modern & minimalistisk','Tech / SaaS','Kreativ & färgstark','Klassisk & sober'] },
-        { id:'notes', label:'Övriga önskemål eller krav', type:'textarea', placeholder:'T.ex. “behåll färgerna”, “lägg in testimonials”...' },
-        { id:'code', label:'Klistra in din nuvarande HTML (frivilligt)', type:'textarea', placeholder:'Hela HTML-dokumentet. Lämna tomt om du vill klistra in i Studio istället.' },
+      improve:[
+        {id:'goal',  label:'Vad vill du förbättra?', type:'select', options:['Design & layout','Tillgänglighet','Prestanda','Kodstädning','Responsivitet']},
+        {id:'pages', label:'Hur många sidor berörs?', type:'text', placeholder:'T.ex. startsida + dashboard'},
+        {id:'style', label:'Designstil att eftersträva', type:'select', options:['Modern & minimalistisk','Tech / SaaS','Kreativ & färgstark','Klassisk & sober']},
+        {id:'notes', label:'Önskemål/krav', type:'textarea', placeholder:'Behåll färgerna, lägg in testimonials…'},
+        {id:'code',  label:'Klistra in din nuvarande HTML (frivilligt)', type:'textarea', placeholder:'Hela dokumentet. Tomt = klistra in i Studio senare.'}
       ]
-    };
+    }
 
-    // ------- Elements -------
-    const wizard = document.getElementById('wizard');
-    const wizClose = document.getElementById('wizClose');
-    const stepMode = document.getElementById('stepMode');
-    const stepQuestions = document.getElementById('stepQuestions');
-    const stepSummary = document.getElementById('stepSummary');
-    const qBody = document.getElementById('qBody');
-    const qIndexEl = document.getElementById('qIndex');
-    const qCountEl = document.getElementById('qCount');
-    const qHelp = document.getElementById('qHelp');
-    const btnBack = document.getElementById('btnBack');
-    const btnBack2 = document.getElementById('btnBack2');
-    const btnNext = document.getElementById('btnNext');
-    const btnStartStudio = document.getElementById('btnStartStudio');
-    const summaryBox = document.getElementById('summaryBox');
-
-    // open modal
-    const openWizard = ()=>{ wizard.classList.remove('hidden'); wizard.classList.add('flex'); };
-    document.getElementById('btnStart').onclick=openWizard;
-    document.getElementById('btnStart2').onclick=openWizard;
-    wizClose.onclick=()=>{ wizard.classList.add('hidden'); wizard.classList.remove('flex'); };
-
-    // choose mode
-    Array.from(stepMode.querySelectorAll('[data-mode]')).forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        mode = btn.dataset.mode; answers = {};
-        startQuestions();
-      });
+    Array.from(stepMode.querySelectorAll("[data-mode]")).forEach(b=>{
+      b.onclick=()=>{ mode=b.dataset.mode; answers={}; qi=0; showQuestions(); }
     });
 
-    let qi = 0; // question index
-    function startQuestions(){
-      stepMode.classList.add('hidden');
-      stepSummary.classList.add('hidden');
-      stepQuestions.classList.remove('hidden');
-      qi = 0;
+    function showQuestions(){
+      stepMode.classList.add("hidden");
+      stepSummary.classList.add("hidden");
+      stepQuestions.classList.remove("hidden");
       renderQuestion();
     }
 
     function renderQuestion(){
-      const qs = Q[mode];
-      qCountEl.textContent = qs.length;
-      qIndexEl.textContent = qi+1;
-      const q = qs[qi];
-      qBody.innerHTML = "";
-      qHelp.textContent = q.help || "";
+      const qs=Q[mode]; qCountEl.textContent=qs.length; qIndexEl.textContent=qi+1;
+      const q=qs[qi]; qBody.innerHTML=""; qHelp.textContent=q.help||"";
+      let field; const label=document.createElement("label"); label.className="block text-sm mb-2"; label.textContent=q.label; qBody.appendChild(label);
 
-      const label = document.createElement('label');
-      label.className = "block text-sm mb-2";
-      label.textContent = q.label;
-      qBody.appendChild(label);
-
-      // field
-      let field;
-      if (q.type === 'text') {
-        field = document.createElement('input');
-        field.type = 'text';
-        field.className = "w-full glass rounded-xl px-4 py-3 outline-none";
-        field.placeholder = q.placeholder || "";
-        field.value = answers[q.id] || "";
-      } else if (q.type === 'textarea') {
-        field = document.createElement('textarea');
-        field.className = "w-full glass rounded-xl px-4 py-3 h-40 outline-none";
-        field.placeholder = q.placeholder || "";
-        field.value = answers[q.id] || "";
-      } else if (q.type === 'select') {
-        field = document.createElement('select');
-        field.className = "w-full glass rounded-xl px-4 py-3 outline-none";
+      if(q.type==='text'){
+        field=document.createElement("input"); field.type="text"; field.className="w-full glass rounded-xl px-4 py-3 outline-none"; field.placeholder=q.placeholder||""; field.value=answers[q.id]||"";
+      } else if(q.type==='textarea'){
+        field=document.createElement("textarea"); field.className="w-full glass rounded-xl px-4 py-3 h-40 outline-none"; field.placeholder=q.placeholder||""; field.value=answers[q.id]||"";
+      } else if(q.type==='select'){
+        field=document.createElement("select"); field.className="w-full glass rounded-xl px-4 py-3 outline-none";
+        (q.options||[]).forEach(o=>{ const opt=document.createElement("option"); opt.value=o; opt.textContent=o; field.appendChild(opt); });
+        field.value=answers[q.id]||q.options?.[0]||"";
+      } else if(q.type==='chips'){
+        field=document.createElement("div"); field.className="flex flex-wrap gap-2";
         (q.options||[]).forEach(opt=>{
-          const o = document.createElement('option');
-          o.value = opt; o.textContent = opt;
-          field.appendChild(o);
-        });
-        field.value = answers[q.id] || (q.options?.[0]||"");
-      } else if (q.type === 'chips') {
-        field = document.createElement('div');
-        field.className = "flex flex-wrap gap-2";
-        (q.options||[]).forEach(opt=>{
-          const chip = document.createElement('button');
-          chip.type="button";
-          chip.className="px-3 py-2 rounded-lg border border-[var(--border)] hover:border-blue-500";
-          chip.textContent = opt;
-          chip.dataset.v = opt;
-          if ((answers[q.id]||[]).includes(opt)) chip.classList.add('ring','ring-blue-500/30','border-blue-500');
-          chip.onclick=()=>{
-            const arr = new Set(answers[q.id]||[]);
-            if (arr.has(opt)) arr.delete(opt); else arr.add(opt);
-            answers[q.id] = Array.from(arr);
-            renderQuestion(); // rerender to update visuals
-          };
+          const chip=document.createElement("button"); chip.type="button"; chip.className="px-3 py-2 rounded-lg border border-[var(--border)] hover:border-blue-500"; chip.textContent=opt;
+          if((answers[q.id]||[]).includes(opt)) chip.classList.add("ring","ring-blue-500/30","border-blue-500");
+          chip.onclick=()=>{ const s=new Set(answers[q.id]||[]); s.has(opt)?s.delete(opt):s.add(opt); answers[q.id]=Array.from(s); renderQuestion(); };
           field.appendChild(chip);
         });
       }
       qBody.appendChild(field);
-
-      // nav
-      btnBack.disabled = (qi===0);
-      btnNext.textContent = (qi===qs.length-1) ? "Fortsätt" : "Nästa";
-
-      btnNext.onclick = ()=>{
-        const q = qs[qi];
-        if (q.type==='chips') {
-          // already stored via click
-        } else {
-          answers[q.id] = field.value.trim();
-        }
-        if (qi<qs.length-1){ qi++; renderQuestion(); }
-        else { showSummary(); }
-      };
-      btnBack.onclick = ()=>{
-        if (qi>0){ qi--; renderQuestion(); }
-        else { // back to mode
-          stepQuestions.classList.add('hidden');
-          stepMode.classList.remove('hidden');
-        }
-      };
+      btnBack.disabled=(qi===0);
+      btnNext.textContent=(qi===qs.length-1)?"Fortsätt":"Nästa";
+      btnNext.onclick=()=>{ if(q.type!=='chips') answers[q.id]=(field.value||"").trim(); if(qi<qs.length-1){qi++;renderQuestion();} else { showSummary(); } }
+      btnBack.onclick=()=>{ if(qi>0){qi--;renderQuestion();} else { stepQuestions.classList.add("hidden"); stepMode.classList.remove("hidden"); } }
     }
 
     function showSummary(){
-      stepQuestions.classList.add('hidden');
-      stepSummary.classList.remove('hidden');
-      const pretty = Object.entries(answers).map(([k,v])=>{
-        const val = Array.isArray(v)? v.join(', ') : v || '—';
-        return `<div class="py-1"><span class="text-slate-400">${k}</span>: <span class="font-semibold">${val}</span></div>`;
-      }).join('');
-      summaryBox.innerHTML = `
-        <div class="text-sm">Läge: <span class="font-semibold">${mode==='create'?'Skapa ny sida':'Förbättra kod'}</span></div>
-        <div class="mt-3">${pretty}</div>
-      `;
+      stepQuestions.classList.add("hidden");
+      stepSummary.classList.remove("hidden");
+      const pretty=Object.entries(answers).map(([k,v])=>{
+        const val=Array.isArray(v)?v.join(", "):(v||'—');
+        return `<div class="py-1 flex justify-between gap-3"><span class="text-slate-400">${k}</span><span class="font-semibold">${val}</span></div>`;
+      }).join("");
+      summaryBox.innerHTML=`<div class="text-sm">Läge: <b>${mode==='create'?'Skapa ny hemsida':'Förbättra kod'}</b></div><div class="mt-3">${pretty}</div>`;
     }
 
-    btnBack2.onclick = ()=>{ stepSummary.classList.add('hidden'); startQuestions(); };
+    btnBack2.onclick=()=>{ stepSummary.classList.add("hidden"); showQuestions(); };
 
-    btnStartStudio.onclick = ()=>{
-      const payload = { mode, answers, timestamp: Date.now(), autoRun:true };
-      localStorage.setItem(SETUP_KEY, JSON.stringify(payload));
-      window.location.href = 'studio.html';
+    btnStartStudio.onclick=()=>{
+      localStorage.setItem("WEBNEVA_SETUP_V1", JSON.stringify({ mode, answers, autoRun:true, timestamp:Date.now() }));
+      window.location.href="studio.html";
     };
   </script>
 </body>
