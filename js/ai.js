@@ -1,15 +1,12 @@
-// /js/ai.js — Endast OpenAI
+// /js/ai.js – OpenAI-klient
 
-async function call(endpointBody) {
+async function call(body) {
   const res = await fetch("/api/openai", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(endpointBody),
+    body: JSON.stringify(body),
   });
-  if (!res.ok) {
-    const txt = await res.text();
-    throw new Error(`OpenAI backend fel ${res.status}: ${txt}`);
-  }
+  if (!res.ok) throw new Error(`OpenAI backend fel ${res.status}: ${await res.text()}`);
   return res.json();
 }
 
