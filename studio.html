@@ -2,84 +2,173 @@
 <html lang="sv">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Webneva Studio</title>
+  <link rel="icon" href="images/bgk-remove.webneva.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background: #0b1120; color: #e5e7eb; font-family: Inter, sans-serif; margin:0; overflow:hidden; }
-    .btn { border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: .5rem .9rem; font-weight: 600; }
-    .btn:hover { background: rgba(255,255,255,.05); }
-    .btn-primary { background: #3b82f6; border-color: #3b82f6; color: white; }
-    .thinking { height:4px; background:linear-gradient(90deg,transparent,rgba(59,130,246,.3),transparent);
-                background-size:200% 100%; animation:shimmer 1.5s linear infinite;}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    :root{ --dark:#0d1117; --panel:#0f1420; --border:#1f2937; --text:#e6e9ef; --blue:#3b82f6; --blue2:#2563eb }
+    html,body{height:100%}
+    body{font-family:Inter,system-ui;background:var(--dark);color:var(--text);overflow:hidden}
+    .btn{border:1px solid var(--border);border-radius:8px;padding:.45rem .75rem;font-weight:600}
+    .btn:hover{background:rgba(255,255,255,.05)}
+    .btn-primary{background:var(--blue);border-color:var(--blue);color:#fff}
+    .btn-primary:hover{background:var(--blue2)}
+    .thinking{background:linear-gradient(90deg,transparent,rgba(59,130,246,.12),transparent);background-size:200% 100%;animation:shimmer 1.6s linear infinite}
     @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
   </style>
 </head>
 <body>
-  <header class="flex justify-between items-center px-4 h-12 border-b border-white/10">
-    <div class="font-bold">Webneva Studio</div>
-    <button id="newBtn" class="btn">Nytt projekt</button>
+  <!-- Topbar -->
+  <header class="flex items-center justify-between px-4 h-12 border-b border-[var(--border)] bg-[#0e1320]">
+    <div class="flex items-center gap-2">
+      <img src="images/bgk-remove.webneva.png" class="h-5 w-5" alt="Webneva">
+      <span class="font-semibold text-sm">Webneva Studio</span>
+      <span id="modeBadge" class="ml-2 text-xs px-2 py-1 rounded-full border border-[var(--border)]">OpenAI</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="btnNew" class="btn">Nytt</button>
+      <button id="btnExport" class="btn">Exportera</button>
+      <a class="btn" href="index.html">Startsida</a>
+    </div>
   </header>
 
+  <!-- Main split 25/75 -->
   <main class="grid grid-cols-[25%_75%] h-[calc(100vh-3rem)]">
-    <section class="flex flex-col border-r border-white/10">
-      <div id="info" class="p-4 text-sm text-slate-400"></div>
-      <div class="p-3 border-t border-white/10">
-        <textarea id="prompt" class="w-full h-24 bg-[#0f172a] border border-white/10 rounded-lg p-2 text-sm" placeholder="Förbättra designen..."></textarea>
-        <button id="sendBtn" class="btn-primary mt-2 w-full">Skicka</button>
+    <!-- Left: Editor + Prompt -->
+    <section class="flex flex-col bg-[var(--panel)] border-r border-[var(--border)]">
+      <div class="px-3 py-3 border-b border-[var(--border)]">
+        <div class="text-sm font-semibold">index.html</div>
+        <div class="text-xs text-slate-400">Skriv eller använd AI-prompten nedan</div>
+      </div>
+      <div id="editorHost" class="flex-1 overflow-hidden"></div>
+      <div class="border-t border-[var(--border)] p-3">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="text-xs text-slate-400">AI</div>
+          <div id="aiStatus" class="ml-auto text-xs text-slate-400 hidden">AI arbetar…</div>
+        </div>
+        <div class="flex items-stretch gap-2">
+          <textarea id="aiPrompt" class="flex-1 resize-none h-16 px-3 py-3 rounded-md bg-[#0b0f19] border border-[var(--border)] text-sm outline-none focus:border-[#2a3a63]" placeholder="Beskriv vad du vill – Enter skickar (Shift+Enter ny rad)"></textarea>
+          <button id="btnSend" class="btn-primary px-4">Skicka</button>
+        </div>
+        <div class="mt-2 text-[12px] text-slate-400">Tips: “Gör designen mörk med blå accent och lägg till testimonials.”</div>
       </div>
     </section>
-    <section class="relative">
-      <iframe id="preview" class="absolute inset-0 w-full h-full border-0 bg-white"></iframe>
-      <div id="loading" class="hidden absolute top-0 left-0 right-0 thinking"></div>
+
+    <!-- Right: Preview -->
+    <section class="relative bg-gradient-to-br from-[#eef2ff] to-[#e6efff]">
+      <div class="flex items-center justify-between px-3 h-10 border-b border-[#c7d4f8] bg-white/60 backdrop-blur">
+        <div class="font-semibold text-slate-700 text-sm">Live Preview</div>
+        <div class="flex items-center gap-2">
+          <button id="btnOpen" class="btn text-slate-700 border-[#ccd6f6]">Ny flik</button>
+          <button id="btnFull" class="btn text-slate-700 border-[#ccd6f6]">Fullskärm</button>
+        </div>
+      </div>
+      <iframe id="preview" class="absolute inset-0 top-10 w-full h-[calc(100%-2.5rem)] bg-white border-0"></iframe>
+      <div id="overlay" class="hidden absolute top-10 left-0 right-0 h-1 thinking"></div>
     </section>
   </main>
 
+  <!-- CodeMirror + logic -->
   <script type="module">
+    import { EditorState } from "https://cdn.jsdelivr.net/npm/@codemirror/state@6.4.1/dist/index.js";
+    import { EditorView, keymap } from "https://cdn.jsdelivr.net/npm/@codemirror/view@6.29.1/dist/index.js";
+    import { defaultKeymap, history, historyKeymap } from "https://cdn.jsdelivr.net/npm/@codemirror/commands@6.6.2/dist/index.js";
+    import { html } from "https://cdn.jsdelivr.net/npm/@codemirror/lang-html@6.4.9/dist/index.js";
+    import { oneDark } from "https://cdn.jsdelivr.net/npm/@codemirror/theme-one-dark@6.2.0/dist/index.js";
     import { aiGenerate, aiImprove } from "./js/ai.js";
-    const setup = JSON.parse(localStorage.getItem("WEBNEVA_SETUP_V1") || "{}");
-    const info = document.getElementById("info");
-    const loading = document.getElementById("loading");
-    const frame = document.getElementById("preview");
-    const promptEl = document.getElementById("prompt");
 
-    info.innerHTML = Object.entries(setup.answers || {})
-      .map(([k,v]) => `<div><b>${k}</b>: ${Array.isArray(v)?v.join(", "):v}</div>`)
-      .join("");
+    // Startdokument
+    let currentHTML = `<!doctype html>
+<html lang="sv"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Webneva Studio</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+<main class="max-w-6xl mx-auto p-10">
+  <h1 class="text-4xl font-black">Välkommen till Webneva Studio</h1>
+  <p class="mt-3 text-slate-600">Skriv i editorn eller använd AI-prompten längst ned.</p>
+</main>
+</body></html>`;
 
-    function setLoading(on){ loading.classList.toggle("hidden",!on); }
+    // CodeMirror init
+    const editorView = new EditorView({
+      state: EditorState.create({
+        doc: currentHTML,
+        extensions: [
+          history(), keymap.of([...defaultKeymap, ...historyKeymap]), html(), oneDark,
+          EditorView.updateListener.of(update => {
+            if (update.docChanged) {
+              currentHTML = update.state.doc.toString();
+              updatePreview();
+            }
+          })
+        ]
+      }),
+      parent: document.getElementById('editorHost')
+    });
 
-    async function runInitial(){
-      setLoading(true);
+    // Preview
+    const iframe = document.getElementById("preview");
+    function ensureTW(html){
+      if (!/cdn\.tailwindcss\.com/.test(html)) {
+        const tw = '<script src="https://cdn.tailwindcss.com"><\\/script>';
+        return html.replace(/<head>/i, `<head>${tw}`);
+      }
+      return html;
+    }
+    function updatePreview(){
+      const blob = new Blob([ensureTW(currentHTML)], { type: "text/html" });
+      iframe.src = URL.createObjectURL(blob);
+    }
+    updatePreview();
+
+    // AI
+    const aiPrompt = document.getElementById('aiPrompt');
+    const aiStatus = document.getElementById('aiStatus');
+    const overlay  = document.getElementById('overlay');
+    const btnSend  = document.getElementById('btnSend');
+    function setThinking(on){ aiStatus.classList.toggle('hidden', !on); overlay.classList.toggle('hidden', !on); }
+
+    async function doGenerate() {
+      const p = aiPrompt.value.trim();
+      if (!p) return;
+      setThinking(true);
       try {
-        const p = `Skapa en komplett HTML-webbplats för ${setup.answers.topic || "ett företag"}.
-Den ska innehålla sidorna ${setup.answers.pages?.join(", ") || "Startsida"}.
-Stilen ska vara ${setup.answers.style || "modern & minimalistisk"}.
-Använd TailwindCSS och skapa en snygg hero, tjänstesektion och kontakt.`;
         const html = await aiGenerate(p);
-        updatePreview(html);
-      } catch(err){ console.error(err); alert("Fel vid AI-generering"); }
-      finally{ setLoading(false); }
+        editorView.dispatch({ changes: { from: 0, to: editorView.state.doc.length, insert: html } });
+        aiPrompt.value = "";
+      } catch (e) {
+        alert("Fel: " + e.message);
+        console.error(e);
+      } finally {
+        setThinking(false);
+      }
     }
+    btnSend.addEventListener("click", doGenerate);
+    aiPrompt.addEventListener("keydown", e => {
+      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); doGenerate(); }
+    });
 
-    function updatePreview(html){
-      const blob=new Blob([html],{type:"text/html"});
-      frame.src=URL.createObjectURL(blob);
-    }
-
-    async function send(){
-      const p=promptEl.value.trim(); if(!p) return;
-      setLoading(true);
-      try {
-        const html = await aiImprove(p, "");
-        updatePreview(html);
-      } catch(err){ alert("Fel vid förbättring"); }
-      finally{ setLoading(false); }
-    }
-
-    document.getElementById("sendBtn").onclick=send;
-    document.getElementById("newBtn").onclick=()=>{localStorage.removeItem("WEBNEVA_SETUP_V1");location.href="index.html";};
-    if(setup.autoRun) runInitial();
+    // Toolbar
+    document.getElementById('btnNew').onclick = () => {
+      if (!confirm("Starta nytt dokument?")) return;
+      editorView.dispatch({ changes: { from: 0, to: editorView.state.doc.length, insert: currentHTML } });
+    };
+    document.getElementById('btnExport').onclick = () => {
+      const blob = new Blob([currentHTML], { type: "text/html" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "webneva-projekt.html";
+      a.click();
+    };
+    document.getElementById('btnOpen').onclick = () => {
+      const blob = new Blob([currentHTML], { type: "text/html" });
+      window.open(URL.createObjectURL(blob), "_blank");
+    };
+    document.getElementById('btnFull').onclick = () => { document.getElementById('preview').requestFullscreen?.(); };
   </script>
 </body>
 </html>
