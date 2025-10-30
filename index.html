@@ -6,106 +6,149 @@
   <title>Webneva – Skapa med AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root {
-      --bg: #0b1120;
-      --panel: rgba(255,255,255,.05);
-      --border: rgba(255,255,255,.1);
-      --blue: #3b82f6;
-    }
-    body { background: var(--bg); color: #e5e7eb; font-family: Inter, sans-serif; }
-    .glass { background: var(--panel); border: 1px solid var(--border); backdrop-filter: blur(18px); }
-    .btn { border: 1px solid var(--border); border-radius: 10px; padding: .6rem 1.2rem; font-weight: 600; }
-    .btn:hover { background: rgba(255,255,255,.05); }
-    .btn-primary { background: var(--blue); border-color: var(--blue); color: white; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+    :root { --bg:#0b1120; --bg2:#0f172a; --panel:rgba(255,255,255,.06); --border:rgba(255,255,255,.12);
+            --text:#e6e9ef; --muted:#94a3b8; --blue:#2563eb; --blue2:#3b82f6 }
+    html,body{height:100%} body{font-family:Inter,system-ui;background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(59,130,246,.18), transparent),
+      radial-gradient(900px 500px at 90% 10%, rgba(37,99,235,.12), transparent),
+      linear-gradient(180deg,var(--bg),var(--bg2)); color:var(--text)}
+    .glass{background:var(--panel); border:1px solid var(--border); backdrop-filter: blur(18px)}
+    .btn{border:1px solid var(--border); border-radius:12px; padding:.8rem 1.2rem; font-weight:700}
+    .btn:hover{background:rgba(255,255,255,.06)}
+    .btn-primary{background:var(--blue); border-color:var(--blue); color:#fff}
+    .btn-primary:hover{background:var(--blue2)}
   </style>
 </head>
-<body class="h-screen flex items-center justify-center">
-  <div id="wizard" class="glass rounded-2xl p-8 w-[90%] max-w-md">
-    <h1 class="text-2xl font-bold mb-1 text-white">Skapa ny hemsida</h1>
-    <p class="text-slate-400 text-sm mb-6">AI guidar dig genom några enkla steg.</p>
-
-    <div id="step">
-      <!-- Frågor kommer här -->
+<body class="min-h-screen overflow-x-hidden">
+  <!-- Nav -->
+  <nav class="sticky top-0 z-40 glass">
+    <div class="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="images/bgk-remove.webneva.png" class="h-6 w-6" alt="Webneva">
+        <span class="font-extrabold tracking-tight">Webneva</span>
+        <span class="text-emerald-400 text-xs ml-2 flex items-center gap-1">
+          <span class="inline-block w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span> LIVE
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a class="btn" href="studio.html">Öppna Studio</a>
+        <button id="startBtn" class="btn btn-primary">Kom igång</button>
+      </div>
     </div>
+  </nav>
 
-    <div class="flex justify-between mt-6">
-      <button id="backBtn" class="btn">Tillbaka</button>
-      <button id="nextBtn" class="btn btn-primary">Nästa</button>
+  <!-- Hero -->
+  <header class="pt-24 pb-16 px-6 text-center">
+    <div class="max-w-5xl mx-auto">
+      <span class="inline-block text-xs px-3 py-1 rounded-full border border-[var(--border)] bg-white/5 text-blue-200">AI-drivet • Mörk/blå stil</span>
+      <h1 class="mt-5 text-5xl md:text-7xl font-extrabold leading-tight">
+        Skapa & förbättra webbsidor
+        <span class="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">med OpenAI</span>
+      </h1>
+      <p class="mt-6 text-lg text-[var(--muted)] max-w-3xl mx-auto">
+        Svara på några frågor – Studio genererar en färdig sida. Redigera vidare med kod + live-preview.
+      </p>
+      <div class="mt-8 flex items-center justify-center gap-4">
+        <button id="startBtn2" class="btn btn-primary">🚀 Kom igång</button>
+        <a class="btn" href="studio.html">Öppna Studio</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Modal Quiz -->
+  <div id="quiz" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4">
+    <div class="glass rounded-2xl max-w-lg w-full overflow-hidden">
+      <div class="px-6 py-5 border-b border-[var(--border)] flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-bold">Kom igång</h3>
+          <p class="text-[var(--muted)] text-sm">Svara kort – Studio gör resten</p>
+        </div>
+        <button id="close" class="btn">Stäng</button>
+      </div>
+
+      <div class="p-6">
+        <div id="qWrap" class="space-y-4"></div>
+
+        <div class="mt-6 flex items-center justify-between">
+          <button id="back" class="btn">Tillbaka</button>
+          <button id="next" class="btn btn-primary">Nästa</button>
+        </div>
+      </div>
     </div>
   </div>
 
+  <footer class="py-10 text-center text-[var(--muted)] text-sm">© 2025 Webneva</footer>
+
   <script>
     const SETUP_KEY = "WEBNEVA_SETUP_V1";
-    const step = document.getElementById("step");
-    const next = document.getElementById("nextBtn");
-    const back = document.getElementById("backBtn");
+    const quiz = document.getElementById("quiz");
+    const qWrap = document.getElementById("qWrap");
+    const back = document.getElementById("back");
+    const next = document.getElementById("next");
+    const closeBtn = document.getElementById("close");
+    const open = ()=>{ quiz.classList.remove("hidden"); quiz.classList.add("flex"); render(); }
+    const close= ()=>{ quiz.classList.add("hidden"); quiz.classList.remove("flex"); }
 
-    let i = 0;
-    const answers = {};
-    const questions = [
-      { id: "topic", label: "Vad ska webbplatsen handla om?", type: "text", placeholder: "Portfolio, företag, restaurang…" },
-      { id: "pages", label: "Vilka sidor ska den innehålla?", type: "chips", options: ["Startsida", "Tjänster", "Kontakt", "Om oss", "Blogg", "Galleri"] },
-      { id: "style", label: "Vilken stil vill du ha?", type: "select", options: ["Modern & minimalistisk", "Färgstark & kreativ", "Mörk & lyxig", "Ren & professionell"] }
+    document.getElementById("startBtn").onclick = open;
+    document.getElementById("startBtn2").onclick = open;
+    closeBtn.onclick = close;
+
+    let i=0; const answers={};
+    const Q=[
+      { id:"purpose", label:"Vad är syftet med webbplatsen?", type:"text", placeholder:"Portfolio, butik, SaaS, event…" },
+      { id:"pages", label:"Vilka sidor vill du ha?", type:"chips", options:["Startsida","Om oss","Tjänster","Kontakt","Blogg","Galleri"] },
+      { id:"style", label:"Vilken stil?", type:"select", options:["Modern & minimalistisk","Mörk & lyxig","Färgstark & kreativ","Ren & professionell"] },
+      { id:"focus", label:"Något särskilt AI ska fokusera på?", type:"text", placeholder:"t.ex. SEO, snabbhet, animationer…" },
     ];
 
-    function render() {
-      const q = questions[i];
-      step.innerHTML = `<label class="block text-sm mb-2 text-slate-300">${q.label}</label>`;
+    function render(){
+      const q=Q[i]; qWrap.innerHTML="";
+      const h=document.createElement("div");
+      h.className="text-xs text-[var(--muted)]"; h.textContent=`${i+1}/${Q.length}`;
+      qWrap.appendChild(h);
+
+      const lab=document.createElement("label");
+      lab.className="block text-sm font-semibold"; lab.textContent=q.label;
+      qWrap.appendChild(lab);
+
       let el;
-      if (q.type === "text") {
-        el = document.createElement("input");
-        el.type = "text";
-        el.placeholder = q.placeholder;
-        el.className = "w-full rounded-lg bg-[#0f172a] text-white border border-[var(--border)] px-4 py-3";
-        el.value = answers[q.id] || "";
-        step.appendChild(el);
-      } else if (q.type === "chips") {
-        el = document.createElement("div");
-        el.className = "flex flex-wrap gap-2";
-        q.options.forEach(opt => {
-          const b = document.createElement("button");
-          b.textContent = opt;
-          b.className = "px-3 py-2 rounded-lg border border-[var(--border)] hover:border-blue-500 text-sm";
-          if ((answers[q.id] || []).includes(opt)) b.classList.add("border-blue-500", "bg-blue-500/10");
-          b.onclick = () => {
-            const set = new Set(answers[q.id] || []);
-            set.has(opt) ? set.delete(opt) : set.add(opt);
-            answers[q.id] = Array.from(set);
-            render();
-          };
+      if(q.type==="text"){
+        el=document.createElement("input"); el.type="text";
+        el.className="w-full rounded-lg bg-[#0f172a] text-white border border-[var(--border)] px-4 py-3 outline-none focus:border-[var(--blue)]";
+        el.placeholder=q.placeholder||""; el.value=answers[q.id]||"";
+        qWrap.appendChild(el);
+        next.onclick=()=>{ answers[q.id]=el.value.trim(); go(); };
+      } else if(q.type==="select"){
+        el=document.createElement("select");
+        el.className="w-full rounded-lg bg-[#0f172a] text-white border border-[var(--border)] px-4 py-3 outline-none focus:border-[var(--blue)]";
+        (q.options||[]).forEach(o=>{ const op=document.createElement("option"); op.textContent=o; el.appendChild(op);});
+        el.value=answers[q.id]||q.options?.[0]||""; qWrap.appendChild(el);
+        next.onclick=()=>{ answers[q.id]=el.value; go(); }
+      } else if(q.type==="chips"){
+        el=document.createElement("div"); el.className="flex flex-wrap gap-2";
+        (q.options||[]).forEach(opt=>{
+          const b=document.createElement("button"); b.type="button";
+          b.className="px-3 py-2 text-sm rounded-lg border border-[var(--border)] hover:border-[var(--blue)]";
+          b.textContent=opt;
+          if((answers[q.id]||[]).includes(opt)) b.classList.add("border-[var(--blue)]","bg-blue-500/10");
+          b.onclick=()=>{ const s=new Set(answers[q.id]||[]); s.has(opt)?s.delete(opt):s.add(opt); answers[q.id]=[...s]; render(); };
           el.appendChild(b);
         });
-        step.appendChild(el);
-      } else if (q.type === "select") {
-        el = document.createElement("select");
-        el.className = "w-full rounded-lg bg-[#0f172a] text-white border border-[var(--border)] px-4 py-3";
-        q.options.forEach(opt => {
-          const optEl = document.createElement("option");
-          optEl.textContent = opt;
-          el.appendChild(optEl);
-        });
-        el.value = answers[q.id] || q.options[0];
-        step.appendChild(el);
+        qWrap.appendChild(el);
+        next.onclick=()=>go();
       }
-      back.disabled = i === 0;
-      next.textContent = i === questions.length - 1 ? "Starta Studio" : "Nästa";
-      next.onclick = () => {
-        if (q.type === "chips") {
-          // redan sparad i klick
-        } else answers[q.id] = el.value.trim();
-        if (i < questions.length - 1) { i++; render(); }
-        else finish();
-      };
-      back.onclick = () => { if (i > 0) { i--; render(); } };
+
+      back.disabled = (i===0);
+      next.textContent = (i===Q.length-1) ? "Starta Studio" : "Nästa";
     }
 
-    function finish() {
-      const setup = { mode: "create", answers, autoRun: true, timestamp: Date.now() };
-      localStorage.setItem(SETUP_KEY, JSON.stringify(setup));
-      window.location.href = "studio.html";
+    function go(){ if(i<Q.length-1){ i++; render(); } else finish(); }
+    function finish(){
+      localStorage.setItem(SETUP_KEY, JSON.stringify({ mode:"create", answers, autoRun:true }));
+      close(); location.href="studio.html";
     }
-
-    render();
+    back.onclick=()=>{ if(i>0){ i--; render(); } };
   </script>
 </body>
 </html>
