@@ -2,76 +2,73 @@
 <html lang="sv">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Webneva Studio</title>
   <link rel="icon" href="images/bgk-remove.webneva.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    :root {
-      --dark:#0d1117;--panel:#0f1420;--border:#1f2937;
-      --text:#e5e7eb;--blue:#3b82f6;--blue-strong:#2563eb;
-    }
-    html,body{height:100%;margin:0}
-    body{font-family:'Inter',sans-serif;background:var(--dark);color:var(--text);overflow:hidden}
-    .btn{padding:.4rem .8rem;border:1px solid var(--border);border-radius:6px;
-         font-size:.85rem;background:transparent;color:var(--text)}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    :root{ --dark:#0d1117; --panel:#0f1420; --border:#1f2937; --text:#e5e7eb; --blue:#3b82f6; --blue-strong:#2563eb; }
+    html,body{height:100%}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--dark);color:var(--text);overflow:hidden}
+    .btn{border:1px solid var(--border);border-radius:8px;padding:.45rem .75rem;font-weight:600}
     .btn:hover{background:rgba(255,255,255,.05)}
     .btn-primary{background:var(--blue);border-color:var(--blue);color:#fff}
     .btn-primary:hover{background:var(--blue-strong)}
-    .thinking{background:linear-gradient(90deg,transparent,rgba(59,130,246,.1),transparent);
-      background-size:200% 100%;animation:shimmer 1.8s linear infinite}
+    .thinking{background:linear-gradient(90deg,transparent,rgba(59,130,246,.08),transparent);background-size:200% 100%;animation:shimmer 1.8s linear infinite}
     @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+    .summary-item{display:flex;justify-content:space-between;gap:1rem;padding:.35rem 0;border-bottom:1px dashed rgba(255,255,255,.06)}
   </style>
 </head>
 <body>
   <!-- Topbar -->
-  <header class="flex items-center justify-between px-4 h-12 border-b border-[#1f2937] bg-[#0e1320]">
+  <header class="flex items-center justify-between px-4 h-12 border-b border-[var(--border)] bg-[#0e1320]">
     <div class="flex items-center gap-2">
       <img src="images/bgk-remove.webneva.png" class="h-5 w-5" alt="Webneva">
       <span class="font-semibold text-sm">Webneva Studio</span>
+      <span id="modeBadge" class="text-xs ml-2 px-2 py-1 rounded-full border border-[var(--border)]">—</span>
     </div>
-    <div class="flex gap-2">
+    <div class="flex items-center gap-2">
       <button id="btnNew" class="btn">Nytt</button>
       <button id="btnExport" class="btn">Exportera</button>
-      <a href="index.html" class="btn">Startsida</a>
+      <a class="btn" href="index.html">Startsida</a>
     </div>
   </header>
 
-  <!-- Main split -->
+  <!-- Main split 25/75 -->
   <main class="grid grid-cols-[25%_75%] h-[calc(100vh-3rem)]">
-    <!-- Editor -->
-    <section class="flex flex-col bg-[#0f1420] border-r border-[#1f2937]">
-      <div class="flex items-center justify-between px-3 h-10 border-b border-[#1f2937]">
-        <span class="text-sm text-slate-300">index.html</span>
-        <button id="btnAddTab" class="btn">+</button>
+    <!-- Left: editor + selection summary + prompt -->
+    <section class="flex flex-col bg-[var(--panel)] border-r border-[var(--border)]">
+      <!-- Selection summary (sticky header) -->
+      <div class="px-3 py-3 border-b border-[var(--border)]">
+        <div class="text-xs text-slate-400">Val från onboarding</div>
+        <div id="summary" class="mt-2 text-sm space-y-1 max-h-28 overflow-auto"></div>
       </div>
+
+      <!-- CodeMirror host -->
       <div id="editorHost" class="flex-1 overflow-hidden"></div>
 
-      <!-- Prompt -->
-      <div class="border-t border-[#1f2937] p-3">
+      <!-- Prompt bar -->
+      <div class="border-t border-[var(--border)] p-3">
         <div class="flex items-center gap-2 mb-2">
-          <select id="aiMode" class="bg-[#0b0f19] border border-[#1f2937] rounded-md text-sm px-2 py-1">
-            <option value="generate">Generera ny sida</option>
-            <option value="improve">Förbättra aktuell kod</option>
+          <select id="aiMode" class="bg-[#0b0f19] border border-[var(--border)] rounded-md text-sm px-2 py-1">
+            <option value="generate">Generera ny</option>
+            <option value="improve">Förbättra kod</option>
           </select>
-          <div id="aiStatus" class="ml-auto text-xs text-slate-400 hidden">AI genererar…</div>
+          <div id="aiStatus" class="ml-auto text-xs text-slate-400 hidden">AI arbetar…</div>
         </div>
         <div class="flex items-stretch gap-2">
-          <textarea id="aiPrompt"
-            class="flex-1 resize-none h-20 px-3 py-3 rounded-md bg-[#0b0f19] border border-[#1f2937]
-                   text-sm outline-none focus:border-[#2a3a63]"
-            placeholder="Skriv din prompt här och tryck Enter eller klicka Skicka"></textarea>
+          <textarea id="aiPrompt" class="flex-1 resize-none h-16 px-3 py-3 rounded-md bg-[#0b0f19] border border-[var(--border)] text-sm outline-none focus:border-[#2a3a63]" placeholder="Beskriv din ändring… (Enter skickar, Shift+Enter ny rad)"></textarea>
           <button id="btnSend" class="btn-primary px-4">Skicka</button>
         </div>
       </div>
     </section>
 
-    <!-- Preview -->
+    <!-- Right: preview -->
     <section class="relative bg-gradient-to-br from-[#eef2ff] to-[#e6efff]">
       <div class="flex items-center justify-between px-3 h-10 border-b border-[#c7d4f8] bg-white/60 backdrop-blur">
         <div class="font-semibold text-slate-700 text-sm">Live Preview</div>
-        <div class="flex gap-2">
+        <div class="flex items-center gap-2">
           <button id="btnOpen" class="btn text-slate-700 border-[#ccd6f6]">Ny flik</button>
           <button id="btnFull" class="btn text-slate-700 border-[#ccd6f6]">Fullskärm</button>
         </div>
@@ -81,99 +78,177 @@
     </section>
   </main>
 
-  <!-- CodeMirror + logic -->
+  <!-- Code + Logic -->
   <script type="module">
-    import {EditorState} from "https://cdn.jsdelivr.net/npm/@codemirror/state@6.4.1/dist/index.js";
-    import {EditorView,keymap} from "https://cdn.jsdelivr.net/npm/@codemirror/view@6.29.1/dist/index.js";
-    import {defaultKeymap,history,historyKeymap} from "https://cdn.jsdelivr.net/npm/@codemirror/commands@6.6.2/dist/index.js";
-    import {html} from "https://cdn.jsdelivr.net/npm/@codemirror/lang-html@6.4.9/dist/index.js";
-    import {oneDark} from "https://cdn.jsdelivr.net/npm/@codemirror/theme-one-dark@6.2.0/dist/index.js";
-    import {aiGenerate,aiImprove} from "./js/ai.js";
+    import { EditorState } from "https://cdn.jsdelivr.net/npm/@codemirror/state@6.4.1/dist/index.js";
+    import { EditorView, keymap } from "https://cdn.jsdelivr.net/npm/@codemirror/view@6.29.1/dist/index.js";
+    import { defaultKeymap, history, historyKeymap } from "https://cdn.jsdelivr.net/npm/@codemirror/commands@6.6.2/dist/index.js";
+    import { html } from "https://cdn.jsdelivr.net/npm/@codemirror/lang-html@6.4.9/dist/index.js";
+    import { oneDark } from "https://cdn.jsdelivr.net/npm/@codemirror/theme-one-dark@6.2.0/dist/index.js";
+    import { aiGenerate, aiImprove, aiExplain } from "./js/ai.js";
 
-    let currentHTML = "<!doctype html><html lang='sv'><head><meta charset='utf-8'><title>Ny sida</title><script src='https://cdn.tailwindcss.com'><\\/script></head><body class='p-10'><h1 class='text-3xl font-bold'>Webneva Studio</h1></body></html>";
+    const SETUP_KEY = 'WEBNEVA_SETUP_V1';
+    const setup = safeLoadSetup();
+    const modeBadge = document.getElementById('modeBadge');
+    const summary = document.getElementById('summary');
 
-    const state = EditorState.create({
-      doc: currentHTML,
-      extensions: [
-        history(), keymap.of([...defaultKeymap,...historyKeymap]), html(), oneDark,
-        EditorView.updateListener.of(update=>{
-          if(update.docChanged){
-            currentHTML = update.state.doc.toString();
-            updatePreview();
-          }
-        })
-      ]
+    function safeLoadSetup(){
+      try { return JSON.parse(localStorage.getItem(SETUP_KEY) || 'null'); } catch { return null; }
+    }
+
+    // Render selection summary
+    function renderSummary(){
+      summary.innerHTML = '';
+      if (!setup?.answers) { summary.innerHTML='<div class="text-slate-500 text-xs">Inga val ännu (öppna index och kör onboarding)</div>'; return; }
+      Object.entries(setup.answers).forEach(([k,v])=>{
+        const val = Array.isArray(v) ? v.join(', ') : (v || '—');
+        const row = document.createElement('div');
+        row.className = 'summary-item text-slate-300';
+        row.innerHTML = `<span class="text-slate-400">${k}</span><span class="font-semibold">${val}</span>`;
+        summary.appendChild(row);
+      });
+      modeBadge.textContent = setup.mode === 'create' ? 'Skapa' : 'Förbättra';
+    }
+    renderSummary();
+
+    // Build initial prompt from setup
+    function composeInitialPrompt(){
+      if (!setup) return '';
+      if (setup.mode === 'create') {
+        const a = setup.answers || {};
+        const pages = Array.isArray(a.pages) ? a.pages.join(', ') : (a.pages||'');
+        return `Skapa en komplett, modern webbplats.
+Syfte: ${a.purpose || '—'}
+Målgrupp: ${a.audience || '—'}
+Designstil: ${a.style || 'Modern & minimalistisk'}
+Sidor: ${pages || 'Startsida, Kontakt'}
+Viktig CTA: ${a.cta || 'Kontakta oss'}
+Krav: TailwindCSS, responsiv, tydlig hero, sektioner, CTA-knappar, footer.
+Returnera EN HTML-fil (inkl. <html><head><body>).`;
+      } else {
+        const a = setup.answers || {};
+        return `Förbättra denna webbplats enligt målen nedan.
+Mål: ${a.goal || 'Design & layout'}
+Omfattning: ${a.pages || '1-2 sidor'}
+Designstil: ${a.style || 'Modern & minimalistisk'}
+Önskemål: ${a.notes || '—'}
+Behåll funktionalitet. Använd Tailwind vid behov.
+Returnera EN fullständig HTML-fil.`;
+      }
+    }
+
+    /* --------------------------- CodeMirror init --------------------------- */
+    let starterHTML = "<!doctype html><html lang='sv'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Webneva</title><script src='https://cdn.tailwindcss.com'><\\/script></head><body class='bg-slate-50 text-slate-900'><main class='max-w-5xl mx-auto p-10'><h1 class='text-3xl font-bold'>Webneva Studio</h1><p class='mt-3 text-slate-600'>Onboarding kör igång AI automatiskt.</p></main></body></html>";
+    // If improve and code provided, use it as starting doc
+    if (setup?.mode === 'improve' && setup?.answers?.code?.trim()) {
+      starterHTML = setup.answers.code.trim();
+    }
+
+    let currentHTML = starterHTML;
+
+    const editorView = new EditorView({
+      state: EditorState.create({
+        doc: starterHTML,
+        extensions: [
+          history(), keymap.of([...defaultKeymap, ...historyKeymap]), html(), oneDark,
+          EditorView.updateListener.of(update=>{
+            if (update.docChanged) {
+              currentHTML = update.state.doc.toString();
+              updatePreview();
+            }
+          })
+        ]
+      }),
+      parent: document.getElementById('editorHost')
     });
-    const view = new EditorView({state,parent:document.getElementById("editorHost")});
-    const iframe=document.getElementById("preview");
-    const overlay=document.getElementById("overlay");
-    const aiPrompt=document.getElementById("aiPrompt");
-    const aiStatus=document.getElementById("aiStatus");
-    const aiMode=document.getElementById("aiMode");
 
-    function ensureTW(html){
-      if(!/cdn\.tailwindcss\.com/.test(html)){
-        const tw='<script src="https://cdn.tailwindcss.com"><\\/script>';
-        return html.replace(/<head>/i,`<head>${tw}`);
+    /* ------------------------- Preview handling ------------------------- */
+    const iframe = document.getElementById("preview");
+    function ensureTailwind(html){
+      if (!/cdn\.tailwindcss\.com/.test(html)) {
+        const tw = '<script src="https://cdn.tailwindcss.com"><\\/script>';
+        return html.replace(/<head>/i, `<head>${tw}`);
       }
       return html;
     }
     function updatePreview(){
-      const blob=new Blob([ensureTW(currentHTML)],{type:"text/html"});
-      iframe.src=URL.createObjectURL(blob);
+      const blob = new Blob([ensureTailwind(currentHTML)], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      iframe.src = url;
     }
     updatePreview();
 
-    function setThinking(on){
-      aiStatus.classList.toggle("hidden",!on);
-      overlay.classList.toggle("hidden",!on);
-    }
+    /* ---------------------------- AI actions ----------------------------- */
+    const aiPrompt = document.getElementById('aiPrompt');
+    const aiMode   = document.getElementById('aiMode');
+    const aiStatus = document.getElementById('aiStatus');
+    const overlay  = document.getElementById('overlay');
+    const btnSend  = document.getElementById('btnSend');
 
-    async function sendPrompt(){
-      const prompt=aiPrompt.value.trim();
-      if(!prompt)return;
+    function setThinking(on){
+      aiStatus.classList.toggle('hidden', !on);
+      overlay.classList.toggle('hidden', !on);
+    }
+    async function runAI({prompt, mode}){
       setThinking(true);
       try{
         let html;
-        if(aiMode.value==="generate"){ html=await aiGenerate(prompt); }
-        else{ html=await aiImprove(prompt,currentHTML); }
-
-        console.log("AI returned:",html.slice(0,200));
-        if(!/<html[\s\S]*<\/html>/i.test(html)) throw new Error("API svarade inte med komplett HTML");
-        view.dispatch({changes:{from:0,to:view.state.doc.length,insert:html}});
-        aiPrompt.value="";
-      }catch(e){
-        console.error("AI error",e);
-        alert("Fel: "+e.message);
-      }finally{ setThinking(false); }
+        if (mode === 'generate') {
+          html = await aiGenerate(prompt);
+        } else {
+          html = await aiImprove(prompt, currentHTML);
+        }
+        if (!/<html[\s\S]*<\/html>/i.test(html)) throw new Error("API returnerade inte komplett HTML.");
+        editorView.dispatch({ changes:{from:0,to:editorView.state.doc.length, insert: html} });
+        // updatePreview() sker via listener
+      } catch (e) {
+        alert("AI-fel: " + e.message);
+        console.error(e);
+      } finally { setThinking(false); }
     }
 
-    document.getElementById("btnSend").addEventListener("click",sendPrompt);
-    aiPrompt.addEventListener("keydown",e=>{
-      if(e.key==="Enter"&&!e.shiftKey){
-        e.preventDefault();
-        sendPrompt();
-      }
+    // Auto-run from setup
+    if (setup?.autoRun) {
+      const initial = composeInitialPrompt();
+      // Set controls visible
+      aiMode.value = (setup.mode === 'create') ? 'generate' : 'improve';
+      aiPrompt.value = initial;
+      runAI({ prompt: initial, mode: aiMode.value });
+      // clear autorun flag so refresh doesn't rerun
+      localStorage.setItem(SETUP_KEY, JSON.stringify({ ...setup, autoRun:false }));
+    }
+
+    // Manual Send
+    async function doSend(){
+      const prompt = aiPrompt.value.trim();
+      if (!prompt) return;
+      await runAI({ prompt, mode: aiMode.value });
+      aiPrompt.value = "";
+    }
+    btnSend.addEventListener("click", doSend);
+    aiPrompt.addEventListener("keydown", e=>{
+      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); doSend(); }
     });
 
-    // top buttons
-    document.getElementById("btnNew").onclick=()=>{
-      if(confirm("Starta nytt projekt?")){
-        view.dispatch({changes:{from:0,to:view.state.doc.length,insert:currentHTML}});
-      }
+    /* ---------------------------- Toolbar ---------------------------- */
+    document.getElementById('btnNew').onclick = ()=>{
+      if (!confirm('Starta nytt dokument?')) return;
+      const fresh = "<!doctype html><html lang='sv'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Nytt projekt</title><script src='https://cdn.tailwindcss.com'><\\/script></head><body class='bg-slate-50 text-slate-900'><main class='max-w-5xl mx-auto p-10'><h1 class='text-3xl font-bold'>Nytt projekt</h1></main></body></html>";
+      editorView.dispatch({ changes:{from:0,to:editorView.state.doc.length, insert:fresh} });
     };
-    document.getElementById("btnExport").onclick=()=>{
-      const blob=new Blob([currentHTML],{type:"text/html"});
-      const a=document.createElement("a");
-      a.href=URL.createObjectURL(blob);
-      a.download="webneva-projekt.html";
+    document.getElementById('btnExport').onclick = ()=>{
+      const blob = new Blob([currentHTML], { type:'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'webneva-projekt.html';
       a.click();
     };
-    document.getElementById("btnOpen").onclick=()=>{
-      const blob=new Blob([currentHTML],{type:"text/html"});
-      window.open(URL.createObjectURL(blob),"_blank");
+    document.getElementById('btnOpen').onclick = ()=>{
+      const blob = new Blob([currentHTML], { type:'text/html' });
+      window.open(URL.createObjectURL(blob), '_blank');
     };
-    document.getElementById("btnFull").onclick=()=>iframe.requestFullscreen?.();
+    document.getElementById('btnFull').onclick = ()=>{ document.getElementById('preview').requestFullscreen?.(); };
+
   </script>
 </body>
 </html>
