@@ -592,5 +592,44 @@
         // Initialize on load
         document.addEventListener('DOMContentLoaded', initialize);
     </script>
+                        <script type="module">
+  import { aiGenerate, aiImprove } from './js/ai.js';
+
+  async function generateSite() {
+    const prompt = document.getElementById('aiPrompt').value.trim();
+    if (!prompt) return;
+    await setAIThinking(true);
+    try {
+      const html = await aiGenerate(prompt);
+      document.getElementById('editor').value = html;
+      currentHTML = html;
+      updatePreview();
+    } catch (err) {
+      alert("Fel vid generering: " + err.message);
+    } finally {
+      await setAIThinking(false);
+    }
+  }
+
+  async function improveCode() {
+    const prompt = document.getElementById('aiPrompt').value.trim();
+    if (!prompt) return;
+    await setAIThinking(true);
+    try {
+      const html = await aiImprove(prompt, currentHTML);
+      document.getElementById('editor').value = html;
+      currentHTML = html;
+      updatePreview();
+    } catch (err) {
+      alert("Fel vid förbättring: " + err.message);
+    } finally {
+      await setAIThinking(false);
+    }
+  }
+
+  window.generateSite = generateSite;
+  window.improveCode = improveCode;
+</script>
+
 </body>
 </html>
